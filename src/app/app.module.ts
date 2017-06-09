@@ -7,7 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { ActivitydetailsComponent } from '../pages/activitydetails/activitydetails.component';
 import { CreateResolutionComponent } from '../pages/createResolution/createResolution.component';
 import { ManageResolutionsComponent } from '../pages/manageResolutions/manageResolutions.component';
-import { ManageContactsComponent } from '../pages/manageContacts/manageContacts.component';
+import { EditResolutionComponent } from '../pages/editResolution/editResolution.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -19,7 +19,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ActivitydetailsComponent,
     CreateResolutionComponent,
     ManageResolutionsComponent,
-    ManageContactsComponent
+    EditResolutionComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +32,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ActivitydetailsComponent,
     CreateResolutionComponent,
     ManageResolutionsComponent,
-    ManageContactsComponent
+    EditResolutionComponent
   ],
   providers: [
     StatusBar,

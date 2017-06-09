@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { ActivitydetailsComponent } from '../activitydetails/activitydetails.component';
+import { Utilities } from '../../app/utilities';
 
 @Component({
   selector: 'page-home',
@@ -8,16 +9,9 @@ import { ActivitydetailsComponent } from '../activitydetails/activitydetails.com
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public utilities: Utilities) {
 
   }
-
-  activities = [
-    { name: "Jogging", done: false },
-    { name: "Gym", done: false },
-    { name: "Quit smoking", done: true },
-    { name: "Eat healthy", done: false }
-  ];
 
   goToPage(activity) {
     this.navCtrl.push(ActivitydetailsComponent, { activity: activity });
