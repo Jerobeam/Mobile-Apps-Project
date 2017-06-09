@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Resolution Management</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="selection">
+      <ion-segment-button value="preconfigured">
+        Vorkonfigurierte
+      </ion-segment-button>
+      <ion-segment-button value="own">
+        Eigene
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <div [ngSwitch]="selection">
+    <ion-list *ngSwitchCase="'preconfigured'">
+      <div *ngFor="let resolution of utilities.getResolutions()">
+        <div *ngIf="resolution.isPreconfigured == true">
+          <ion-item>
+            <div>
+              {{resolution.name}}
+            </div>
+            <div item-right *ngIf="resolution.isActive == false">
+              <button color="secondary" class="listButton" ion-button round outline icon-only item-right (click)="addToActiveResolutions(resolution)">
+                <ion-icon name="add"></ion-icon>
+              </button>
+            </div>
+            <div item-right *ngIf="resolution.isActive == true">
+              <button color="danger" class="listButton" ion-button round outline icon-only item-right (click)="showRemovalConfirmationAlert(resolution)">
+                <ion-icon name="remove"></ion-icon>
+              </button>
+            </div>
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+    <ion-list *ngSwitchCase="'own'">
+      <div *ngFor="let resolution of utilities.getResolutions()">
+        <div *ngIf="resolution.isPreconfigured == false">
+          <ion-item>
+            <div>
+              {{resolution.name}}
+            </div>
+            <div item-right *ngIf="resolution.isActive == false">
+              <button color="secondary" class="listButton" ion-button round outline icon-only item-right (click)="addToActiveResolutions(resolution)">
+                <ion-icon name="add"></ion-icon>
+              </button>
+            </div>
+            <div item-right *ngIf="resolution.isActive == true">
+              <button color="danger" class="listButton" ion-button round outline icon-only item-right (click)="showRemovalConfirmationAlert(resolution)">
+                <ion-icon name="remove"></ion-icon>
+              </button>
+            </div>
+            <button class="listButton" ion-button round outline icon-only item-right>
+              <ion-icon name="md-create"></ion-icon>
+            </button>
+          </ion-item>
+        </div>
+      </div>
+      <ion-fab right bottom>
+        <button ion-fab icon-only (click)="openWindowCreateResolution()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-fab>
+    </ion-list>
+  </div>
+</ion-content>

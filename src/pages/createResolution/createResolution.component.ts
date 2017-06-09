@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
-  selector: 'page-createResolution.component',
+  selector: 'page-createResolution',
   templateUrl: 'createResolution.component.html'
 })
 export class CreateResolutionComponent {
