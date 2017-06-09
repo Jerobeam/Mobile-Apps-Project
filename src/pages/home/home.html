@@ -11,7 +11,12 @@
   <!--<button ion-button (click)="schedule()">Moin</button>
 -->
   <span *ngFor="let activity of activities">
-    <button ion-button class="img-activity" (click)="goToPage(activity.name)">{{activity.name}}</button>
+    <button ion-button class="img-activity" (click)="goToPage(activity.name)">
+      {{activity.name}}
+      <span *ngIf="activity.done == true"> 
+        <ion-icon ios="ios-checkmark-circle" md="md-checkmark-circle"></ion-icon>
+      </span>
+    </button>
   </span>
   <br><button ion-button>+</button>
 </ion-content>

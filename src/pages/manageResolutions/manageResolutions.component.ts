@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
-  selector: 'page-editResolution.component',
-  templateUrl: 'editResolution.component.html'
+  selector: 'page-manageResolutions',
+  templateUrl: 'manageResolutions.component.html'
 })
-export class EditResolutionComponent {
+export class ManageResolutionsComponent {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 

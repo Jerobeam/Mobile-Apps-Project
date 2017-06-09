@@ -13,10 +13,10 @@ export class HomePage {
   }
 
   activities = [
-    { name: "Jogging" },
-    { name: "Gym" },
-    { name: "Quit smoking" },
-    { name: "Eat healthy" }
+    { name: "Jogging", done: false },
+    { name: "Gym", done: false },
+    { name: "Quit smoking", done: true },
+    { name: "Eat healthy", done: false }
   ];
 
   goToPage(activity) {
