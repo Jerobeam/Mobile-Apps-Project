@@ -22,16 +22,6 @@ export class ManageResolutionsComponent {
       duration: 3000
     });
     toast.present();
-
-  }
-
-  showInformationAlert(heading, text) {
-    let alert = this.alertCtrl.create({
-      title: heading,
-      subTitle: text,
-      buttons: ['OK']
-    });
-    alert.present();
   }
 
   showRemovalConfirmationAlert(resolutionItem) {
@@ -54,8 +44,6 @@ export class ManageResolutionsComponent {
       ]
     });
     confirm.present();
-
-
   }
 
   addToActiveResolutions(resolutionItem) {
@@ -66,16 +54,19 @@ export class ManageResolutionsComponent {
       resolutionItem.isActive = true;
       this.showToast("Resolution is now active and will appear on the home screen");
     }
-
   }
 
   removeFromActiveResolutions(resolutionItem) {
+    if(resolutionItem.name == "Socialize"){
+      resolutionItem.contacts = [];
+      console.log("Cleared Array:");
+      console.log(resolutionItem.contacts);
+    }
     this.showToast("Resolution is no longer active and was removed from the home screen");
     resolutionItem.isActive = false;
   }
 
   openWindowCreateResolution() {
-    //this.showInformationAlert('Button clicked.','Opening Window "Create Resolution"');
     this.navCtrl.push(CreateResolutionComponent);
   }
 }

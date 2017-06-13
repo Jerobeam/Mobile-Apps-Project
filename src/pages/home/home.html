@@ -10,7 +10,7 @@
 <ion-content padding>
   <span *ngFor="let activity of utilities.getResolutions()">
     <span *ngIf="activity.isActive == true">
-      <button ion-button class="img-activity" (click)="goToPage(activity.name)">
+      <button ion-button class="img-activity" (click)="goToPage(activity)">
         {{activity.name}}
         <span *ngIf="activity.isDone == true"> 
           <ion-icon ios="ios-checkmark-circle" md="md-checkmark-circle"></ion-icon>

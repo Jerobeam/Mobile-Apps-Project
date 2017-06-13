@@ -8,5 +8,14 @@
 
 
 <ion-content padding>
-  {{activity}}
+  {{activity.name}}
+  <br>
+  <div *ngIf="activity.name == 'Socialize'">
+    <div *ngFor="let contact of activity.contacts">
+      <ion-item>
+        {{contact.name.formatted}}
+        <br> {{contact.phoneNumbers[0].value}}
+      </ion-item>
+    </div>
+  </div>
 </ion-content>

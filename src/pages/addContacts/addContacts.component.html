@@ -1,12 +1,45 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+  <ion-navbar hideBackButton="true">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="popPage()" clear>
+        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>Add Contacts</ion-title>
+    <ion-buttons right>
+      <button ion-button item-right outline color="secondary" (click)="confirm()">
+        Confirm
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
- 
+  <ion-searchbar (ionInput)="getItems($event)" placeholder="Search"></ion-searchbar>
+  <ion-list>
+    <div *ngFor="let p of displayArray">
+      <ion-item>
+        {{p.name.formatted}}
+        <div *ngIf="p.phoneNumbers != null">
+          <br>
+          <p>{{p.phoneNumbers[0].value}}</p>
+        </div>
+        <div *ngIf="p.phoneNumbers == null">
+          <br>
+          <p>No number available</p>
+        </div>
+        <div *ngIf="contactIsInArray(p) == true" item-right (click)="removeContactFromList(p)">
+          <button class="listButton" color="danger" ion-button round outline icon-only item-right>
+            <ion-icon name="remove"> </ion-icon>
+          </button>
+        </div>
+        <div *ngIf="contactIsInArray(p) == false" item-right>
+          <button class="listButton" color="secondary" ion-button round outline icon-only item-right (click)="addContactToList(p)">
+            <ion-icon name="add"> </ion-icon>
+          </button>
+        </div>
+
+      </ion-item>
+    </div>
+  </ion-list>
 </ion-content>

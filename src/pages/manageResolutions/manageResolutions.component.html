@@ -11,10 +11,10 @@
   <ion-toolbar no-border-top>
     <ion-segment [(ngModel)]="selection">
       <ion-segment-button value="preconfigured">
-        Vorkonfigurierte
+        Preconfigured
       </ion-segment-button>
-      <ion-segment-button value="own">
-        Eigene
+      <ion-segment-button value="custom">
+        Custom
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -41,7 +41,7 @@
         </div>
       </div>
     </ion-list>
-    <ion-list *ngSwitchCase="'own'">
+    <ion-list *ngSwitchCase="'custom'">
       <div *ngFor="let resolution of utilities.getResolutions()">
         <div *ngIf="resolution.isPreconfigured == false">
           <ion-item>
