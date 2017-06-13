@@ -8,6 +8,7 @@ import { ActivitydetailsComponent } from '../pages/activitydetails/activitydetai
 import { CreateResolutionComponent } from '../pages/createResolution/createResolution.component';
 import { ManageResolutionsComponent } from '../pages/manageResolutions/manageResolutions.component';
 import { EditResolutionComponent } from '../pages/editResolution/editResolution.component';
+import { AddContactsComponent } from '../pages/addContacts/addContacts.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -19,7 +20,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ActivitydetailsComponent,
     CreateResolutionComponent,
     ManageResolutionsComponent,
-    EditResolutionComponent
+    EditResolutionComponent,
+    AddContactsComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +34,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ActivitydetailsComponent,
     CreateResolutionComponent,
     ManageResolutionsComponent,
-    EditResolutionComponent
+    EditResolutionComponent,
+    AddContactsComponent
   ],
   providers: [
     StatusBar,

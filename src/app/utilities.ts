@@ -13,7 +13,8 @@ export class Utilities {
     { name: "Stop Smoking", isPreconfigured: true, isActive: true, isDone: false },
     { name: "Lose Weight", isPreconfigured: true, isActive: false, isDone: false },
     { name: "1 nice Activity", isPreconfigured: false, isActive: false, isDone: false },
-    { name: "Fußball", isPreconfigured: false, isActive: true, isDone: true }
+    { name: "Fußball", isPreconfigured: false, isActive: true, isDone: true },
+    { name: "Socialize", isPreconfigured: true, isActive: false, isDone: true }
   ];
 
   getResolutions() {

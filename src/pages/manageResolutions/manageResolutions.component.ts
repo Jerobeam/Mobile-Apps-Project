@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { CreateResolutionComponent } from '../createResolution/createResolution.component';
+import { AddContactsComponent } from '../addContacts/addContacts.component';
 import { Utilities } from '../../app/utilities';
 
 @Component({
@@ -58,8 +59,14 @@ export class ManageResolutionsComponent {
   }
 
   addToActiveResolutions(resolutionItem) {
-    resolutionItem.isActive = true;
-    this.showToast("Resolution is now active and will appear on the home screen");
+    if (resolutionItem.name == "Socialize") {
+      this.navCtrl.push(AddContactsComponent, { activity: resolutionItem });
+    }
+    else {
+      resolutionItem.isActive = true;
+      this.showToast("Resolution is now active and will appear on the home screen");
+    }
+
   }
 
   removeFromActiveResolutions(resolutionItem) {
