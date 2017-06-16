@@ -9,10 +9,16 @@ import * as _ from 'lodash';
 export class Utilities {
 
   resolutions = [
-    { name: "Running", isPreconfigured: true, isActive: false, isDone: false },
+    { name: "Running", isPreconfigured: true, isActive: false, isDone: false, activeDays: [0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
+      , 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
+      1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
+      0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1] },
     { name: "Stop Smoking", isPreconfigured: true, isActive: true, isDone: false },
     { name: "Lose Weight", isPreconfigured: true, isActive: false, isDone: false },
-    { name: "Football", isPreconfigured: false, isActive: true, isDone: true },
+    { name: "Football", isPreconfigured: false, isActive: true, isDone: true , activeDays: [0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0,
+      1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0,
+      1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1 , 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
+      0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1]},
     { name: "Socialize", isPreconfigured: true, isActive: false, isDone: false, contacts: [] }
   ];
 

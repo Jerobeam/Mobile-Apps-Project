@@ -8,34 +8,42 @@
 </ion-header>
 
 <ion-content padding>
-  <span *ngFor="let activity of utilities.getResolutions()">
-    <span *ngIf="activity.isActive == true">
-      <button ion-button class="img-activity" (click)="goToPage(activity)">
+  <!--<span *ngFor="let activity of utilities.getResolutions()">-->
+    <!--<button ion-button class="img-activity" (click)="goToPage(activity)">-->
+    <!--{{activity.name}}-->
+    <!--<span *ngIf="activity.isDone == true">-->
+    <!--<ion-icon ios="ios-checkmark-circle" md="md-checkmark-circle"></ion-icon>-->
+    <!--</span>-->
+    <!--</button>-->
+    <!--<div class="progress">-->
+      <!--<span *ngFor="let item of activity.activeDays; let i = index;">-->
+        <!--<div *ngIf="item == 0" class="progress-bar default-background" role="progressbar" style="width:0.275%"></div>-->
+        <!--<div *ngIf="item == 1" class="progress-bar green-background" role="progressbar" style="width:0.275%"></div>-->
+      <!--</span>-->
+    <!--</div>-->
+  <!--</span>-->
+  <ion-list>
+    <div *ngFor="let activity of utilities.getResolutions()">
+      <ion-item>
         {{activity.name}}
-        <span *ngIf="activity.isDone == true">
-          <ion-icon ios="ios-checkmark-circle" md="md-checkmark-circle"></ion-icon>
-        </span>
-      </button>
-    </span>
-  </span>
-  <div class="container">
-    <h2>Stacked Progress Bars</h2>
-    <p>Create a stacked progress bar by placing multiple bars into the same div with class .progress:</p>
-    <div class="progress">
-      <div class="progress-bar progress-bar-success" role="progressbar" style="width:40%">
-        Free Space
-      </div>
-      <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
-        Warning
-      </div>
-      <div class="progress-bar progress-bar-danger" role="progressbar" style="width:20%">
-        Danger
-      </div>
-      <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
-        Warning
-      </div>
+        <div class="progress">
+          <span *ngFor="let item of activity.activeDays; let i = index;">
+            <div *ngIf="item == 0" class="progress-bar default-background" role="progressbar"
+                 style="width:0.275%"></div>
+            <div *ngIf="item == 1" class="progress-bar green-background" role="progressbar" style="width:0.275%"></div>
+          </span>
+        </div>
+      </ion-item>
     </div>
-  </div>
+  </ion-list>
+  <!--<div class="container">-->
+  <!--<div class="progress">-->
+  <!--<span *ngFor="let item of daysInYear; let i = index;">-->
+  <!--<div *ngIf="item == 0" class="progress-bar default-background" role="progressbar" style="width:0.275%"></div>-->
+  <!--<div *ngIf="item == 1" class="progress-bar green-background" role="progressbar" style="width:0.275%"></div>-->
+  <!--</span>-->
+  <!--</div>-->
+  <!--</div>-->
 
   <ion-fab right bottom>
     <button ion-fab icon-only (click)="goToPageManageResolutions()">
