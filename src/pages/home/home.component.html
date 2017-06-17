@@ -7,33 +7,59 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <!--<span *ngFor="let activity of utilities.getResolutions()">-->
-    <!--<button ion-button class="img-activity" (click)="goToPage(activity)">-->
-    <!--{{activity.name}}-->
-    <!--<span *ngIf="activity.isDone == true">-->
-    <!--<ion-icon ios="ios-checkmark-circle" md="md-checkmark-circle"></ion-icon>-->
-    <!--</span>-->
-    <!--</button>-->
-    <!--<div class="progress">-->
-      <!--<span *ngFor="let item of activity.activeDays; let i = index;">-->
-        <!--<div *ngIf="item == 0" class="progress-bar default-background" role="progressbar" style="width:0.275%"></div>-->
-        <!--<div *ngIf="item == 1" class="progress-bar green-background" role="progressbar" style="width:0.275%"></div>-->
-      <!--</span>-->
-    <!--</div>-->
+  <!--<button ion-button class="img-activity" (click)="goToPage(activity)">-->
+  <!--{{activity.name}}-->
+  <!--<span *ngIf="activity.isDone == true">-->
+  <!--<ion-icon ios="ios-checkmark-circle" md="md-checkmark-circle"></ion-icon>-->
+  <!--</span>-->
+  <!--</button>-->
+  <!--<div class="progress">-->
+  <!--<span *ngFor="let item of activity.activeDays; let i = index;">-->
+  <!--<div *ngIf="item == 0" class="progress-bar default-background" role="progressbar" style="width:0.275%"></div>-->
+  <!--<div *ngIf="item == 1" class="progress-bar green-background" role="progressbar" style="width:0.275%"></div>-->
+  <!--</span>-->
+  <!--</div>-->
   <!--</span>-->
   <ion-list>
     <div *ngFor="let activity of utilities.getResolutions()">
-      <ion-item>
-        {{activity.name}}
-        <div class="progress">
-          <span *ngFor="let item of activity.activeDays; let i = index;">
-            <div *ngIf="item == 0" class="progress-bar default-background" role="progressbar"
-                 style="width:0.275%"></div>
-            <div *ngIf="item == 1" class="progress-bar green-background" role="progressbar" style="width:0.275%"></div>
-          </span>
+      <ion-item class="less-label-margin">
+        <div class="item-left">
+          <!--<div class="resolution-list-icon">-->
+          <!--<img class="resolution-list-icon" src='assets/images/running-icon.jpg'/>-->
+          <!--</div>-->
+          <!--<div>-->
+          <img src='assets/images/running-icon.jpg' class="resolution-list-icon"/>
+          <!--</div>-->
         </div>
+        <div class="item-right">
+          <div class="resolution-list-name">{{activity.name}}</div>
+          <div>Last activity: 21.06.</div>
+        </div>
+        <div class="progress">
+            <span *ngFor="let item of activity.activeDays; let i = index;">
+              <div *ngIf="item == 0" class="progress-bar default-background" role="progressbar"
+                   style="width:0.275%"></div>
+              <div *ngIf="item == 1" class="progress-bar green-background" role="progressbar" style="width:0.275%"></div>
+            </span>
+        </div>
+        <div class="datum-range">
+          01.01.2017
+          <span class="datum-range-end">31.12.2017</span>
+        </div>
+        <span></span>
       </ion-item>
+      <!--<ion-item>-->
+      <!--{{activity.name}}-->
+      <!--<div class="progress">-->
+      <!--<span *ngFor="let item of activity.activeDays; let i = index;">-->
+      <!--<div *ngIf="item == 0" class="progress-bar default-background" role="progressbar"-->
+      <!--style="width:0.275%"></div>-->
+      <!--<div *ngIf="item == 1" class="progress-bar green-background" role="progressbar" style="width:0.275%"></div>-->
+      <!--</span>-->
+      <!--</div>-->
+      <!--</ion-item>-->
     </div>
   </ion-list>
   <!--<div class="container">-->
