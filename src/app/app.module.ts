@@ -9,6 +9,7 @@ import { CreateResolutionComponent } from '../pages/createResolution/createResol
 import { ManageResolutionsComponent } from '../pages/manageResolutions/manageResolutions.component';
 import { EditResolutionComponent } from '../pages/editResolution/editResolution.component';
 import { AddContactsComponent } from '../pages/addContacts/addContacts.component';
+import {Date} from './pipes/date';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -21,7 +22,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     CreateResolutionComponent,
     ManageResolutionsComponent,
     EditResolutionComponent,
-    AddContactsComponent
+    AddContactsComponent,
+
+    //pipes
+    Date
   ],
   imports: [
     BrowserModule,

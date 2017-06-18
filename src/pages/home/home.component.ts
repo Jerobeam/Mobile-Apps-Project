@@ -10,6 +10,8 @@ import {Utilities} from '../../app/utilities';
 })
 export class Home {
 
+  recurrance: string = "all";
+  today: string = "2017-06-21";
   daysInYear: Array<any> = [];
   progressWidth: any;
   daysInYearTest: Array<any> = [0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
@@ -51,8 +53,19 @@ export class Home {
     console.log(diffDays);
   }
 
-  goToPage(activity) {
-    this.navCtrl.push(ActivitydetailsComponent, {activity: activity});
+  goToPage(event, resolution) {
+    this.navCtrl.push(ActivitydetailsComponent, {activity: resolution});
+  }
+
+  doneResolutionToday(event, resolution){
+    event.stopPropagation();
+    resolution.secondLastActivity = resolution.lastActivity;
+    resolution.lastActivity = this.today;
+  }
+
+  doneSingleResolution(event, resolution){
+    event.stopPropagation();
+    resolution.isDone = true;
   }
 
   goToPageManageResolutions() {

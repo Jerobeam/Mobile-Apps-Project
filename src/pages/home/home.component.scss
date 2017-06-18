@@ -27,7 +27,7 @@ page-home {
     -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
 
-    margin-top: 20px;
+    margin-top: 14px;
     margin-bottom: 5px;
   }
 
@@ -64,7 +64,7 @@ page-home {
   }
 
   .item-right {
-    padding: 12px 8px 8px 15px;
+    padding: 18px 8px 8px 15px;
     color: $lightgray;
     margin-left: 60px;
     font-size: 14px;
@@ -73,6 +73,8 @@ page-home {
   .resolution-list-name {
     font-size: 16px;
     color: black;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .datum-range{
@@ -84,5 +86,27 @@ page-home {
     float: right;
   }
 
+  .resolution-list-button {
+    float: right;
+    height: 28px !important;
+    margin-top: 18px;
+  }
+
+  .resolution-list-button-icon{
+    font-size: 30px;
+    margin-left: 5px;
+  }
+
+  .resolution-list-done{
+    margin-top: 6px;
+    color: $secondary;
+    font-size: 12px;
+  }
+
+  .resolution-list-not-done{
+    margin-top: 6px;
+    color: $danger;
+    font-size: 12px;
+  }
 }
 
