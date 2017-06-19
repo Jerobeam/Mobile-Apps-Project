@@ -1,0 +1,6 @@
+page-register {
+  .datetime-text:empty:not(:focus):before{
+    content: "Geburtstag";
+    color: #999;
+  }
+}
