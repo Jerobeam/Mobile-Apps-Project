@@ -57,7 +57,7 @@ export class ManageResolutionsComponent {
   }
 
   removeFromActiveResolutions(resolutionItem) {
-    if(resolutionItem.name == "Socialize"){
+    if (resolutionItem.name == "Socialize") {
       resolutionItem.contacts = [];
       console.log("Cleared Array:");
       console.log(resolutionItem.contacts);
@@ -68,5 +68,9 @@ export class ManageResolutionsComponent {
 
   openWindowCreateResolution() {
     this.navCtrl.push(CreateResolutionComponent);
+  }
+
+  popPage() {
+    this.navCtrl.pop();
   }
 }
