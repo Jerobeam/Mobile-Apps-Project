@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Activity</ion-title>
+    <ion-title>{{activity.name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -9,13 +9,26 @@
 
 <ion-content padding>
   {{activity.name}}
-  <br>
-  <div *ngIf="activity.name == 'Socialize'">
-    <div *ngFor="let contact of activity.contacts">
-      <ion-item>
-        {{contact.name.formatted}}
-        <br> {{contact.phoneNumbers[0].value}}
-      </ion-item>
+
+  <div>
+    <div class="picture-container">
+      <img  src="./../../assets/images/ball.png">
     </div>
-  </div>
+    <br>
+
+    <form>
+      <ion-item>
+        <ion-label>Last Activity</ion-label>
+        <ion-label>{{activity.lastActivity}}</ion-label>
+      </ion-item>
+    </form>
+
+    <div *ngIf="activity.name == 'Socialize'">
+      <div *ngFor="let contact of activity.contacts">
+        <ion-item>
+          {{contact.name.formatted}}
+          <br> {{contact.phoneNumbers[0].value}}
+        </ion-item>
+      </div>
+    </div>
 </ion-content>
