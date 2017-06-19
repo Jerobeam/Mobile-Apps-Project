@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {ActivitydetailsComponent} from '../activitydetails/activitydetails.component';
-import {ManageResolutionsComponent} from '../manageResolutions/manageResolutions.component';
-import {Utilities} from '../../app/utilities';
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+import { ActivitydetailsComponent } from '../activitydetails/activitydetails.component';
+import { ManageResolutionsComponent } from '../manageResolutions/manageResolutions.component';
+import { Utilities } from '../../app/utilities';
 
 @Component({
   selector: 'page-home',
@@ -10,6 +10,7 @@ import {Utilities} from '../../app/utilities';
 })
 export class Home {
 
+  displayName: any;
   recurrance: string = "all";
   today: string = "2017-06-21";
   daysInYear: Array<any> = [];
@@ -42,6 +43,11 @@ export class Home {
     this.calculateCurrentDayNumber();
   }
 
+  ionViewWillEnter() {
+    this.displayName = this.utilities.userData.lastname;
+    console.log(this.displayName);
+}
+
   calculateCurrentDayNumber() {
     let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
     let firstDate = new Date(2017, 1, 1);
@@ -54,16 +60,16 @@ export class Home {
   }
 
   goToPage(event, resolution) {
-    this.navCtrl.push(ActivitydetailsComponent, {activity: resolution});
+    this.navCtrl.push(ActivitydetailsComponent, { activity: resolution });
   }
 
-  doneResolutionToday(event, resolution){
+  doneResolutionToday(event, resolution) {
     event.stopPropagation();
     resolution.secondLastActivity = resolution.lastActivity;
     resolution.lastActivity = this.today;
   }
 
-  doneSingleResolution(event, resolution){
+  doneSingleResolution(event, resolution) {
     event.stopPropagation();
     resolution.isDone = true;
   }
