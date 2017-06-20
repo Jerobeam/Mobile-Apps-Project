@@ -4,10 +4,10 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import firebase from 'firebase';
-import { Http, Response, Headers, RequestOptions } from "@angular/http";
+/*import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
-
+*/
 
 
 @Injectable()
@@ -44,10 +44,6 @@ export class Utilities {
     { name: "Socialize", isSingleActivity: false, isPreconfigured: true, isActive: false, isDone: false, contacts: [], iconUrl: "assets/images/running-icon.jpg" }
   ];
 
-  getResolutions() {
-    return this.resolutions;
-  }
-
   constructor() {
 
   }
@@ -75,7 +71,23 @@ export class Utilities {
   }
 
   updateUser(userID: any, data: any): any {
-    return firebase.database().ref('users' + userID).update(data);
+    return firebase.database().ref('users/' + userID).update(data);
+  }
+
+  updateResolutionStatus(isPreconfigured: boolean, toState: any, userID: any, resolutionID, data: any): any {
+      if (toState == "active") {
+        return firebase.database().ref('users/' + userID + '/activeResolutions/' + resolutionID).set(
+          data
+        );
+        //return firebase.database().ref('users/' + userID).update(data);
+      }
+      else if (toState == "inactive") {
+        return firebase.database().ref('users/' + userID + '/activeResolutions/' + resolutionID).remove();
+      }
+  }
+
+  customResolutionExists(){
+
   }
 
   hashPassword(password): any {
