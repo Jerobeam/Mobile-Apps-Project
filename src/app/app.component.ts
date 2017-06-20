@@ -52,9 +52,9 @@ export class MyApp {
         if (this.nav.getActive() == undefined) {
           if (this.loadUserCredentials()) {
             if (this.notificationPressed) {
-              //this.rootPage = MyGamesComponent;
+              this.rootPage = Home;
             } else {
-              //this.rootPage = MatchdayComponent;
+              this.rootPage = Home;
               this.authenticated = true;
             }
           } else {
@@ -81,7 +81,7 @@ export class MyApp {
         console.log(user.val());
         if (user.val() != null) {
           if (!this.utilities.inRegister) {
-            this.checkForVerification();
+            //this.checkForVerification();
           }
           if (user.val().email) {
             this.checkPlatform(userID);

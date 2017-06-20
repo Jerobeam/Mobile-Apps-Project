@@ -24,7 +24,7 @@
 
   <div [ngSwitch]="recurrance">
     <ion-list *ngSwitchCase="'all'">
-      <div *ngFor="let resolution of utilities.getResolutions()">
+      <div *ngFor="let resolution of utilities.resolutions">
         <ion-item class="less-label-margin" (click)="goToPage($event, resolution)">
           <div class="item-left">
             <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
@@ -71,7 +71,7 @@
 
   <div [ngSwitch]="recurrance">
     <ion-list *ngSwitchCase="'recurring'">
-      <div *ngFor="let resolution of utilities.getResolutions()">
+      <div *ngFor="let resolution of utilities.resolutions">
         <ion-item class="less-label-margin" *ngIf="!resolution.isSingleActivity" (click)="goToPage($event, resolution)">
           <div class="item-left">
             <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
@@ -111,7 +111,7 @@
 
   <div [ngSwitch]="recurrance">
     <ion-list *ngSwitchCase="'once'">
-      <div *ngFor="let resolution of utilities.getResolutions()">
+      <div *ngFor="let resolution of utilities.resolutions">
         <ion-item class="less-label-margin" *ngIf="resolution.isSingleActivity" (click)="goToPage($event, resolution)">
           <div class="item-left">
             <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
