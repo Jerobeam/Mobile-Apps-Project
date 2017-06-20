@@ -2,21 +2,28 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { CreateResolutionComponent } from '../createResolution/createResolution.component';
 import { AddContactsComponent } from '../addContacts/addContacts.component';
+import { LoginComponent } from '../login/login.component';
 import { Utilities } from '../../app/utilities';
 import { ResolutionProvider } from '../../providers/resolution-provider';
+import { AuthData } from '../../providers/auth-data';
 
 @Component({
   selector: 'page-manageResolutions',
   templateUrl: 'manageResolutions.component.html',
-  providers: [ResolutionProvider]
+  providers: [AuthData, ResolutionProvider]
 })
 export class ManageResolutionsComponent {
 
   selection = "preconfigured";
   activeResolutions = [];
 
-  constructor(public resolutionProvider: ResolutionProvider, public utilities: Utilities, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public toastCtrl: ToastController) {
+  constructor(public authData: AuthData, public resolutionProvider: ResolutionProvider, public utilities: Utilities, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public toastCtrl: ToastController) {
 
+  }
+
+  logout() {
+    this.authData.logoutUser();
+    this.navCtrl.setRoot(LoginComponent);
   }
 
   findActiveResolutions() {

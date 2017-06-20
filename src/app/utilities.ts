@@ -15,7 +15,7 @@ export class Utilities {
 
   inRegister: boolean = false;
   loggedIn: boolean = false;
-  LOCAL_TOKEN_KEY: string = 'MobileApps';
+  LOCAL_TOKEN_KEY: string = 'Batmanton';
   userLoaded: boolean = false;
   userData: any = {};
   user: any;

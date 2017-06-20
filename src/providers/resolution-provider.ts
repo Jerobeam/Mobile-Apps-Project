@@ -7,6 +7,7 @@ export class ResolutionProvider {
 
     allResolutions: Array<any>;
     allUsers: Array<any>;
+    customResolutions: Array<any>;
 
     constructor() {
         this.setUsers();
