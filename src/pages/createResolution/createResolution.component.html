@@ -18,7 +18,7 @@
 
     <ion-item>
       <ion-label>Type</ion-label>
-    <ion-select okText="Okay" cancelText="Dismiss">
+    <ion-select [(ngModel)]="resolution.type" name="type" okText="Okay" cancelText="Dismiss">
       <ion-option>Recurring Activity</ion-option>
       <ion-option>Single Activity</ion-option>
     </ion-select>
@@ -26,7 +26,7 @@
 
     <ion-item>
       <ion-label>Reminder</ion-label>
-      <ion-select okText="Okay" cancelText="Dismiss">
+      <ion-select [(ngModel)]="resolution.reminder" name="reminder" okText="Okay" cancelText="Dismiss">
         <ion-option>Every Day</ion-option>
         <ion-option>Every 3 Days</ion-option>
         <ion-option>Every Week</ion-option>

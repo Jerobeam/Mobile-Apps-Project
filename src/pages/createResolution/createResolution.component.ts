@@ -6,7 +6,7 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'createResolution.component.html'
 })
 export class CreateResolutionComponent {
-  resolution = {name, }
+  resolution = {}
   logForm() {
     console.log(this.resolution)
   }
