@@ -25,17 +25,20 @@
     <ion-list *ngSwitchCase="'preconfigured'">
       <div *ngFor="let resolution of resolutionProvider.allResolutions">
         <div *ngIf="resolution.isPreconfigured == true">
-          <ion-item>
+          <ion-item class="less-label-margin">
+            <div item-left>
+              <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
+            </div>
             <div>
               {{resolution.name}}
             </div>
             <div item-right *ngIf="isActive(resolution) == false">
-              <button color="secondary" class="listButton" ion-button round outline icon-only item-right (click)="addToActiveResolutions(resolution, true)">
+              <button color="secondary" class="listButton" ion-button round outline icon-only item-right (click)="addToActiveResolutions(resolution)">
                 <ion-icon name="add"></ion-icon>
               </button>
             </div>
             <div item-right *ngIf="isActive(resolution) == true">
-              <button color="danger" class="listButton" ion-button round outline icon-only item-right (click)="showRemovalConfirmationAlert(resolution, true)">
+              <button color="danger" class="listButton" ion-button round outline icon-only item-right (click)="showRemovalConfirmationAlert(resolution)">
                   <ion-icon name="remove"></ion-icon>
                 </button>
             </div>
@@ -46,17 +49,20 @@
     <ion-list *ngSwitchCase="'custom'">
       <div *ngFor="let resolution of resolutionProvider.allResolutions">
         <div *ngIf="resolution.isPreconfigured == false">
-          <ion-item>
+          <ion-item class="less-label-margin">
+            <div item-left>
+              <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
+            </div>
             <div>
               {{resolution.name}}
             </div>
             <div item-right *ngIf="isActive(resolution) == false">
-              <button color="secondary" class="listButton" ion-button round outline icon-only item-right (click)="addToActiveResolutions(resolution, false)">
+              <button color="secondary" class="listButton" ion-button round outline icon-only item-right (click)="addToActiveResolutions(resolution)">
                 <ion-icon name="add"></ion-icon>
               </button>
             </div>
             <div item-right *ngIf="isActive(resolution) == true">
-              <button color="danger" class="listButton" ion-button round outline icon-only item-right (click)="showRemovalConfirmationAlert(resolution, false)">
+              <button color="danger" class="listButton" ion-button round outline icon-only item-right (click)="showRemovalConfirmationAlert(resolution)">
                 <ion-icon name="remove"></ion-icon>
               </button>
             </div>

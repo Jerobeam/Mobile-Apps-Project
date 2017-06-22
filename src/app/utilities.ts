@@ -15,7 +15,7 @@ export class Utilities {
 
   inRegister: boolean = false;
   loggedIn: boolean = false;
-  LOCAL_TOKEN_KEY: string = 'MobileApps';
+  LOCAL_TOKEN_KEY: string = 'Batmanton';
   userLoaded: boolean = false;
   userData: any = {};
   user: any;
@@ -74,32 +74,41 @@ export class Utilities {
     return firebase.database().ref('users/' + userID).update(data);
   }
 
-  updateResolutionStatus(isPreconfigured: boolean, toState: any, userID: any, resolutionID, data: any): any {
-      if (toState == "active") {
-        return firebase.database().ref('users/' + userID + '/activeResolutions/' + resolutionID).set(
-          data
-        );
-        //return firebase.database().ref('users/' + userID).update(data);
-      }
-      else if (toState == "inactive") {
-        return firebase.database().ref('users/' + userID + '/activeResolutions/' + resolutionID).remove();
-      }
-  }
-
-  customResolutionExists(){
-
-  }
-
-  hashPassword(password): any {
-    let hash = 0, i, chr, len;
-    if (password.length === 0) return hash;
-    for (i = 0, len = password.length; i < len; i++) {
-      chr = password.charCodeAt(i);
-      hash = ((hash << 5) - hash) + chr;
-      hash |= 0; // Convert to 32bit integer
+  updateResolutionStatus(toState: any, userID: any, resolutionID, data: any): any {
+    if (toState == "active") {
+      return firebase.database().ref('users/' + userID + '/activeResolutions/' + resolutionID).set(
+        data
+      );
     }
-    return hash;
-  };
+    else if (toState == "inactive") {
+      return firebase.database().ref('users/' + userID + '/activeResolutions/' + resolutionID).remove();
+    }
+  }
+
+  createNewCustomResolution(data, userID) {
+    return firebase.database().ref('users/' + userID + '/customResolutions/').child(this.makeID()).set({
+      isPreconfigured: data.isPreconfigured,
+      iconUrl: data.iconUrl,
+      isRecurring: data.isRecurring,
+      name: data.name
+    });
+  }
+
+  removeCustomResolution(resolutionID, userID) {
+    return firebase.database().ref('users/' + userID + '/customResolutions/').child(resolutionID).remove().then(() => {
+      firebase.database().ref('users/' + userID + '/activeResolutions/').child(resolutionID).remove();
+    });
+  }
+
+  makeID() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < 26; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+  }
 }
 
 

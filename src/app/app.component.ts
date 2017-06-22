@@ -22,7 +22,7 @@ firebase.initializeApp(firebaseConfig);
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = LoginComponent;
+  rootPage: any = Home;
 
   pages: Array<{ title: string, component: any }>;
   notificationPressed: boolean = false;
@@ -32,7 +32,7 @@ export class MyApp {
     this.initializeApp();
 
     firebase.auth().onAuthStateChanged((user) => {
-      utilities.user = user;
+      //utilities.user = user;
 
       if (user != undefined) {
         utilities.user = user;
@@ -43,23 +43,15 @@ export class MyApp {
       if (!user) {
         utilities.loggedIn = false;
         utilities.user = {};
-        if (this.loadUserCredentials()) {
-          this.rootPage = LoginComponent;
-        } else {
-          //this.rootPage = ClubPasswordComponent;
-        }
+        this.rootPage = LoginComponent;
       } else {
         if (this.nav.getActive() == undefined) {
-          if (this.loadUserCredentials()) {
-            if (this.notificationPressed) {
-              this.rootPage = Home;
-            } else {
-              this.rootPage = Home;
-              this.authenticated = true;
-            }
-          } else {
-            //this.rootPage = ClubPasswordComponent;
-          }
+          //if (this.loadUserCredentials()) {
+          this.rootPage = Home;
+          this.authenticated = true;
+          /*} else {
+            this.rootPage = LoginComponent;
+          }*/
         }
       }
       //this.utilities.countOpen();
@@ -81,7 +73,7 @@ export class MyApp {
         console.log(user.val());
         if (user.val() != null) {
           if (!this.utilities.inRegister) {
-            //this.checkForVerification();
+            this.checkForVerification();
           }
           if (user.val().email) {
             this.checkPlatform(userID);
@@ -108,8 +100,6 @@ export class MyApp {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
@@ -158,28 +148,7 @@ export class MyApp {
     }
   }
 
-  /**
-   * This function checks, if the user entered the club password
-   * The local token gets loaded and checked, if it contains the right password
-   * @returns {boolean}
-   */
-  loadUserCredentials() {
-    let token = window.localStorage.getItem(this.utilities.LOCAL_TOKEN_KEY);
-    if (token) {
-      if (this.utilities.hashPassword(token) == this.utilities.hashedPassword) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-
-  }
-
   openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
   }
 }
