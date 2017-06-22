@@ -86,10 +86,6 @@ export class Utilities {
       }
   }
 
-  customResolutionExists(){
-
-  }
-
   hashPassword(password): any {
     let hash = 0, i, chr, len;
     if (password.length === 0) return hash;

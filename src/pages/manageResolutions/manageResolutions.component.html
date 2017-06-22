@@ -25,7 +25,10 @@
     <ion-list *ngSwitchCase="'preconfigured'">
       <div *ngFor="let resolution of resolutionProvider.allResolutions">
         <div *ngIf="resolution.isPreconfigured == true">
-          <ion-item>
+          <ion-item class="less-label-margin">
+            <div item-left>
+              <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
+            </div>
             <div>
               {{resolution.name}}
             </div>
@@ -46,7 +49,10 @@
     <ion-list *ngSwitchCase="'custom'">
       <div *ngFor="let resolution of resolutionProvider.allResolutions">
         <div *ngIf="resolution.isPreconfigured == false">
-          <ion-item>
+          <ion-item class="less-label-margin">
+            <div item-left>
+              <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
+            </div>
             <div>
               {{resolution.name}}
             </div>

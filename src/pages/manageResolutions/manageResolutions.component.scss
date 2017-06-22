@@ -3,5 +3,38 @@ page-manageResolutions {
         width: 32px;
         height: 32px !important;
     }
+
+    .item-left {
+        float: left;
+        margin-top: 4px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        padding-left: 3px;
+    }
+
+    .resolution-list-icon {
+        border-radius: 50%;
+        width: 55px;
+        height: 55px;
+        background-color: $primary;
+        padding: 3px;
+    }
+
+    .item-right {
+        padding: 18px 8px 8px 15px;
+        color: $lightgray;
+        margin-left: 60px;
+        font-size: 14px;
+    }
+
+    .less-label-margin .label-md {
+        margin-top: 5px;
+        margin-bottom: 8px;
+    }
+
+    .less-label-margin .label-ios {
+        margin-top: 5px;
+        margin-bottom: 8px;
+    }
 }
 
