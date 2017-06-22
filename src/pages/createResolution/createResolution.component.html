@@ -1,0 +1,40 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Create your own Resolution</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <h1></h1>
+
+  <form (ngSubmit)="logForm()">
+    <ion-item>
+      <ion-label>Resolution Name</ion-label>
+      <ion-input type="text" [(ngModel)]="resolution.name" name="name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Type</ion-label>
+    <ion-select okText="Okay" cancelText="Dismiss">
+      <ion-option>Recurring Activity</ion-option>
+      <ion-option>Single Activity</ion-option>
+    </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Reminder</ion-label>
+      <ion-select okText="Okay" cancelText="Dismiss">
+        <ion-option>Every Day</ion-option>
+        <ion-option>Every 3 Days</ion-option>
+        <ion-option>Every Week</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <button ion-button type="submit" block>Add Resolution</button>
+  </form>
+
+
+</ion-content>
