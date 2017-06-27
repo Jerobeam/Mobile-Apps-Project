@@ -16,13 +16,9 @@ export class ManageResolutionsComponent {
 
   selection = "preconfigured";
   activeResolutions = [];
-  amountOfDaysInCurrentYear;
 
   constructor(public authData: AuthData, public resolutionProvider: ResolutionProvider, public utilities: Utilities, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public toastCtrl: ToastController) {
-    let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
-    let firstDate = new Date(2017, 1, 1);
-    var secondDate = new Date(2017, 12, 31);
-    this.amountOfDaysInCurrentYear = Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay));
+
   }
 
   logout() {
@@ -117,8 +113,7 @@ export class ManageResolutionsComponent {
 
   addToActiveResolutions(resolutionItem) {
     if (resolutionItem.isRecurring){
-
-      resolutionItem.activeDays = new Array(this.amountOfDaysInCurrentYear);
+      resolutionItem.activeDays = new Array(this.utilities.amountOfDaysInCurrentYear);
     }
     if (resolutionItem.name == "Socialize") {
       this.navCtrl.push(AddContactsComponent, { activity: resolutionItem });
@@ -128,7 +123,7 @@ export class ManageResolutionsComponent {
       //this.activeResolutionsIDs.push(resolutionItem.id);
       this.resolutionProvider.updateResolutionStatus("active", this.utilities.user.uid,
         resolutionItem.id,
-        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "" , activeDays: "" });
+        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "" , activeDays: resolutionItem.activeDays });
       this.showToast("Resolution is now active");
     }
   }

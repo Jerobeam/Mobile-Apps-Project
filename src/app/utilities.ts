@@ -18,6 +18,8 @@ export class Utilities {
   userLoaded: boolean = false;
   userData: any = {};
   user: any;
+  amountOfDaysInCurrentYear: any;
+  currentDay = new Date();
 
   resolutions = [
     {
@@ -42,7 +44,10 @@ export class Utilities {
   ];
 
   constructor() {
-
+    let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
+    let firstDate = new Date(new Date().getFullYear(), 1, 1);
+    var secondDate = new Date(new Date().getFullYear(), 12, 31);
+    this.amountOfDaysInCurrentYear = Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay));
   }
 
   setInRegister(): void {

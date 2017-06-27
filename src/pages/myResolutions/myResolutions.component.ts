@@ -12,7 +12,7 @@ export class Home {
 
   displayName: any;
   recurrance: string = "all";
-  today: string = "2017-06-21";
+  // today: string = "2017-06-21";
   daysInYear: Array<any> = [];
   progressWidth: any;
   daysInYearTest: Array<any> = [0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
@@ -23,23 +23,16 @@ export class Home {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public utilities: Utilities) {
-    let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
-    let firstDate = new Date(2017, 1, 1);
-    var secondDate = new Date(2017, 12, 31);
-    let amountOfDays = Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay));
-
-    this.daysInYear = new Array(amountOfDays);
-
-    for (let i = 0; i < this.daysInYear.length; i++) {
-      if (Math.random() > 0.5) {
-        this.daysInYear[i] = 0;
-      } else {
-        this.daysInYear[i] = 1;
-      }
-    }
-    this.progressWidth = 100 / amountOfDays;
-    console.log(this.daysInYear);
-    console.log(this.progressWidth);
+    // for (let i = 0; i < this.daysInYear.length; i++) {
+    //   if (Math.random() > 0.5) {
+    //     this.daysInYear[i] = 0;
+    //   } else {
+    //     this.daysInYear[i] = 1;
+    //   }
+    // }
+    // this.progressWidth = 100 / amountOfDays;
+    // console.log(this.daysInYear);
+    // console.log(this.progressWidth);
     this.calculateCurrentDayNumber();
   }
 
@@ -50,11 +43,10 @@ export class Home {
 
   calculateCurrentDayNumber() {
     let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
-    let firstDate = new Date(2017, 1, 1);
+    let firstDate = new Date(new Date().getFullYear(), 1, 1);
     // var secondDate = new Date(2017,12,31);
-    let secondDate = new Date();
 
-    let diffDays = Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay));
+    let diffDays = Math.abs((firstDate.getTime() - this.utilities.currentDay.getTime()) / (oneDay));
 
     console.log(diffDays);
   }
@@ -66,7 +58,7 @@ export class Home {
   doneResolutionToday(event, resolution) {
     event.stopPropagation();
     resolution.secondLastActivity = resolution.lastActivity;
-    resolution.lastActivity = this.today;
+    resolution.lastActivity = this.utilities.currentDay;
   }
 
   doneSingleResolution(event, resolution) {
