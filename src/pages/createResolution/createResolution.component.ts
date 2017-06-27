@@ -6,14 +6,25 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'createResolution.component.html'
 })
 export class CreateResolutionComponent {
-  resolution = {}
-  logForm() {
-    console.log(this.resolution)
-  }
+  resolution = {};
+  isPreconfigured: boolean =false;
+  isRecurring: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 
   }
+
+  isRecurringMethod(){
+
+  }
+
+  setCustomerRes() {
+    console.log(this.resolution)
+  }
+
+
+
+
 
 
 

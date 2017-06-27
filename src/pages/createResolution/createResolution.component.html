@@ -10,7 +10,7 @@
 <ion-content padding>
   <h1></h1>
 
-  <form (ngSubmit)="logForm()">
+  <form [formGroup]="createRes" (submit)="setCustomerRes()">
     <ion-item>
       <ion-label>Resolution Name</ion-label>
       <ion-input type="text" [(ngModel)]="resolution.name" name="name"></ion-input>
@@ -31,6 +31,11 @@
         <ion-option>Every 3 Days</ion-option>
         <ion-option>Every Week</ion-option>
       </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Picture</ion-label>
+      <ion-input type="text" [(ngModel)]="resolution.pictureUrl" name="name"></ion-input>
     </ion-item>
 
     <button ion-button type="submit" block>Add Resolution</button>
