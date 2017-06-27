@@ -6,7 +6,7 @@ import { Utilities } from '../../app/utilities';
 
 @Component({
   selector: 'page-home',
-  templateUrl: 'src/pages/myResolutions/myResolutions.component.html'
+  templateUrl: 'myResolutions.component.html'
 })
 export class MyResolutions {
 
