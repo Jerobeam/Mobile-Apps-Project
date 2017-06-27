@@ -51,11 +51,8 @@ import { Camera } from 'ionic-native';
   providers: [
     StatusBar,
     SplashScreen,
-<<<<<<< HEAD
     Camera,
-=======
     Geofence,
->>>>>>> test
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
