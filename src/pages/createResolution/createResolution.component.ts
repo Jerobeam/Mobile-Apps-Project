@@ -30,7 +30,7 @@ export class CreateResolutionComponent {
     } if (this.resolution.value.type == 'Single Activity'){
       this.isRecurringC = false;
     } else{
-      console.log('jodelahiti');
+
     }
     console.log(this.isRecurringC)
   }
