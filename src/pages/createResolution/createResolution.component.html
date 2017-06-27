@@ -10,7 +10,7 @@
 <ion-content padding>
   <h1></h1>
 
-  <form (ngSubmit)="logForm()">
+  <form [formGroup]="createRes" (submit)="setCustomerRes()">
     <ion-item>
       <ion-label>Resolution Name</ion-label>
       <ion-input type="text" [(ngModel)]="resolution.name" name="name"></ion-input>
