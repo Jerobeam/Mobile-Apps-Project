@@ -14,7 +14,7 @@ export class CreateResolutionComponent {
 
   }
 
-  isRecurring(){
+  isRecurringMethod(){
 
   }
 
