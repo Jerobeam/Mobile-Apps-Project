@@ -94,9 +94,9 @@
           </div>
           <div class="progress">
             <span *ngFor="let item of resolution.activeDays; let i = index;">
-              <div *ngIf="item == 0" class="progress-bar default-background" role="progressbar"
+              <div *ngIf="item == false || item == undefined || item == null" class="progress-bar default-background" role="progressbar"
                    style="width:0.275%"></div>
-              <div *ngIf="item == 1" class="progress-bar green-background" role="progressbar"
+              <div *ngIf="item == true" class="progress-bar green-background" role="progressbar"
                    style="width:0.275%"></div>
             </span>
           </div>
