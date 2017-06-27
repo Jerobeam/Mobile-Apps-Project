@@ -47,7 +47,6 @@ export class ResolutionProvider {
                 counter++;
             }
             this.allUsers = userArray;
-            this.allUsers = _.sortBy(this.allUsers, "lastname");
         });
     }
 }
