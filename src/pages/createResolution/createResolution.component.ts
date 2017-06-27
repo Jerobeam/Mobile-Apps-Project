@@ -7,40 +7,20 @@ import {FormBuilder, Validators, FormControl, FormGroup} from '@angular/forms';
   templateUrl: 'createResolution.component.html'
 })
 export class CreateResolutionComponent {
-  private resolution : FormGroup;
+  public resolution ;
+
 
   constructor( public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder ) {
     this.resolution = this.formBuilder.group({
-      title: ['', Validators.required],
-      description: [''],
+      name: [''],
+      type: [''],
+      reminder: [''],
+      imageUrl:['']
     });
   }
   logForm(){
     console.log(this.resolution.value)
   }
-
-
-  /*isPreconfigured: boolean =false;
-  isRecurring: boolean = false;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-
-  }
-
-  isRecurringMethod(){
-
-  }
-
-  setCustomerRes() {
-    console.log(this.resolution)
-  }*/
-
-
-
-
-
-
-
 
 
 }
