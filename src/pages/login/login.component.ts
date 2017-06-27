@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController, AlertController, MenuController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthData } from '../../providers/auth-data';
-import { Home } from '../myResolutions/myResolutions.component';
+import { MyResolutions } from '../myResolutions/myResolutions.component';
 import {RegisterComponent} from "../register/register.component";
 //import { ResetPasswordComponent } from '../resetPassword/resetPassword.component';*/
 
@@ -49,7 +49,7 @@ export class LoginComponent {
     } else {
       this.authData.loginUser(this.loginForm.value.email, this.loginForm.value.password).then( authData => {
         //this.authData.changePushid(authData.uid);
-        this.navCtrl.setRoot(Home);
+        this.navCtrl.setRoot(MyResolutions);
         //this.menuCtrl.enable(true, 'mainMenu');
       }, error => {
         this.loading.dismiss().then( () => {

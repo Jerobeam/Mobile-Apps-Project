@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController, AlertController } from 'ionic-angular';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AuthData } from '../../providers/auth-data';
-import { Home } from "../myResolutions/myResolutions.component";
+import { MyResolutions } from "../myResolutions/myResolutions.component";
 import { Utilities } from "../../app/utilities";
 
 
@@ -140,7 +140,7 @@ export class RegisterComponent {
         {
           text: 'Ok',
           handler: () => {
-            this.navCtrl.setRoot(Home);
+            this.navCtrl.setRoot(MyResolutions);
             this.utilities.setInRegister();
           }
         }

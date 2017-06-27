@@ -3,7 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
-import { Home } from '../pages/myResolutions/myResolutions.component';
+import { MyResolutions } from '../pages/myResolutions/myResolutions.component';
 import { ActivitydetailsComponent } from '../pages/activitydetails/activitydetails.component';
 import { CreateResolutionComponent } from '../pages/createResolution/createResolution.component';
 import { ManageResolutionsComponent } from '../pages/manageResolutions/manageResolutions.component';
@@ -19,7 +19,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 @NgModule({
   declarations: [
     MyApp,
-    Home,
+    MyResolutions,
     ActivitydetailsComponent,
     CreateResolutionComponent,
     ManageResolutionsComponent,
@@ -38,7 +38,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    Home,
+    MyResolutions,
     ActivitydetailsComponent,
     CreateResolutionComponent,
     ManageResolutionsComponent,

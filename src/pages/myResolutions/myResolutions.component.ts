@@ -8,7 +8,7 @@ import { Utilities } from '../../app/utilities';
   selector: 'page-home',
   templateUrl: 'src/pages/myResolutions/myResolutions.component.html'
 })
-export class Home {
+export class MyResolutions {
 
   displayName: any;
   recurrance: string = "all";

@@ -3,7 +3,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { Home } from '../pages/myResolutions/myResolutions.component';
+import { MyResolutions } from '../pages/myResolutions/myResolutions.component';
 import { LoginComponent } from '../pages/login/login.component';
 import { ManageResolutionsComponent } from '../pages/manageResolutions/manageResolutions.component';
 import firebase from 'firebase';
@@ -22,7 +22,7 @@ firebase.initializeApp(firebaseConfig);
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = Home;
+  rootPage: any = MyResolutions;
 
   pages: Array<{ title: string, component: any }>;
   notificationPressed: boolean = false;
@@ -47,7 +47,7 @@ export class MyApp {
       } else {
         if (this.nav.getActive() == undefined) {
           //if (this.loadUserCredentials()) {
-          this.rootPage = Home;
+          this.rootPage = MyResolutions;
           this.authenticated = true;
           /*} else {
             this.rootPage = LoginComponent;
@@ -59,7 +59,7 @@ export class MyApp {
     });
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: Home },
+      { title: 'MyResolutions', component: MyResolutions },
       { title: 'Resolution Management', component: ManageResolutionsComponent }
     ];
 
