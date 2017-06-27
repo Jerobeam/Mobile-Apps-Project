@@ -13,7 +13,7 @@ export class Date {
   }
 
   transform(date) {
-    if(date != undefined){
+    if(date != undefined && date != "") {
       return date.split("-")[2] + "." + date.split("-")[1] + "." + date.split("-")[0];
     }
   }

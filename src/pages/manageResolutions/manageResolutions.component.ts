@@ -113,12 +113,8 @@ export class ManageResolutionsComponent {
 
   addToActiveResolutions(resolutionItem) {
     if (resolutionItem.isRecurring){
-      // resolutionItem.activeDays = new Array(this.utilities.amountOfDaysInCurrentYear);
-      Array.prototype.repeat= function(what, L){
-        while(L) this[--L]= what;
-        return this;
-      }
-      resolutionItem.activeDays = [false, true, false];
+      resolutionItem.activeDays = new Array(this.utilities.amountOfDaysInCurrentYear);
+      resolutionItem.activeDays.fill(false);
     }else{
       resolutionItem.activeDays = "";
     }
