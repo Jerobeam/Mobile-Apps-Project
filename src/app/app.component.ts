@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
 import { MyResolutions } from '../pages/myResolutions/myResolutions.component';
 import { LoginComponent } from '../pages/login/login.component';
 import { ManageResolutionsComponent } from '../pages/manageResolutions/manageResolutions.component';
@@ -11,6 +10,7 @@ import { firebaseConfig } from "./firebaseAppData";
 import { AuthData } from '../providers/auth-data';
 import { Utilities } from './utilities';
 import { AlertController } from "ionic-angular";
+import { Geofence } from '@ionic-native/geofence';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -28,9 +28,8 @@ export class MyApp {
   notificationPressed: boolean = false;
   authenticated: boolean = false;
 
-  constructor(public alertCtrl: AlertController, public authData: AuthData, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public utilities: Utilities) {
+  constructor(public geofence: Geofence, public alertCtrl: AlertController, public authData: AuthData, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public utilities: Utilities) {
     this.initializeApp();
-
     firebase.auth().onAuthStateChanged((user) => {
       //utilities.user = user;
 
@@ -61,7 +60,6 @@ export class MyApp {
       { title: 'MyResolutions', component: MyResolutions },
       { title: 'Resolution Management', component: ManageResolutionsComponent }
     ];
-
   }
 
   checkIfUserDeleted(userID: any): any {
@@ -101,7 +99,13 @@ export class MyApp {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.geofence.initialize().then(
+        // resolved promise does not return a value
+        () => console.log('Geofence Plugin Ready'),
+        (err) => console.log(err)
+      )
     });
+
   }
 
   logout() {

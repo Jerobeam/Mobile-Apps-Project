@@ -12,7 +12,7 @@ import { AddContactsComponent } from '../pages/addContacts/addContacts.component
 import { LoginComponent } from '../pages/login/login.component';
 import { RegisterComponent } from '../pages/register/register.component';
 import { Date } from './pipes/date';
-
+import { Geofence } from '@ionic-native/geofence';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from 'ionic-native';
@@ -51,7 +51,11 @@ import { Camera } from 'ionic-native';
   providers: [
     StatusBar,
     SplashScreen,
+<<<<<<< HEAD
     Camera,
+=======
+    Geofence,
+>>>>>>> test
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
