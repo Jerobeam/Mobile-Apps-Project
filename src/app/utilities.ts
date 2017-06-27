@@ -83,7 +83,7 @@ export class Utilities {
 
   createNewCustomResolution(data, userID) {
     return firebase.database().ref('users/' + userID + '/customResolutions/').child(this.makeID()).set({
-      isPreconfigured: data.isPreconfigured,
+      isPreconfigured: false,
       iconUrl: data.iconUrl,
       isRecurring: data.isRecurring,
       name: data.name
