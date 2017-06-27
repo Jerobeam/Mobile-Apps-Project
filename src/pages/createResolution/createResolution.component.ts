@@ -44,6 +44,6 @@ export class CreateResolutionComponent {
         isRecurring: this.isRecurringC,
         name: this.resolution.value.name,
         iconUrl: this.resolution.value.imageUrl
-      }, this.utilities.user.uid);
+      });
   }
 }
