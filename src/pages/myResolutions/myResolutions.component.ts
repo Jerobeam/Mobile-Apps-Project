@@ -41,6 +41,7 @@ export class MyResolutions {
 
   ionViewWillEnter() {
     this.resolutionProvider.getActiveResolutions();
+    console.log("Entered triggered");
   }
 
   calculateCurrentDayNumber() {

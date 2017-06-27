@@ -79,6 +79,10 @@ export class ResolutionProvider {
     }
 
     getActiveResolutions() {
+      console.log("getActiveResolutions triggered");
+      this.noRecurringResolutions = true;
+      this.noSingleResolutions = true;
+      this.activeResolutions = [];
       return firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions').once('value', snapshot => {
         let counter = 0;
         for (let i in snapshot.val()) {
