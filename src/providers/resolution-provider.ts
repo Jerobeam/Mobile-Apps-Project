@@ -1,31 +1,36 @@
 import firebase from 'firebase';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import { Utilities } from '../app/utilities';
 
 @Injectable()
 export class ResolutionProvider {
 
     allResolutions: Array<any>;
+    activeResolutions: Array<any> = [];
+    noRecurringResolutions: boolean = true;
+    noSingleResolutions: boolean = true;
     allUsers: Array<any>;
     customResolutions: Array<any>;
 
-    constructor() {
+
+    constructor(public utilities: Utilities) {
         this.getUsers();
     }
 
-    updateResolutionStatus(toState: any, userID: any, resolutionID, data: any): any {
+    updateResolutionStatus(toState: any, resolutionID, data: any): any {
         if (toState == "active") {
-            return firebase.database().ref('users/' + userID + '/activeResolutions/' + resolutionID).set(
+            return firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolutionID).set(
                 data
             );
         }
         else if (toState == "inactive") {
-            return firebase.database().ref('users/' + userID + '/activeResolutions/' + resolutionID).remove();
+            return firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolutionID).remove();
         }
     }
 
-    createNewCustomResolution(data, userID) {
-        return firebase.database().ref('users/' + userID + '/customResolutions/').child(this.makeID()).set({
+    createNewCustomResolution(data) {
+        return firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions/').child(this.makeID()).set({
             isPreconfigured: data.isPreconfigured,
             iconUrl: data.iconUrl,
             isRecurring: data.isRecurring,
@@ -43,9 +48,9 @@ export class ResolutionProvider {
         return text;
     }
 
-    removeCustomResolution(resolutionID, userID) {
-        return firebase.database().ref('users/' + userID + '/customResolutions/').child(resolutionID).remove().then(() => {
-            firebase.database().ref('users/' + userID + '/activeResolutions/').child(resolutionID).remove();
+    removeCustomResolution(resolutionID) {
+        return firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions/').child(resolutionID).remove().then(() => {
+            firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/').child(resolutionID).remove();
         });
     }
 
@@ -62,8 +67,8 @@ export class ResolutionProvider {
         })
     }
 
-    getCustomResolutions(user) {
-        return firebase.database().ref('users/' + user.uid + '/customResolutions').once('value', snapshot => {
+    getCustomResolutions() {
+        return firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions').once('value', snapshot => {
             let counter = this.allResolutions.length;
             for (let i in snapshot.val()) {
                 this.allResolutions[counter] = snapshot.val()[i];
@@ -71,6 +76,22 @@ export class ResolutionProvider {
                 counter++;
             }
         })
+    }
+
+    getActiveResolutions() {
+      return firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions').once('value', snapshot => {
+        let counter = 0;
+        for (let i in snapshot.val()) {
+          this.activeResolutions[counter] = snapshot.val()[i];
+          this.activeResolutions[counter].id = i;
+          counter++;
+          if(snapshot.val()[i].isRecurring){
+            this.noRecurringResolutions = false;
+          }else{
+            this.noSingleResolutions = false;
+          }
+        }
+      })
     }
 
     getUsers() {

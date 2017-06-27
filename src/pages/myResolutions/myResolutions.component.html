@@ -3,7 +3,7 @@
     <!--<button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>-->
-    <ion-title item-center>Home {{displayName}}</ion-title>
+    <ion-title item-center>My Resolutions</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -24,35 +24,36 @@
 
   <div [ngSwitch]="recurrance">
     <ion-list *ngSwitchCase="'all'">
-      <div *ngFor="let resolution of utilities.resolutions">
+      <div class="no-data-label" *ngIf="resolutionProvider.activeResolutions.length === 0">No resolution currently selected</div>
+      <div *ngFor="let resolution of resolutionProvider.activeResolutions">
         <ion-item class="less-label-margin" (click)="goToPage($event, resolution)">
           <div class="item-left">
             <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
           </div>
 
-          <button [disabled]="true" *ngIf="!resolution.isSingleActivity && (today == resolution.lastActivity)" class="resolution-list-button"
+          <button [disabled]="true" *ngIf="resolution.isRecurring && (today == resolution.lastActivity)" class="resolution-list-button"
             ion-button icon-end round outline color="secondary">
             DONE TODAY
             <ion-icon class="resolution-list-button-icon" name="checkmark"></ion-icon>
           </button>
-          <button [disabled]="false" *ngIf="!resolution.isSingleActivity && (today != resolution.lastActivity)" class="resolution-list-button"
+          <button [disabled]="false" *ngIf="resolution.isRecurring && (today != resolution.lastActivity)" class="resolution-list-button"
             ion-button icon-end round outline color="secondary" (click)="doneResolutionToday($event, resolution)">
             DONE TODAY
             <ion-icon class="resolution-list-button-icon" name="checkmark"></ion-icon>
           </button>
 
-          <button [disabled]="resolution.isDone" *ngIf="resolution.isSingleActivity" class="resolution-list-button" ion-button icon-end
+          <button [disabled]="resolution.isDone" *ngIf="!resolution.isRecurring" class="resolution-list-button" ion-button icon-end
             round outline color="secondary" (click)="doneSingleResolution($event, resolution)">
             DONE
             <ion-icon class="resolution-list-button-icon" name="checkmark"></ion-icon>
           </button>
           <div class="item-right">
             <div class="resolution-list-name">{{resolution.name}}</div>
-            <div *ngIf="!resolution.isSingleActivity">Last activity: {{resolution.lastActivity | date}}</div>
-            <div class="resolution-list-done" *ngIf="resolution.isSingleActivity && resolution.isDone">- DONE -</div>
-            <div class="resolution-list-not-done" *ngIf="resolution.isSingleActivity && !resolution.isDone">- NOT DONE -</div>
+            <div *ngIf="resolution.isRecurring">Last activity: {{resolution.lastActivity | date}}</div>
+            <div class="resolution-list-done" *ngIf="!resolution.isRecurring && resolution.isDone">- DONE -</div>
+            <div class="resolution-list-not-done" *ngIf="!resolution.isRecurring && !resolution.isDone">- NOT DONE -</div>
           </div>
-          <div *ngIf="!resolution.isSingleActivity" class="progress">
+          <div *ngIf="resolution.isRecurring" class="progress">
             <span *ngFor="let item of resolution.activeDays; let i = index;">
               <div *ngIf="item == 0" class="progress-bar default-background" role="progressbar"
                    style="width:0.275%"></div>
@@ -60,7 +61,7 @@
                    style="width:0.275%"></div>
             </span>
           </div>
-          <div *ngIf="!resolution.isSingleActivity" class="datum-range">
+          <div *ngIf="resolution.isRecurring" class="datum-range">
             01.01.2017
             <span class="datum-range-end">31.12.2017</span>
           </div>
@@ -71,18 +72,19 @@
 
   <div [ngSwitch]="recurrance">
     <ion-list *ngSwitchCase="'recurring'">
-      <div *ngFor="let resolution of utilities.resolutions">
-        <ion-item class="less-label-margin" *ngIf="!resolution.isSingleActivity" (click)="goToPage($event, resolution)">
+      <div class="no-data-label" *ngIf="resolutionProvider.noRecurringResolutions">No recurring resolution currently selected</div>
+      <div *ngFor="let resolution of resolutionProvider.activeResolutions">
+        <ion-item class="less-label-margin" *ngIf="resolution.isRecurring" (click)="goToPage($event, resolution)">
           <div class="item-left">
             <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
           </div>
 
-          <button [disabled]="true" *ngIf="!resolution.isSingleActivity && (today == resolution.lastActivity)" class="resolution-list-button"
+          <button [disabled]="true" *ngIf="resolution.isRecurring && (today == resolution.lastActivity)" class="resolution-list-button"
             ion-button icon-end round outline color="secondary">
             DONE TODAY
             <ion-icon class="resolution-list-button-icon" name="checkmark"></ion-icon>
           </button>
-          <button [disabled]="false" *ngIf="!resolution.isSingleActivity && (today != resolution.lastActivity)" class="resolution-list-button"
+          <button [disabled]="false" *ngIf="resolution.isRecurring && (today != resolution.lastActivity)" class="resolution-list-button"
             ion-button icon-end round outline color="secondary" (click)="doneResolutionToday($event, resolution)">
             DONE TODAY
             <ion-icon class="resolution-list-button-icon" name="checkmark"></ion-icon>
@@ -101,8 +103,8 @@
             </span>
           </div>
           <div class="datum-range">
-            01.01.2017
-            <span class="datum-range-end">31.12.2017</span>
+            01.01.{{currentYear}}
+            <span class="datum-range-end">31.12.{{currentYear}}</span>
           </div>
         </ion-item>
       </div>
@@ -111,8 +113,9 @@
 
   <div [ngSwitch]="recurrance">
     <ion-list *ngSwitchCase="'once'">
-      <div *ngFor="let resolution of utilities.resolutions">
-        <ion-item class="less-label-margin" *ngIf="resolution.isSingleActivity" (click)="goToPage($event, resolution)">
+      <div class="no-data-label" *ngIf="resolutionProvider.noSingleResolutions">No single resolution currently selected</div>
+      <div *ngFor="let resolution of resolutionProvider.activeResolutions">
+        <ion-item class="less-label-margin" *ngIf="!resolution.isRecurring" (click)="goToPage($event, resolution)">
           <div class="item-left">
             <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
           </div>

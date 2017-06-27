@@ -37,7 +37,6 @@ export class MyApp {
       if (user != undefined) {
         utilities.user = user;
         utilities.setUserData();
-        //utilities.setPlayers();
         this.checkIfUserDeleted(user.uid);
       }
       if (!user) {

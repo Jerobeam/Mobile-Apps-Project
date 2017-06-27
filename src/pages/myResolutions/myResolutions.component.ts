@@ -3,26 +3,29 @@ import { NavController, NavParams } from 'ionic-angular';
 import { ActivitydetailsComponent } from '../activitydetails/activitydetails.component';
 import { ManageResolutionsComponent } from '../manageResolutions/manageResolutions.component';
 import { Utilities } from '../../app/utilities';
+import { ResolutionProvider } from '../../providers/resolution-provider';
+import { AuthData } from '../../providers/auth-data';
 
 @Component({
   selector: 'page-home',
-  templateUrl: 'myResolutions.component.html'
+  templateUrl: 'myResolutions.component.html',
+  providers: [AuthData, ResolutionProvider]
 })
 export class MyResolutions {
 
-  displayName: any;
+  // displayName: any;
   recurrance: string = "all";
-  // today: string = "2017-06-21";
+  currentYear = new Date().getFullYear();
   daysInYear: Array<any> = [];
   progressWidth: any;
-  daysInYearTest: Array<any> = [0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
-    , 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
-    1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
-    1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0,
-    0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1];
+  // daysInYearTest: Array<any> = [0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
+  //   , 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
+  //   1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
+  //   1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0,
+  //   0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1];
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public utilities: Utilities) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public utilities: Utilities, public resolutionProvider: ResolutionProvider) {
     // for (let i = 0; i < this.daysInYear.length; i++) {
     //   if (Math.random() > 0.5) {
     //     this.daysInYear[i] = 0;
@@ -37,9 +40,8 @@ export class MyResolutions {
   }
 
   ionViewWillEnter() {
-    this.displayName = this.utilities.userData.lastname;
-    console.log(this.displayName);
-}
+    this.resolutionProvider.getActiveResolutions();
+  }
 
   calculateCurrentDayNumber() {
     let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds

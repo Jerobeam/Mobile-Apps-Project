@@ -28,10 +28,10 @@ export class ManageResolutionsComponent {
 
 //Only used in order to test the method utilities.createNewCustomRevolution()
   testCreate() {
-    this.resolutionProvider.createNewCustomResolution({ isPreconfigured: false, isRecurring: false, name: "1 nice Methode", iconUrl: "assets/images/running-icon.jpg" }, this.utilities.user.uid).then(() => {
+    this.resolutionProvider.createNewCustomResolution({ isPreconfigured: false, isRecurring: false, name: "1 nice Methode", iconUrl: "assets/images/running-icon.jpg" }).then(() => {
       this.utilities.setUserData();
       this.resolutionProvider.getPreconfiguredResolutions().then(() => {
-        this.resolutionProvider.getCustomResolutions(this.utilities.user).then(() => {
+        this.resolutionProvider.getCustomResolutions().then(() => {
           this.findActiveResolutions();
         });
       });
@@ -40,10 +40,10 @@ export class ManageResolutionsComponent {
 
   //Only used in order to test the method utilities.removeCustomRevolution()
   testRemove(resolutionID) {
-    this.resolutionProvider.removeCustomResolution(resolutionID, this.utilities.user.uid).then(() => {
+    this.resolutionProvider.removeCustomResolution(resolutionID).then(() => {
       this.utilities.setUserData();
       this.resolutionProvider.getPreconfiguredResolutions().then(() => {
-        this.resolutionProvider.getCustomResolutions(this.utilities.user).then(() => {
+        this.resolutionProvider.getCustomResolutions().then(() => {
           this.findActiveResolutions();
         });
       });
@@ -74,7 +74,7 @@ export class ManageResolutionsComponent {
     //this.showLoadingElement();
     this.utilities.setUserData();
     this.resolutionProvider.getPreconfiguredResolutions().then(() => {
-      this.resolutionProvider.getCustomResolutions(this.utilities.user).then(() => {
+      this.resolutionProvider.getCustomResolutions().then(() => {
         this.findActiveResolutions();
       });
     });
@@ -114,6 +114,8 @@ export class ManageResolutionsComponent {
   addToActiveResolutions(resolutionItem) {
     if (resolutionItem.isRecurring){
       resolutionItem.activeDays = new Array(this.utilities.amountOfDaysInCurrentYear);
+    }else{
+      resolutionItem.activeDays = "";
     }
     if (resolutionItem.name == "Socialize") {
       this.navCtrl.push(AddContactsComponent, { activity: resolutionItem });
@@ -121,9 +123,8 @@ export class ManageResolutionsComponent {
     else {
       this.activeResolutions.push(resolutionItem);
       //this.activeResolutionsIDs.push(resolutionItem.id);
-      this.resolutionProvider.updateResolutionStatus("active", this.utilities.user.uid,
-        resolutionItem.id,
-        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "" , activeDays: resolutionItem.activeDays });
+      this.resolutionProvider.updateResolutionStatus("active", resolutionItem.id,
+        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "" , activeDays: resolutionItem.activeDays, isRecurring: resolutionItem.isRecurring});
       this.showToast("Resolution is now active");
     }
   }
@@ -134,14 +135,13 @@ export class ManageResolutionsComponent {
       console.log("Cleared Array:");
       console.log(resolutionItem.contacts);
     }
-    this.resolutionProvider.updateResolutionStatus("inactive", this.utilities.user.uid,
-      resolutionItem.id,
+    this.resolutionProvider.updateResolutionStatus("inactive", resolutionItem.id,
       { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "" });
 
     this.activeResolutions = this.activeResolutions.filter((item) => {
       return ((item.id.toLowerCase().indexOf(resolutionItem.id.toLowerCase()) <= -1));
     })
-    this.showToast("Resolution is no longer active and was removed from the myResolutions screen");
+    this.showToast("Resolution is no longer active");
   }
 
   openWindowCreateResolution() {

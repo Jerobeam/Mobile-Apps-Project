@@ -23,7 +23,7 @@ export class AuthData {
     return this.fireAuth.signInWithEmailAndPassword(email, password);
   }
 
-  signupUser(email: string, password: string, firstname: string, lastname: string, birthday: string, gender: string, team: string): any {
+  signupUser(email: string, password: string, firstname: string, lastname: string, birthday: string): any {
     return this.fireAuth.createUserWithEmailAndPassword(email, password)
       .then((newUser) => {
         this.userProfile.child(newUser.uid).set({
@@ -31,19 +31,8 @@ export class AuthData {
           firstname: firstname,
           lastname: lastname,
           birthday: birthday,
-          gender: gender,
-          team: team,
-          state: 0,
-          isPlayer: true,
-          isTrainer: false,
-          picUrl: "",
           pushid: {},
-          isDefault: false,
-          helpCounter: 0
         });
-        /*firebase.database().ref('clubs/12/players/' + newUser.uid + '/pushid/' + pushid).set(
-          true
-        );*/
         this.utilities.user = newUser;
         newUser.sendEmailVerification();
       });
@@ -106,7 +95,7 @@ export class AuthData {
     //console.log('getIds: ' + JSON.stringify(ids));
     return this.fireAuth.signOut();
     /* firebase.database().ref('users/' + this.utilities.user.uid + '/pushid').child(ids.userId).remove().then(() => {
-       
+
      })*/
     //})
   }

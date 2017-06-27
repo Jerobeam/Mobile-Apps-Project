@@ -63,11 +63,6 @@ export class RegisterComponent {
     this[field + "Changed"] = true;
   }
 
-  genderSelectChanged(input) {
-    this.gender = input;
-    this.genderChanged = true;
-  }
-
   startsWithACapital(c: FormControl) {
     let NAME_REGEXP = new RegExp("[A-Z]");
     if (!NAME_REGEXP.test(c.value.charAt(0))) {
@@ -93,8 +88,6 @@ export class RegisterComponent {
     // if (!this.signupForm.valid || !this.gender || !this.team) {
     if (!this.signupForm.valid || !this.gender) {
       console.log(this.signupForm.value);
-      console.log("gender: " + this.gender);
-      // console.log("team: " + this.team);
     } else {
       /*window["plugins"].OneSignal.getIds(ids => {
         console.log('getIds: ' + JSON.stringify(ids));
@@ -107,10 +100,7 @@ export class RegisterComponent {
         this.signupForm.value.firstname,
         this.signupForm.value.lastname,
         this.signupForm.value.birthday,
-        this.gender,
-        "0",
       ).then(() => {
-        //this.utilities.addPlayerToTeam(this.team, this.utilities.user.uid);
         this.showVerificationAlert();
       }, (error) => {
         this.loading.dismiss();
