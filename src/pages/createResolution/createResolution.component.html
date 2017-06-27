@@ -10,7 +10,7 @@
 <ion-content padding>
   <h1></h1>
 
-  <form [formGroup]="createRes" (submit)="setCustomerRes()">
+<!--  <form [formGroup]="createRes" (submit)="setCustomerRes()">
     <ion-item>
       <ion-label>Resolution Name</ion-label>
       <ion-input type="text" [(ngModel)]="resolution.name" name="name"></ion-input>
@@ -31,15 +31,45 @@
         <ion-option>Every 3 Days</ion-option>
         <ion-option>Every Week</ion-option>
       </ion-select>
-    </ion-item>
 
     <ion-item>
       <ion-label>Picture</ion-label>
       <ion-input type="text" [(ngModel)]="resolution.pictureUrl" name="name"></ion-input>
     </ion-item>
-
     <button ion-button type="submit" block>Add Resolution</button>
-  </form>
+  </form>-->
+
+    <form [formGroup]="createResolution" (ngSubmit)="logForm()">
+      <ion-item>
+        <ion-label>Resolution Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Type</ion-label>
+        <ion-select [(ngModel)]="type" name="type" okText="Okay" cancelText="Dismiss">
+          <ion-option>Recurring Activity</ion-option>
+          <ion-option>Single Activity</ion-option>
+        </ion-select>
+      </ion-item>
+
+        <ion-item>
+          <ion-label>Reminder</ion-label>
+          <ion-select [(ngModel)]="reminder" name="reminder" okText="Okay" cancelText="Dismiss">
+            <ion-option>Every Day</ion-option>
+            <ion-option>Every 3 Days</ion-option>
+            <ion-option>Every Week</ion-option>
+          </ion-select>
+        </ion-item>
+
+      <ion-item>
+        <ion-label>Picture</ion-label>
+        <ion-input type="text" [(ngModel)]="resolution.pictureUrl" name="name"></ion-input>
+      </ion-item>
+
+
+      <button ion-button type="submit" [disabled]="!createResolution.valid">Submit</button>
+    </form>
 
 
 </ion-content>
