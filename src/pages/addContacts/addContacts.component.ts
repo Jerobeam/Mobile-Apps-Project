@@ -84,9 +84,9 @@ export class AddContactsComponent {
         this.utilities.updateResolutionStatus("active", this.utilities.user.uid,
             this.resolutionItem.id,
             { id: this.resolutionItem.id, name: this.resolutionItem.name, lastActivity: "", contacts: this.selectedContacts });
-        this.showToast("Resolution is now active and will appear on the home screen");
+        this.showToast("Resolution is now active and will appear on the myResolutions screen");
 
-        this.showToast("Resolution is now active and will appear on the home screen");
+        this.showToast("Resolution is now active and will appear on the myResolutions screen");
         this.navCtrl.pop();
     }
 

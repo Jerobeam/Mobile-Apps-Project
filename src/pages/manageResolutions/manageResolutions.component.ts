@@ -121,7 +121,7 @@ export class ManageResolutionsComponent {
       this.utilities.updateResolutionStatus("active", this.utilities.user.uid,
         resolutionItem.id,
         { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "" , activeDays: "" });
-      this.showToast("Resolution is now active and will appear on the home screen");
+      this.showToast("Resolution is now active and will appear on the myResolutions screen");
     }
   }
 
@@ -138,7 +138,7 @@ export class ManageResolutionsComponent {
     this.activeResolutions = this.activeResolutions.filter((item) => {
       return ((item.id.toLowerCase().indexOf(resolutionItem.id.toLowerCase()) <= -1));
     })
-    this.showToast("Resolution is no longer active and was removed from the home screen");
+    this.showToast("Resolution is no longer active and was removed from the myResolutions screen");
   }
 
   openWindowCreateResolution() {

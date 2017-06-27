@@ -3,7 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
-import { Home } from '../pages/home/home.component';
+import { Home } from '../pages/myResolutions/myResolutions.component';
 import { ActivitydetailsComponent } from '../pages/activitydetails/activitydetails.component';
 import { CreateResolutionComponent } from '../pages/createResolution/createResolution.component';
 import { ManageResolutionsComponent } from '../pages/manageResolutions/manageResolutions.component';

@@ -15,12 +15,9 @@ export class Utilities {
 
   inRegister: boolean = false;
   loggedIn: boolean = false;
-  LOCAL_TOKEN_KEY: string = 'Batmanton';
   userLoaded: boolean = false;
   userData: any = {};
   user: any;
-  hashedPassword = -1719170103;
-
 
   resolutions = [
     {
@@ -58,7 +55,6 @@ export class Utilities {
   setUserData(): void {
     firebase.database().ref('users/' + this.user.uid).once('value', snapshot => {
       if (snapshot.val() != null) {
-        console.log("in snapshot");
         this.userData = snapshot.val();
         this.userLoaded = true;
       }
@@ -67,7 +63,7 @@ export class Utilities {
 
   getUser(userID: any): any {
     return firebase.database().ref('users/' + userID).once('value')
-      .then(user => { console.log("in utilities then"); return user });
+      .then(user => { return user });
   }
 
   updateUser(userID: any, data: any): any {
