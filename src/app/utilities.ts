@@ -70,32 +70,6 @@ export class Utilities {
     return firebase.database().ref('users/' + userID).update(data);
   }
 
-  updateResolutionStatus(toState: any, userID: any, resolutionID, data: any): any {
-    if (toState == "active") {
-      return firebase.database().ref('users/' + userID + '/activeResolutions/' + resolutionID).set(
-        data
-      );
-    }
-    else if (toState == "inactive") {
-      return firebase.database().ref('users/' + userID + '/activeResolutions/' + resolutionID).remove();
-    }
-  }
-
-  createNewCustomResolution(data, userID) {
-    return firebase.database().ref('users/' + userID + '/customResolutions/').child(this.makeID()).set({
-      isPreconfigured: false,
-      iconUrl: data.iconUrl,
-      isRecurring: data.isRecurring,
-      name: data.name
-    });
-  }
-
-  removeCustomResolution(resolutionID, userID) {
-    return firebase.database().ref('users/' + userID + '/customResolutions/').child(resolutionID).remove().then(() => {
-      firebase.database().ref('users/' + userID + '/activeResolutions/').child(resolutionID).remove();
-    });
-  }
-
   makeID() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

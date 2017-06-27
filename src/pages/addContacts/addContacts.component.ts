@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
 import { Contacts } from 'ionic-native';
+import { ResolutionProvider } from '../../providers/resolution-provider'
 //import { Contacts, Contact, ContactField, ContactName } from 'ionic-native';
 
 @Component({
     selector: 'page-addContacts',
-    templateUrl: 'addContacts.component.html'
+    templateUrl: 'addContacts.component.html',
+    providers: [ResolutionProvider]
 })
 export class AddContactsComponent {
 
@@ -15,7 +17,7 @@ export class AddContactsComponent {
     resolutionItem: any;
     selectedContacts = [];
 
-    constructor(public navCtrl: NavController, public toastCtrl: ToastController, public navParams: NavParams, public utilities: Utilities) {
+    constructor(public resolutionProvider: ResolutionProvider, public navCtrl: NavController, public toastCtrl: ToastController, public navParams: NavParams, public utilities: Utilities) {
         Contacts.find(['displayName']).then((allContacts) => {
             this.displayArray = allContacts;
             this.contactArray = allContacts;
@@ -81,7 +83,7 @@ export class AddContactsComponent {
         console.log("Resolution Item");
         console.log(this.resolutionItem.contacts);
 
-        this.utilities.updateResolutionStatus("active", this.utilities.user.uid,
+        this..updateResolutionStatus("active", this.utilities.user.uid,
             this.resolutionItem.id,
             { id: this.resolutionItem.id, name: this.resolutionItem.name, lastActivity: "", contacts: this.selectedContacts });
         this.showToast("Resolution is now active and will appear on the myResolutions screen");
