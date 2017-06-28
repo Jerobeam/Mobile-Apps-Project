@@ -49,7 +49,8 @@
           </button>
           <div class="item-right">
             <div class="resolution-list-name">{{resolution.name}}</div>
-            <div *ngIf="resolution.isRecurring">Last activity: {{resolution.lastActivity | date}}</div>
+            <div *ngIf="resolution.isRecurring && (resolution.lastActivity != '' && resolution.lastActivity != undefined)">Last activity: {{resolution.lastActivity | date}}</div>
+            <div *ngIf="resolution.isRecurring && (resolution.lastActivity === '' || resolution.lastActivity === undefined)">No activity yet</div>
             <div class="resolution-list-done" *ngIf="!resolution.isRecurring && resolution.isDone">- DONE -</div>
             <div class="resolution-list-not-done" *ngIf="!resolution.isRecurring && !resolution.isDone">- NOT DONE -</div>
           </div>
@@ -92,7 +93,8 @@
 
           <div class="item-right">
             <div class="resolution-list-name">{{resolution.name}}</div>
-            <div>Last activity: {{resolution.lastActivity | date}}</div>
+            <div *ngIf="resolution.lastActivity != '' && resolution.lastActivity != undefined">Last activity: {{resolution.lastActivity | date}}</div>
+            <div *ngIf="resolution.lastActivity === '' || resolution.lastActivity === undefined">No activity yet</div>
           </div>
           <div class="progress">
             <span *ngFor="let item of resolution.activeDays; let i = index;">
