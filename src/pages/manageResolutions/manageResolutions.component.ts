@@ -18,7 +18,7 @@ export class ManageResolutionsComponent {
   activeResolutions = [];
 
   constructor(public authData: AuthData, public resolutionProvider: ResolutionProvider, public utilities: Utilities, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public toastCtrl: ToastController) {
-
+   
   }
 
   logout() {
@@ -26,7 +26,7 @@ export class ManageResolutionsComponent {
     this.navCtrl.setRoot(LoginComponent);
   }
 
-//Only used in order to test the method utilities.createNewCustomRevolution()
+  //Only used in order to test the method utilities.createNewCustomRevolution()
   testCreate() {
     this.resolutionProvider.createNewCustomResolution({ isPreconfigured: false, isRecurring: false, name: "1 nice Methode", iconUrl: "assets/images/running-icon.jpg" }).then(() => {
       this.utilities.setUserData();

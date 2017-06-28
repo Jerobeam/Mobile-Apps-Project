@@ -12,10 +12,10 @@ import { AddContactsComponent } from '../pages/addContacts/addContacts.component
 import { LoginComponent } from '../pages/login/login.component';
 import { RegisterComponent } from '../pages/register/register.component';
 import { Date } from './pipes/date';
-
+import { Geofence } from '@ionic-native/geofence';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Camera } from '@ionic-native/camera';
+import { Camera } from 'ionic-native';
 
 @NgModule({
   declarations: [
@@ -52,6 +52,7 @@ import { Camera } from '@ionic-native/camera';
     StatusBar,
     SplashScreen,
     Camera,
+    Geofence,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

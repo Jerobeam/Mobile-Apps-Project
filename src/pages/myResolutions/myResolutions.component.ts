@@ -42,6 +42,7 @@ export class MyResolutions {
   ionViewWillEnter() {
     this.resolutionProvider.getActiveResolutions();
     console.log("Entered triggered");
+    this.utilities.addGeofence();
   }
 
   calculateCurrentDayNumber() {
@@ -72,5 +73,4 @@ export class MyResolutions {
   goToPageManageResolutions() {
     this.navCtrl.push(ManageResolutionsComponent);
   }
-
 }
