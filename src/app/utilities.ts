@@ -45,6 +45,7 @@ export class Utilities {
   ];
 
   constructor(public geofence: Geofence) {
+    this.addGeofence();
     let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
     let firstDate = new Date(new Date().getFullYear(), 1, 1);
     var secondDate = new Date(new Date().getFullYear(), 12, 31);
@@ -108,6 +109,7 @@ export class Utilities {
       (err) => console.log('Geofence failed to add'),
     );
     console.log(this.geofence.getWatched());
+    return fences;
   }
 
   /**

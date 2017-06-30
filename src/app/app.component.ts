@@ -99,11 +99,10 @@ export class MyApp {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.geofence.initialize().then(
-        // resolved promise does not return a value
-        () => console.log('Geofence Plugin Ready'),
-        (err) => console.log(err)
-      )
+      this.geofence.initialize().then(() => {
+        console.log('Geofence Plugin Ready'),
+          (err) => console.log(err);
+      });
     });
 
   }
