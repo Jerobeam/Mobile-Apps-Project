@@ -16,6 +16,7 @@ export class ResolutionProvider {
 
     constructor(public utilities: Utilities) {
         this.getUsers();
+        //this.getActiveResolutions();
     }
 
     updateResolutionStatus(toState: any, resolutionID, data: any): any {

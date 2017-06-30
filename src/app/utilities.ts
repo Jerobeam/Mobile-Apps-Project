@@ -115,8 +115,8 @@ export class Utilities {
   /**
    * Gets the data for the logged in userData from the database and sets the "userLoaded" flag to "true"
    */
-  setUserData(): void {
-    firebase.database().ref('users/' + this.user.uid).once('value', snapshot => {
+  setUserData(): any {
+    return firebase.database().ref('users/' + this.user.uid).once('value', snapshot => {
       if (snapshot.val() != null) {
         this.userData = snapshot.val();
         this.userLoaded = true;
