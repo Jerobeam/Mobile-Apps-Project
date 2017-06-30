@@ -22,14 +22,16 @@ firebase.initializeApp(firebaseConfig);
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = MyResolutions;
+  rootPage: any;
 
   pages: Array<{ title: string, component: any }>;
   notificationPressed: boolean = false;
-  authenticated: boolean = false;
+  // authenticated: boolean = false;
 
   constructor(public geofence: Geofence, public alertCtrl: AlertController, public authData: AuthData, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public utilities: Utilities) {
     this.initializeApp();
+
+
     firebase.auth().onAuthStateChanged((user) => {
       //utilities.user = user;
 
@@ -43,14 +45,14 @@ export class MyApp {
         utilities.user = {};
         this.rootPage = LoginComponent;
       } else {
-        if (this.nav.getActive() == undefined) {
+        // if (this.nav.getActive() == undefined) {
           //if (this.loadUserCredentials()) {
-          this.rootPage = MyResolutions;
-          this.authenticated = true;
+        this.rootPage = MyResolutions;
+          // this.authenticated = true;
           /*} else {
             this.rootPage = LoginComponent;
           }*/
-        }
+        // }
       }
       //this.utilities.countOpen();
       this.notificationPressed = false;
@@ -99,11 +101,11 @@ export class MyApp {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.geofence.initialize().then(
-        // resolved promise does not return a value
-        () => console.log('Geofence Plugin Ready'),
-        (err) => console.log(err)
-      )
+      // this.geofence.initialize().then(
+      //   // resolved promise does not return a value
+      //   () => console.log('Geofence Plugin Ready'),
+      //   (err) => console.log(err)
+      // )
     });
 
   }
