@@ -34,7 +34,6 @@ export class MyApp {
 
     firebase.auth().onAuthStateChanged((user) => {
       //utilities.user = user;
-
       if (user != undefined) {
         utilities.user = user;
         utilities.setUserData();
@@ -45,14 +44,14 @@ export class MyApp {
         utilities.user = {};
         this.rootPage = LoginComponent;
       } else {
-        // if (this.nav.getActive() == undefined) {
+       // if (this.nav.getActive() == undefined) {
           //if (this.loadUserCredentials()) {
-        this.rootPage = MyResolutions;
-          // this.authenticated = true;
-          /*} else {
+          this.rootPage = MyResolutions;
+          //this.authenticated = true 
+        //}//
+       /* else {
             this.rootPage = LoginComponent;
           }*/
-        // }
       }
       //this.utilities.countOpen();
       this.notificationPressed = false;
@@ -65,7 +64,7 @@ export class MyApp {
   }
 
   checkIfUserDeleted(userID: any): any {
-    this.utilities.getUser(userID)
+    return this.utilities.getUser(userID)
       .then(user => {
         console.log("in then");
         console.log(user);
@@ -101,11 +100,10 @@ export class MyApp {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      // this.geofence.initialize().then(
-      //   // resolved promise does not return a value
-      //   () => console.log('Geofence Plugin Ready'),
-      //   (err) => console.log(err)
-      // )
+      this.geofence.initialize().then(() => {
+        console.log('Geofence Plugin Ready'),
+          (err) => console.log(err);
+      });
     });
 
   }

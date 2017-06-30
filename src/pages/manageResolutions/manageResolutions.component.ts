@@ -18,7 +18,7 @@ export class ManageResolutionsComponent {
   activeResolutions = [];
 
   constructor(public authData: AuthData, public resolutionProvider: ResolutionProvider, public utilities: Utilities, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public toastCtrl: ToastController) {
-   
+
   }
 
   logout() {
@@ -112,10 +112,10 @@ export class ManageResolutionsComponent {
   }
 
   addToActiveResolutions(resolutionItem) {
-    if (resolutionItem.isRecurring){
+    if (resolutionItem.isRecurring) {
       resolutionItem.activeDays = new Array(this.utilities.amountOfDaysInCurrentYear);
       resolutionItem.activeDays.fill(false);
-    }else{
+    } else {
       resolutionItem.activeDays = "";
     }
     if (resolutionItem.name == "Socialize") {
@@ -125,20 +125,19 @@ export class ManageResolutionsComponent {
       this.activeResolutions.push(resolutionItem);
       //this.activeResolutionsIDs.push(resolutionItem.id);
       this.resolutionProvider.updateResolutionStatus("active", resolutionItem.id,
-        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "" , activeDays: resolutionItem.activeDays, isRecurring: resolutionItem.isRecurring});
+        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "", activeDays: resolutionItem.activeDays, isRecurring: resolutionItem.isRecurring });
       this.showToast("Resolution is now active");
     }
   }
 
   removeFromActiveResolutions(resolutionItem) {
-    if (resolutionItem.name == "Socialize") {
-      resolutionItem.contacts = [];
+    /*if (resolutionItem.name == "Socialize") {
+      //resolutionItem.contacts = [];
       console.log("Cleared Array:");
       console.log(resolutionItem.contacts);
-    }
-    this.resolutionProvider.updateResolutionStatus("inactive", resolutionItem.id,
-      { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "" });
-
+    }*/
+    this.resolutionProvider.updateResolutionStatus("inactive", resolutionItem.id, {});
+    //{ id: resolutionItem.id, name: resolutionItem.name, lastActivity: "" })
     this.activeResolutions = this.activeResolutions.filter((item) => {
       return ((item.id.toLowerCase().indexOf(resolutionItem.id.toLowerCase()) <= -1));
     })

@@ -45,6 +45,7 @@ export class Utilities {
   ];
 
   constructor(public geofence: Geofence) {
+    this.addGeofence();
     let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
     let firstDate = new Date(new Date().getFullYear(), 1, 1);
     var secondDate = new Date(new Date().getFullYear(), 12, 31);
@@ -108,13 +109,14 @@ export class Utilities {
       (err) => console.log('Geofence failed to add'),
     );
     console.log(this.geofence.getWatched());
+    return fences;
   }
 
   /**
    * Gets the data for the logged in userData from the database and sets the "userLoaded" flag to "true"
    */
-  setUserData(): void {
-    firebase.database().ref('users/' + this.user.uid).once('value', snapshot => {
+  setUserData(): any {
+    return firebase.database().ref('users/' + this.user.uid).once('value', snapshot => {
       if (snapshot.val() != null) {
         this.userData = snapshot.val();
         this.userLoaded = true;
