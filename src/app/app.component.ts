@@ -26,10 +26,12 @@ export class MyApp {
 
   pages: Array<{ title: string, component: any }>;
   notificationPressed: boolean = false;
-  authenticated: boolean = false;
+  // authenticated: boolean = false;
 
   constructor(public geofence: Geofence, public alertCtrl: AlertController, public authData: AuthData, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public utilities: Utilities) {
     this.initializeApp();
+
+
     firebase.auth().onAuthStateChanged((user) => {
       //utilities.user = user;
       if (user != undefined) {
