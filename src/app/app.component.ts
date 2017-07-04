@@ -73,9 +73,9 @@ export class MyApp {
           if (!this.utilities.inRegister) {
             this.checkForVerification();
           }
-          if (user.val().email) {
-            this.checkPlatform(userID);
-          }
+          // if (user.val().email) {
+          //   this.checkPlatform(userID);
+          // }
           this.utilities.loggedIn = true;
         } else {
           this.logout();
@@ -100,24 +100,27 @@ export class MyApp {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.geofence.initialize().then(() => {
-        console.log('Geofence Plugin Ready'),
-          (err) => console.log(err);
-      });
-      let notificationOpenedCallback = (jsonData) => {
-        console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-        if (this.authenticated) {
-          this.nav.push(MyResolutions);
-        }
-        else {
-          this.notificationPressed = true;
-        }
-      };
+      // Check for cordova, since it is only available on native iOS/Android
+      if (this.platform.is('cordova')) {
+        this.geofence.initialize().then(() => {
+          console.log('Geofence Plugin Ready'),
+            (err) => console.log(err);
+        });
+        let notificationOpenedCallback = (jsonData) => {
+          console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+          if (this.authenticated) {
+            this.nav.push(MyResolutions);
+          }
+          else {
+            this.notificationPressed = true;
+          }
+        };
 
-      window["plugins"].OneSignal
-        .startInit("69c4c123-c0aa-481b-a5f3-253642300266", "630182428381")
-        .handleNotificationOpened(notificationOpenedCallback)
-        .endInit();
+        window["plugins"].OneSignal
+          .startInit("69c4c123-c0aa-481b-a5f3-253642300266", "630182428381")
+          .handleNotificationOpened(notificationOpenedCallback)
+          .endInit();
+      }
     });
 
   }
@@ -127,20 +130,20 @@ export class MyApp {
     this.nav.setRoot(LoginComponent);
   }
 
-  checkPlatform(userID) {
-    let flag = false;
-    let tempPlat = "";
-
-    if (this.platform.is('ios')) {
-      tempPlat = "ios";
-    } else if (this.platform.is('android')) {
-      tempPlat = "android";
-    } else {
-      tempPlat = "web";
-    }
-
-    this.utilities.updateUser(userID, { platform: tempPlat });
-  }
+  // checkPlatform(userID) {
+  //   let flag = false;
+  //   let tempPlat = "";
+  //
+  //   if (this.platform.is('ios')) {
+  //     tempPlat = "ios";
+  //   } else if (this.platform.is('android')) {
+  //     tempPlat = "android";
+  //   } else {
+  //     tempPlat = "web";
+  //   }
+  //
+  //   this.utilities.updateUser(userID, { platform: tempPlat });
+  // }
 
   checkForVerification() {
     if (!this.utilities.user.emailVerified) {
