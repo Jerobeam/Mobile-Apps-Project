@@ -21,6 +21,7 @@ export class Utilities {
   user: any;
   amountOfDaysInCurrentYear: any;
   currentDay = new Date();
+  currentDayString: any;
 
   resolutions = [
     {
@@ -48,8 +49,15 @@ export class Utilities {
     this.addGeofence();
     let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
     let firstDate = new Date(new Date().getFullYear(), 1, 1);
-    var secondDate = new Date(new Date().getFullYear(), 12, 31);
+    let secondDate = new Date(new Date().getFullYear(), 12, 31);
     this.amountOfDaysInCurrentYear = Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay));
+
+    let mm = this.currentDay.getMonth() + 1;
+    let dd = this.currentDay.getDate();
+    this.currentDayString = [this.currentDay.getFullYear(),
+      (mm>9 ? '' : '0') + mm,
+      (dd>9 ? '' : '0') + dd
+    ].join('-');
   }
 
   setInRegister(): void {
