@@ -5,10 +5,12 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import firebase from 'firebase';
 import { Geofence } from '@ionic-native/geofence';
-/*import { Http, Response, Headers, RequestOptions } from "@angular/http";
+import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
-*/
+import { AlertController } from "ionic-angular";
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/toPromise';
 
 
 @Injectable()
@@ -44,12 +46,59 @@ export class Utilities {
     { name: "Socialize", isSingleActivity: false, isPreconfigured: true, isActive: false, isDone: false, contacts: [], iconUrl: "assets/images/running-icon.jpg" }
   ];
 
-  constructor(public geofence: Geofence) {
+  constructor(public geofence: Geofence) {//public http: Http
     this.addGeofence();
     let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
     let firstDate = new Date(new Date().getFullYear(), 1, 1);
     var secondDate = new Date(new Date().getFullYear(), 12, 31);
     this.amountOfDaysInCurrentYear = Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay));
+  }
+
+  sendPushNotification(pushIds: Array<any>, content: String) {
+    let notificationObj = {
+      contents: { en: content },
+      include_player_ids: pushIds
+    };
+    window["plugins"].OneSignal.postNotification(notificationObj,
+      function (successResponse) {
+      },
+      function (failedResponse) {
+        console.log("Notification Post Failed: ", failedResponse);
+      }
+    )
+  }
+
+  setReminder(pushIds: Array<any>, content: String, time: string) {
+    let reminderTime = new Date(time);
+    reminderTime.setDate(reminderTime.getDate());
+    let notificationObj = {
+      contents: { en: content },
+      send_after: reminderTime,
+      include_player_ids: pushIds
+    };
+    window["plugins"].OneSignal.postNotification(notificationObj,
+      function (successResponse) {
+        firebase.database().ref('users/').update({ delayedNotificationID: successResponse.id });
+      },
+      function (failedResponse) {
+        console.log("Notification Post Failed: ", failedResponse);
+      }
+    )
+  }
+
+  cancelPushNotification(notificationID: any) {
+    let url = 'https://onesignal.com/api/v1/notifications/' + notificationID + '?app_id=69c4c123-c0aa-481b-a5f3-253642300266';
+    let headers = new Headers({ 'Authorization': 'Basic ZWFlNjRiZTQtYjMwMy00NGEyLTk5Y2QtMmFhMGE5ZmY1NDgy' });
+    let options = new RequestOptions({
+      headers: headers
+    });
+
+    //this.http.delete(url, options).toPromise().catch(this.handleError);
+  }
+
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error);
+    return Promise.reject(error.message || error);
   }
 
   setInRegister(): void {
@@ -96,7 +145,8 @@ export class Utilities {
       notification: { //notification settings
         id: 1, //any unique ID
         title: 'Neue Location', //notification title
-        text: 'Sie sind an der DHBW', //notification body
+        text: this.makeID(), //notification body
+        //text: 'Sie sind an der DHBW', //notification body
         openAppOnClick: true //open app when notification is tapped
       }
     }
@@ -108,6 +158,7 @@ export class Utilities {
       () => console.log(fences),
       (err) => console.log('Geofence failed to add'),
     );
+    console.log("über getWatched");
     console.log(this.geofence.getWatched());
     return fences;
   }
@@ -136,6 +187,8 @@ export class Utilities {
   makeID() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    console.log("JapJepJup");
 
     for (var i = 0; i < 26; i++)
       text += possible.charAt(Math.floor(Math.random() * possible.length));

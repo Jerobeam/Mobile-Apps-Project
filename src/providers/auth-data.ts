@@ -23,7 +23,7 @@ export class AuthData {
     return this.fireAuth.signInWithEmailAndPassword(email, password);
   }
 
-  signupUser(email: string, password: string, firstname: string, lastname: string, birthday: string): any {
+  signupUser(email: string, password: string, firstname: string, lastname: string, birthday: string, pushid: string): any {
     return this.fireAuth.createUserWithEmailAndPassword(email, password)
       .then((newUser) => {
         this.userProfile.child(newUser.uid).set({
@@ -33,6 +33,9 @@ export class AuthData {
           birthday: birthday,
           pushid: {},
         });
+        firebase.database().ref('users/' + newUser.uid + '/pushid/' + pushid).set(
+          true
+        );
         this.utilities.user = newUser;
         newUser.sendEmailVerification();
       });
@@ -88,16 +91,21 @@ export class AuthData {
     });
   }*/
 
-  logoutUser(): any {
-    this.menuCtrl.close('mainMenu');
-    console.log("nach menu close");
-    // window["plugins"].OneSignal.getIds(ids => {
-    //console.log('getIds: ' + JSON.stringify(ids));
-    return this.fireAuth.signOut();
-    /* firebase.database().ref('users/' + this.utilities.user.uid + '/pushid').child(ids.userId).remove().then(() => {
+  changePushid(userid: string): any {
+    window["plugins"].OneSignal.getIds(ids => {
+      return firebase.database().ref('users/' + userid + '/pushid/' + ids.userId).set(
+        true
+      );
+    });
+  }
 
-     })*/
-    //})
+  logoutUser(): any {
+    //this.menuCtrl.close('mainMenu');
+    window["plugins"].OneSignal.getIds(ids => {
+      firebase.database().ref('users/' + this.utilities.user.uid + '/pushid').child(ids.userId).remove().then(() => {
+        return this.fireAuth.signOut();
+      })
+    })
   }
 
   getErrorMessage(error): string {

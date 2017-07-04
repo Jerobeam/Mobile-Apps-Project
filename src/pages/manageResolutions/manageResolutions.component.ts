@@ -38,6 +38,30 @@ export class ManageResolutionsComponent {
     });
   }
 
+  testReminder() {
+    let pushIDs = [];
+    for (let pushID in this.utilities.userData.pushid) {
+      pushIDs.push(pushID);
+    }
+    let message = 'Remindertest';
+    this.utilities.setReminder(pushIDs, message, "2017-07-07");
+  }
+
+  testCancel() {
+    if (this.utilities.userData.delayedNotificationID != undefined) {
+      this.utilities.cancelPushNotification(this.utilities.userData.delayedNotificationID);
+    }
+  }
+
+  testPush() {
+    let pushIDs = [];
+    for (let pushID in this.utilities.userData.pushid) {
+      pushIDs.push(pushID);
+    }
+    let message = 'Es Klappt :)';
+    this.utilities.sendPushNotification(pushIDs, message);
+  }
+
   //Only used in order to test the method utilities.removeCustomRevolution()
   testRemove(resolutionID) {
     this.resolutionProvider.removeCustomResolution(resolutionID).then(() => {
