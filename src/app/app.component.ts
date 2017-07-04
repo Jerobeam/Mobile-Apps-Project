@@ -73,9 +73,9 @@ export class MyApp {
           if (!this.utilities.inRegister) {
             this.checkForVerification();
           }
-          if (user.val().email) {
-            this.checkPlatform(userID);
-          }
+          // if (user.val().email) {
+          //   this.checkPlatform(userID);
+          // }
           this.utilities.loggedIn = true;
         } else {
           this.logout();
@@ -100,10 +100,14 @@ export class MyApp {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.geofence.initialize().then(() => {
-        console.log('Geofence Plugin Ready'),
-          (err) => console.log(err);
-      });
+      // Check for cordova, since it is only available on native iOS/Android
+      if (this.platform.is('cordova')) {
+        this.geofence.initialize().then(() => {
+          console.log('Geofence Plugin Ready'),
+            (err) => console.log(err);
+        });
+      }
+
     });
 
   }
@@ -113,20 +117,20 @@ export class MyApp {
     this.nav.setRoot(LoginComponent);
   }
 
-  checkPlatform(userID) {
-    let flag = false;
-    let tempPlat = "";
-
-    if (this.platform.is('ios')) {
-      tempPlat = "ios";
-    } else if (this.platform.is('android')) {
-      tempPlat = "android";
-    } else {
-      tempPlat = "web";
-    }
-
-    this.utilities.updateUser(userID, { platform: tempPlat });
-  }
+  // checkPlatform(userID) {
+  //   let flag = false;
+  //   let tempPlat = "";
+  //
+  //   if (this.platform.is('ios')) {
+  //     tempPlat = "ios";
+  //   } else if (this.platform.is('android')) {
+  //     tempPlat = "android";
+  //   } else {
+  //     tempPlat = "web";
+  //   }
+  //
+  //   this.utilities.updateUser(userID, { platform: tempPlat });
+  // }
 
   checkForVerification() {
     if (!this.utilities.user.emailVerified) {
