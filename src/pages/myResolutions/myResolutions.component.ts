@@ -5,6 +5,7 @@ import { ManageResolutionsComponent } from '../manageResolutions/manageResolutio
 import { Utilities } from '../../app/utilities';
 import { ResolutionProvider } from '../../providers/resolution-provider';
 import { AuthData } from '../../providers/auth-data';
+import firebase from 'firebase';
 
 @Component({
   selector: 'page-home',
@@ -63,12 +64,16 @@ export class MyResolutions {
   doneResolutionToday(event, resolution) {
     event.stopPropagation();
     resolution.secondLastActivity = resolution.lastActivity;
-    resolution.lastActivity = this.utilities.currentDay;
+    resolution.lastActivity = this.utilities.currentDayString;
+
   }
 
   doneSingleResolution(event, resolution) {
     event.stopPropagation();
     resolution.isDone = true;
+    firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolution.id + '/').update({
+      isDone: resolution.isDone
+    });
   }
 
   goToPageManageResolutions() {
