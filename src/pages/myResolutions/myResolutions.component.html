@@ -31,12 +31,7 @@
             <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
           </div>
 
-          <button [disabled]="true" *ngIf="resolution.isRecurring && (today == resolution.lastActivity)" class="resolution-list-button"
-            ion-button icon-end round outline color="secondary">
-            DONE TODAY
-            <ion-icon class="resolution-list-button-icon" name="checkmark"></ion-icon>
-          </button>
-          <button [disabled]="false" *ngIf="resolution.isRecurring && (today != resolution.lastActivity)" class="resolution-list-button"
+          <button [disabled]="(this.utilities.currentDayString == resolution.lastActivity)" *ngIf="resolution.isRecurring" class="resolution-list-button"
             ion-button icon-end round outline color="secondary" (click)="doneResolutionToday($event, resolution)">
             DONE TODAY
             <ion-icon class="resolution-list-button-icon" name="checkmark"></ion-icon>
@@ -80,13 +75,8 @@
             <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
           </div>
 
-          <button [disabled]="true" *ngIf="resolution.isRecurring && (today == resolution.lastActivity)" class="resolution-list-button"
-            ion-button icon-end round outline color="secondary">
-            DONE TODAY
-            <ion-icon class="resolution-list-button-icon" name="checkmark"></ion-icon>
-          </button>
-          <button [disabled]="false" *ngIf="resolution.isRecurring && (today != resolution.lastActivity)" class="resolution-list-button"
-            ion-button icon-end round outline color="secondary" (click)="doneResolutionToday($event, resolution)">
+          <button [disabled]="(this.utilities.currentDayString == resolution.lastActivity)" class="resolution-list-button"
+                  ion-button icon-end round outline color="secondary" (click)="doneResolutionToday($event, resolution)">
             DONE TODAY
             <ion-icon class="resolution-list-button-icon" name="checkmark"></ion-icon>
           </button>
