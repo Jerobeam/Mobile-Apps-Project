@@ -14,34 +14,16 @@ import firebase from 'firebase';
 })
 export class MyResolutions {
 
-  // displayName: any;
   recurrance: string = "all";
-  currentYear = new Date().getFullYear();
-  daysInYear: Array<any> = [];
+  currentDayNumber: any;
   progressWidth: any;
-  // daysInYearTest: Array<any> = [0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
-  //   , 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
-  //   1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
-  //   1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0,
-  //   0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1];
-
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public utilities: Utilities, public resolutionProvider: ResolutionProvider) {
-    // for (let i = 0; i < this.daysInYear.length; i++) {
-    //   if (Math.random() > 0.5) {
-    //     this.daysInYear[i] = 0;
-    //   } else {
-    //     this.daysInYear[i] = 1;
-    //   }
-    // }
     // this.progressWidth = 100 / amountOfDays;
-    // console.log(this.daysInYear);
-    // console.log(this.progressWidth);
     this.calculateCurrentDayNumber();
   }
 
   ionViewWillEnter() {
-    console.log("Entered triggered");
     this.utilities.setUserData().then(() => {
       this.resolutionProvider.getActiveResolutions();
     });
@@ -49,12 +31,11 @@ export class MyResolutions {
 
   calculateCurrentDayNumber() {
     let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
-    let firstDate = new Date(new Date().getFullYear(), 1, 1);
-    // var secondDate = new Date(2017,12,31);
+    let firstDate = new Date(new Date().getFullYear(), 0, 1);
 
-    let diffDays = Math.abs((firstDate.getTime() - this.utilities.currentDay.getTime()) / (oneDay));
+    let diffDays = Math.floor(Math.abs((firstDate.getTime() - this.utilities.currentDay.getTime()) / (oneDay)));
 
-    console.log(diffDays);
+    this.currentDayNumber = diffDays;
   }
 
   goToPage(event, resolution) {
@@ -65,6 +46,12 @@ export class MyResolutions {
     event.stopPropagation();
     resolution.secondLastActivity = resolution.lastActivity;
     resolution.lastActivity = this.utilities.currentDayString;
+    resolution.activeDays[this.currentDayNumber] = true;
+    firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolution.id + '/').update({
+      secondLastActivity: resolution.secondLastActivity,
+      lastActivity: resolution.lastActivity,
+      activeDays: resolution.activeDays
+    });
 
   }
 
