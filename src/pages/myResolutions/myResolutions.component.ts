@@ -15,27 +15,17 @@ import firebase from 'firebase';
 export class MyResolutions {
 
   recurrance: string = "all";
-  currentDayNumber: any;
   progressWidth: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public utilities: Utilities, public resolutionProvider: ResolutionProvider) {
     // this.progressWidth = 100 / amountOfDays;
-    this.calculateCurrentDayNumber();
+
   }
 
   ionViewWillEnter() {
     this.utilities.setUserData().then(() => {
       this.resolutionProvider.getActiveResolutions();
     });
-  }
-
-  calculateCurrentDayNumber() {
-    let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
-    let firstDate = new Date(new Date().getFullYear(), 0, 1);
-
-    let diffDays = Math.floor(Math.abs((firstDate.getTime() - this.utilities.currentDay.getTime()) / (oneDay)));
-
-    this.currentDayNumber = diffDays;
   }
 
   goToPage(event, resolution) {
@@ -46,13 +36,12 @@ export class MyResolutions {
     event.stopPropagation();
     resolution.secondLastActivity = resolution.lastActivity;
     resolution.lastActivity = this.utilities.currentDayString;
-    resolution.activeDays[this.currentDayNumber] = true;
+    resolution.activeDays[this.utilities.currentDayNumber] = true;
     firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolution.id + '/').update({
       secondLastActivity: resolution.secondLastActivity,
       lastActivity: resolution.lastActivity,
       activeDays: resolution.activeDays
     });
-
   }
 
   doneSingleResolution(event, resolution) {
