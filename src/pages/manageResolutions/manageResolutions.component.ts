@@ -35,9 +35,13 @@ export class ManageResolutionsComponent {
   }
 
   testCancel() {
-    if (this.utilities.userData.delayedNotificationID != undefined) {
-      this.utilities.cancelPushNotification(this.utilities.userData.delayedNotificationID);
-    }
+    this.utilities.setUserData().then(() => {
+      if (this.utilities.userData.delayedNotificationID != undefined) {
+        this.utilities.cancelPushNotification(this.utilities.userData.delayedNotificationID);
+      } else {
+        console.log("No Notification ID");
+      }
+    })
   }
 
   testPush() {
@@ -121,7 +125,7 @@ export class ManageResolutionsComponent {
     }
     else {
       this.resolutionProvider.updateResolutionStatus("active", resolutionItem.id,
-        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "", activeDays: resolutionItem.activeDays, isRecurring: resolutionItem.isRecurring })
+        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "", activeDays: resolutionItem.activeDays, isRecurring: resolutionItem.isRecurring, reminderFrequency: 3 })
         .then(() => {
           this.utilities.addGeofence(resolutionItem.id, "Test", "Sie sind bei X", 49.474797, 8.535164).then(() => {
             this.resolutionProvider.getActiveResolutions();

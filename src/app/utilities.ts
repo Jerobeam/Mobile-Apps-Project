@@ -61,14 +61,16 @@ export class Utilities {
       send_after: reminderTime,
       include_player_ids: pushIds
     };
+    let user = this.user;
     window["plugins"].OneSignal.postNotification(notificationObj,
       function (successResponse) {
-        firebase.database().ref('users/').update({ delayedNotificationID: successResponse.id });
+        firebase.database().ref('users/' + user.uid + '/delayedNotificationID').set(successResponse.id);
       },
       function (failedResponse) {
         console.log("Notification Post Failed: ", failedResponse);
       }
-    )
+    );
+    this.setUserData();
   }
 
   cancelPushNotification(notificationID: any) {
@@ -78,7 +80,9 @@ export class Utilities {
       headers: headers
     });
 
-    this.http.delete(url, options).toPromise().catch(this.handleError);
+    this.http.delete(url, options)
+      .toPromise()
+      .catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {
@@ -102,7 +106,7 @@ export class Utilities {
       radius: 100, //radius in meters
       transitionType: 3,
       notification: {
-        id: this.makeID(),
+        id: 1,
         title: notificationTitle,
         text: notificationMessage,
         openAppOnClick: true
