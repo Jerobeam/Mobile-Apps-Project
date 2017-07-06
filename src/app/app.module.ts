@@ -4,7 +4,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { MyResolutions } from '../pages/myResolutions/myResolutions.component';
-import { ActivitydetailsComponent } from '../pages/activitydetails/activitydetails.component';
+import { ResolutionDetailsComponent } from '../pages/resolutionDetails/resolutionDetails.component';
 import { CreateResolutionComponent } from '../pages/createResolution/createResolution.component';
 import { ManageResolutionsComponent } from '../pages/manageResolutions/manageResolutions.component';
 import { EditResolutionComponent } from '../pages/editResolution/editResolution.component';
@@ -22,7 +22,7 @@ import { Camera } from 'ionic-native';
   declarations: [
     MyApp,
     MyResolutions,
-    ActivitydetailsComponent,
+    ResolutionDetailsComponent,
     CreateResolutionComponent,
     ManageResolutionsComponent,
     EditResolutionComponent,
@@ -42,7 +42,7 @@ import { Camera } from 'ionic-native';
   entryComponents: [
     MyApp,
     MyResolutions,
-    ActivitydetailsComponent,
+    ResolutionDetailsComponent,
     CreateResolutionComponent,
     ManageResolutionsComponent,
     EditResolutionComponent,
