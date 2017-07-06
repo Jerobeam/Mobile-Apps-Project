@@ -16,7 +16,6 @@
            onError="this.src='assets/images/default_resolution_256.png'"/>
     </div>
     <br/>
-    <!--<form class="center-form">-->
     <ion-item *ngIf="resolution.isRecurring">
       <ion-label>Last activity:</ion-label>
       <ion-label class="form-value">{{resolution.lastActivity | date}}</ion-label>
@@ -67,10 +66,25 @@
       <!--5 = never-->
     </ion-item>
 
-    <div class="bottom-container">
-      <button [disabled]="(this.utilities.currentDayString == resolution.lastActivity)" ion-button round
+    <div *ngIf="resolution.isRecurring" class="bottom-container">
+      <button *ngIf="!(this.utilities.currentDayString == resolution.lastActivity)" ion-button round
               outline color="secondary" (click)="doneResolutionToday($event, resolution)">
         DONE TODAY
+      </button>
+      <button *ngIf="(this.utilities.currentDayString == resolution.lastActivity)" ion-button round color="warning"
+              outline (click)="undoDoneResolutionToday($event, resolution)">
+        UNDO DONE TODAY
+      </button>
+    </div>
+
+    <div *ngIf="!resolution.isRecurring" class="bottom-container">
+      <button *ngIf="!resolution.isDone" ion-button round
+              outline color="secondary" (click)="doneSingleResolution($event, resolution)">
+        DONE
+      </button>
+      <button *ngIf="resolution.isDone" ion-button round color="warning"
+              outline (click)="undoDoneSingleResolution($event, resolution)">
+        UNDO DONE
       </button>
     </div>
   </div>

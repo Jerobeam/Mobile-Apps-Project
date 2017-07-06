@@ -24,8 +24,10 @@ export class Utilities {
   amountOfDaysInCurrentYear: any;
   currentDay = new Date();
   currentDayString: any;
+  currentDayNumber: any;
 
   constructor(public geofence: Geofence) {
+    this.calculateCurrentDayNumber();
     let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
     let firstDate = new Date(this.currentDay.getFullYear(), 1, 1);
     let secondDate = new Date(this.currentDay.getFullYear(), 12, 31);
@@ -79,6 +81,15 @@ export class Utilities {
     });
 
     //this.http.delete(url, options).toPromise().catch(this.handleError);
+  }
+
+  calculateCurrentDayNumber() {
+    let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
+    let firstDate = new Date(new Date().getFullYear(), 0, 1);
+
+    let diffDays = Math.floor(Math.abs((firstDate.getTime() - this.currentDay.getTime()) / (oneDay)));
+
+    this.currentDayNumber = diffDays;
   }
 
   private handleError(error: any): Promise<any> {

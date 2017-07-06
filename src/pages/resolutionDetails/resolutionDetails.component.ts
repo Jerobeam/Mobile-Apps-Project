@@ -29,4 +29,41 @@ export class ResolutionDetailsComponent implements OnInit{
     }
     this.navCtrl.pop();
   }
+
+  doneResolutionToday(event, resolution) {
+    resolution.secondLastActivity = resolution.lastActivity;
+    resolution.lastActivity = this.utilities.currentDayString;
+    resolution.activeDays[this.utilities.currentDayNumber] = true;
+    firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolution.id + '/').update({
+      secondLastActivity: resolution.secondLastActivity,
+      lastActivity: resolution.lastActivity,
+      activeDays: resolution.activeDays
+    });
+  }
+
+  undoDoneResolutionToday(event, resolution) {
+    resolution.lastActivity = resolution.secondLastActivity
+    resolution.activeDays[this.utilities.currentDayNumber] = false;
+    firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolution.id + '/').update({
+      secondLastActivity: resolution.secondLastActivity,
+      lastActivity: resolution.lastActivity,
+      activeDays: resolution.activeDays
+    });
+  }
+
+  doneSingleResolution(event, resolution) {
+    event.stopPropagation();
+    resolution.isDone = true;
+    firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolution.id + '/').update({
+      isDone: resolution.isDone
+    });
+  }
+
+  undoDoneSingleResolution(event, resolution) {
+    event.stopPropagation();
+    resolution.isDone = false;
+    firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolution.id + '/').update({
+      isDone: resolution.isDone
+    });
+  }
 }
