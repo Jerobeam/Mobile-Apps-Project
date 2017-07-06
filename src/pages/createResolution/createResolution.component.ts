@@ -19,7 +19,6 @@ export class CreateResolutionComponent {
     this.resolution = this.formBuilder.group({
       name: [''],
       type: [''],
-      reminder: [''],
       imageUrl:['']
     });
   }
