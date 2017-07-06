@@ -76,7 +76,6 @@ export class ManageResolutionsComponent {
 
   findActiveResolutions() {
     for (let resolution of this.resolutionProvider.allResolutions) {
-      console.log(resolution);
       for (let i in this.utilities.userData.activeResolutions) {
         if (resolution.id == i) {
           this.activeResolutions.push(resolution);
@@ -146,26 +145,39 @@ export class ManageResolutionsComponent {
       this.navCtrl.push(AddContactsComponent, { activity: resolutionItem });
     }
     else {
-      this.activeResolutions.push(resolutionItem);
-      //this.activeResolutionsIDs.push(resolutionItem.id);
       this.resolutionProvider.updateResolutionStatus("active", resolutionItem.id,
-        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "", activeDays: resolutionItem.activeDays, isRecurring: resolutionItem.isRecurring });
-      this.showToast("Resolution is now active");
+        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "", activeDays: resolutionItem.activeDays, isRecurring: resolutionItem.isRecurring })
+        .then(() => {
+          this.utilities.addGeofence(resolutionItem.id, "Test", "Sie sind bei X").then(() => {
+            this.activeResolutions.push(resolutionItem);
+            this.resolutionProvider.getActiveResolutions();
+          });
+          this.showToast("Resolution is now active");
+        });
     }
   }
 
   removeFromActiveResolutions(resolutionItem) {
-    /*if (resolutionItem.name == "Socialize") {
-      //resolutionItem.contacts = [];
-      console.log("Cleared Array:");
-      console.log(resolutionItem.contacts);
-    }*/
-    this.resolutionProvider.updateResolutionStatus("inactive", resolutionItem.id, {});
-    //{ id: resolutionItem.id, name: resolutionItem.name, lastActivity: "" })
-    this.activeResolutions = this.activeResolutions.filter((item) => {
-      return ((item.id.toLowerCase().indexOf(resolutionItem.id.toLowerCase()) <= -1));
-    })
-    this.showToast("Resolution is no longer active");
+    console.log("array Active Resolutions" + this.resolutionProvider.activeResolutions);
+    for (let i of this.resolutionProvider.activeResolutions) {
+      if (i.id == resolutionItem.id) {
+        console.log("active Resolution: " + i);
+        console.log("geofences:" + i.geofences);
+        for (let j of i.geofences) {
+          console.log("innere for-schleife");
+          console.log(j);
+          this.utilities.removeGeofence(j.id);
+        }
+      }
+    }
+    this.resolutionProvider.updateResolutionStatus("inactive", resolutionItem.id, {}).then
+      (() => {
+        this.activeResolutions = this.activeResolutions.filter((item) => {
+          return ((item.id.toLowerCase().indexOf(resolutionItem.id.toLowerCase()) <= -1));
+        })
+        this.resolutionProvider.getActiveResolutions();
+        this.showToast("Resolution is no longer active");
+      });
   }
 
   openWindowCreateResolution() {

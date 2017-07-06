@@ -25,30 +25,7 @@ export class Utilities {
   currentDay = new Date();
   currentDayString: any;
 
-  resolutions = [
-    {
-      name: "Running", isSingleActivity: false, isPreconfigured: true, isActive: false, isDone: false, activeDays: [0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
-        , 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
-        1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
-        0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1], lastActivity: "2017-06-21", secondLastActivity: "2017-06-15", iconUrl: "assets/images/running-icon.jpg"
-    },
-    { name: "Stop Smoking", isSingleActivity: true, isPreconfigured: true, isActive: true, isDone: false, iconUrl: "assets/images/running-icon.jpg" },
-    { name: "Learn Spanish", isSingleActivity: true, isPreconfigured: true, isActive: true, isDone: true, iconUrl: "assets/images/running-icon.jpg" },
-    {
-      name: "Lose Weight", isSingleActivity: false, isPreconfigured: true, isActive: false, isDone: false, lastActivity: "2017-06-18", secondLastActivity: "2017-06-07",
-      iconUrl: "assets/images/running-icon.jpg"
-    },
-    {
-      name: "Football", isSingleActivity: false, isPreconfigured: false, isActive: true, isDone: true, activeDays: [0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0,
-        1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0,
-        1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
-        0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1], lastActivity: "2017-06-20", secondLastActivity: "2017-06-06", iconUrl: "assets/images/running-icon.jpg"
-    },
-    { name: "Socialize", isSingleActivity: false, isPreconfigured: true, isActive: false, isDone: false, contacts: [], iconUrl: "assets/images/running-icon.jpg" }
-  ];
-
   constructor(public geofence: Geofence) {//public http: Http
-    this.addGeofence();
     let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
     let firstDate = new Date(new Date().getFullYear(), 1, 1);
     let secondDate = new Date(new Date().getFullYear(), 12, 31);
@@ -57,8 +34,8 @@ export class Utilities {
     let mm = this.currentDay.getMonth() + 1;
     let dd = this.currentDay.getDate();
     this.currentDayString = [this.currentDay.getFullYear(),
-      (mm>9 ? '' : '0') + mm,
-      (dd>9 ? '' : '0') + dd
+    (mm > 9 ? '' : '0') + mm,
+    (dd > 9 ? '' : '0') + dd
     ].join('-');
   }
 
@@ -113,62 +90,36 @@ export class Utilities {
     this.inRegister = !this.inRegister;
   }
 
-  public addGeofence() {
+  public removeGeofence(geofenceID) {
+    console.log("geofence to remove" + geofenceID);
+    this.geofence.remove(geofenceID).then(() => {
+      console.log("Geofence removed");
+    });
+  }
+
+  public addGeofence(resolutionID, notificationTitle, notificationMessage) {
     //options describing geofence
-    let fences = [];
     let fence = {
       id: this.makeID(), //any unique ID
-      latitude: 49.478557,  //center of geofence radius
-      longitude: 8.508034,
-      radius: 15, //radius to edge of geofence in meters
-      transitionType: 1, //see 'Transition Types' below
-      notification: { //notification settings
-        id: 1, //any unique ID
-        title: 'Neue Location', //notification title
-        text: 'Sie sind an Location 14', //notification body
-        openAppOnClick: true //open app when notification is tapped
-      }
-    }
-    fences.push(fence);
-    fence = {
-      id: this.makeID(), //any unique ID
-      latitude: 49.478381,  //center of geofence radius
-      longitude: 8.507825,
+      latitude: 49.474797,  //center of geofence radius
+      longitude: 8.535164,
       radius: 100, //radius to edge of geofence in meters
       transitionType: 3, //see 'Transition Types' below
       notification: { //notification settings
         id: 1, //any unique ID
-        title: 'Neue Location', //notification title
-        text: 'Sie sind an der Nr. 12', //notification body
+        title: notificationTitle, //notification title
+        text: notificationMessage, //notification body
         openAppOnClick: true //open app when notification is tapped
       }
     }
-    fences.push(fence);
-    fence = {
-      id: this.makeID(), //any unique ID
-      latitude: 49.474312,  //center of geofence radius
-      longitude: 8.534947,
-      radius: 100, //radius to edge of geofence in meters
-      transitionType: 3, //see 'Transition Types' below
-      notification: { //notification settings
-        id: 1, //any unique ID
-        title: 'Neue Location', //notification title
-        text: this.makeID(), //notification body
-        //text: 'Sie sind an der DHBW', //notification body
-        openAppOnClick: true //open app when notification is tapped
-      }
-    }
-    fences.push(fence);
     console.log("addFence")
     console.log(fence);
 
-    this.geofence.addOrUpdate(fences).then(
-      () => console.log(fences),
-      (err) => console.log('Geofence failed to add'),
-    );
-    console.log("über getWatched");
-    console.log(this.geofence.getWatched());
-    return fences;
+    return this.geofence.addOrUpdate(fence).then(() => {
+      firebase.database().ref('users/' + this.user.uid + '/activeResolutions/' + resolutionID + '/geofences/' + fence.id).set(fence),
+        console.log(fence),
+        (err) => console.log('Geofence failed to add');
+    });
   }
 
   /**
