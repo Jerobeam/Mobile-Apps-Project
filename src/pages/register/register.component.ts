@@ -89,32 +89,33 @@ export class RegisterComponent {
     if (!this.signupForm.valid || !this.gender) {
       console.log(this.signupForm.value);
     } else {
-      /*window["plugins"].OneSignal.getIds(ids => {
+      window["plugins"].OneSignal.getIds(ids => {
         console.log('getIds: ' + JSON.stringify(ids));
-
-      });*/
-      this.utilities.setInRegister();
-      this.authData.signupUser(
-        this.signupForm.value.email,
-        this.passwordGroup.value.password,
-        this.signupForm.value.firstname,
-        this.signupForm.value.lastname,
-        this.signupForm.value.birthday,
-      ).then(() => {
-        this.showVerificationAlert();
-      }, (error) => {
-        this.loading.dismiss();
-        let alert = this.alertCtrl.create({
-          message: this.authData.getErrorMessage(error),
-          buttons: [
-            {
-              text: "Ok",
-              role: 'cancel'
-            }
-          ]
+        this.utilities.setInRegister();
+        this.authData.signupUser(
+          this.signupForm.value.email,
+          this.passwordGroup.value.password,
+          this.signupForm.value.firstname,
+          this.signupForm.value.lastname,
+          this.signupForm.value.birthday,
+          ids.userId
+        ).then(() => {
+          this.showVerificationAlert();
+        }, (error) => {
+          this.loading.dismiss();
+          let alert = this.alertCtrl.create({
+            message: this.authData.getErrorMessage(error),
+            buttons: [
+              {
+                text: "Ok",
+                role: 'cancel'
+              }
+            ]
+          });
+          alert.present();
         });
-        alert.present();
       });
+
       this.loading = this.loadingCtrl.create({
         dismissOnPageChange: true,
       });
