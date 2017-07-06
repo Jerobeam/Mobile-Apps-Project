@@ -1,3 +1,24 @@
 page-resolutionDetails{
 
+  .picture-container{
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .no-margin-top{
+    margin-top: 3px;
+  }
+
+  .resolution-list-done{
+    color: $secondary;
+  }
+
+  .resolution-list-not-done{
+    color: $danger;
+  }
+
+  .reminder-range-label{
+    align-self: left;
+    margin-bottom: -5px;
+  }
 }

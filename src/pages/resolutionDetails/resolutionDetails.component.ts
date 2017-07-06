@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { Utilities } from '../../app/utilities';
+import firebase from 'firebase';
 
 @Component({
   selector: 'page-resolutionDetails.component',
@@ -7,14 +9,24 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class ResolutionDetailsComponent implements OnInit{
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public utilities: Utilities) {
   }
 
   resolution: any;
+  oldReminderFrequency: any;
 
   ngOnInit(){
+
     this.resolution = this.navParams.get('resolution');
-    console.log(this.resolution);
-    console.log("Test");
+    this.oldReminderFrequency = this.resolution.reminderFrequency;
+  }
+
+  backButtonPress() {
+    if(this.oldReminderFrequency !== this.resolution.reminderFrequency){
+      firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + this.resolution.id + '/').update({
+        reminderFrequency: this.resolution.reminderFrequency
+      });
+    }
+    this.navCtrl.pop();
   }
 }
