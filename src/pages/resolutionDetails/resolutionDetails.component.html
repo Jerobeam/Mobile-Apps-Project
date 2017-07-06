@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle *ngIf="(!editMode)">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{resolution.name}}</ion-title>
+      </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <div class="picture-container">
+      <!--<img class="profile-image picture-click picture-border" src="{{this.utilities.userData.picUrl}}"-->
+           <!--onError="this.src='assets/images/user-shape-256.png'" (click)="changeProfilePicture()">-->
+    </div>
+    <br/>
+    <!--<form class="center-form right-form-inputs" [formGroup]="profileForm">-->
+      <!--<ion-item *ngIf="(!editMode)">-->
+        <!--<ion-label class="form-label">Vorname:</ion-label>-->
+        <!--<ion-label class="form-value">{{utilities.userData.firstname}}</ion-label>-->
+      <!--</ion-item>-->
+      <!--<ion-item *ngIf="(editMode)">-->
+        <!--<ion-label color="primary">Vorname:</ion-label>-->
+        <!--<ion-input class="form-value" #firstname formControlName="firstname"-->
+                   <!--[(ngModel)]="utilities.userData.firstname"-->
+                   <!--(input)="elementChanged(firstname)"-->
+                   <!--[class.invalid]="!profileForm.controls.firstname.valid && firstnameChanged"></ion-input>-->
+      <!--</ion-item>-->
+      <!--<ion-item class="error-message" *ngIf="!profileForm.controls.firstname.valid && firstnameChanged">-->
+        <!--<p>Bitte geben Sie Ihren Vorname ein.</p>-->
+      <!--</ion-item>-->
+
+      <!--<ion-item *ngIf="(!editMode)">-->
+        <!--<ion-label class="form-label">Nachname:</ion-label>-->
+        <!--<ion-label class="form-value">{{utilities.userData.lastname}}</ion-label>-->
+      <!--</ion-item>-->
+      <!--<ion-item *ngIf="(editMode)">-->
+        <!--<ion-label color="primary">Nachname:</ion-label>-->
+        <!--<ion-input class="form-value" #lastname formControlName="lastname" [(ngModel)]="utilities.userData.lastname"-->
+                   <!--(input)="elementChanged(lastname)"-->
+                   <!--[class.invalid]="!profileForm.controls.lastname.valid && lastnameChanged"></ion-input>-->
+      <!--</ion-item>-->
+      <!--<ion-item class="error-message" *ngIf="!profileForm.controls.lastname.valid && lastnameChanged">-->
+        <!--<p>Bitte geben Sie Ihren Nachnamen ein.</p>-->
+      <!--</ion-item>-->
+
+      <!--<ion-item *ngIf="(!editMode)">-->
+        <!--<ion-label class="form-label">E-Mail:</ion-label>-->
+        <!--<ion-label class="form-value">{{utilities.userData.email}}</ion-label>-->
+      <!--</ion-item>-->
+      <!--<ion-item *ngIf="(editMode)">-->
+        <!--<ion-label color="primary">E-Mail:</ion-label>-->
+        <!--<ion-input class="form-value" #email formControlName="email" type="email"-->
+                   <!--[(ngModel)]="utilities.userData.email"-->
+                   <!--(input)="elementChanged(email)"-->
+                   <!--[class.invalid]="!profileForm.controls.email.valid  && emailChanged"></ion-input>-->
+      <!--</ion-item>-->
+      <!--<ion-item class="error-message" *ngIf="!profileForm.controls.email.valid && emailChanged">-->
+        <!--<p>Bitte geben Sie eine gültige E-Mail-Adresse ein.</p>-->
+      <!--</ion-item>-->
+
+      <!--<ion-item *ngIf="(!editMode)">-->
+        <!--<ion-label class="form-label">Geburtsdatum:</ion-label>-->
+        <!--<ion-label class="form-value">{{utilities.userData.birthday | birthday}}</ion-label>-->
+      <!--</ion-item>-->
+      <!--<ion-item *ngIf="(editMode)">-->
+        <!--<ion-label color="primary">Geburtsdatum:</ion-label>-->
+        <!--<ion-datetime class="form-value" #birthday formControlName="birthday" displayFormat="DD.MM.YYYY"-->
+                      <!--pickerFormat="DD MM YYYY"-->
+                      <!--placeholder="Geburtsdatum" [(ngModel)]="utilities.userData.birthday"-->
+                      <!--(ionChange)="birthdaySelectChanged(utilities.userData.birthday)"-->
+                      <!--max="{{today}}" doneText="Ok" cancelText="Abbrechen"></ion-datetime>-->
+      <!--</ion-item>-->
+
+      <!--<ion-item *ngIf="(!editMode)">-->
+        <!--<ion-label class="form-label">Geschlecht:</ion-label>-->
+        <!--<ion-label class="form-value">{{utilities.userData.gender | gender}}</ion-label>-->
+      <!--</ion-item>-->
+
+      <!--<ion-item *ngIf="(editMode)">-->
+        <!--<ion-label color="primary">Geschlecht:</ion-label>-->
+        <!--<ion-select class="form-value" #gender formControlName="gender" placeholder="Geschlecht"-->
+                    <!--[(ngModel)]="utilities.userData.gender"-->
+                    <!--(ionChange)="genderSelectChanged(utilities.userData.gender)" doneText="Ok" cancelText="Abbrechen">-->
+          <!--<ion-option value="m">männlich</ion-option>-->
+          <!--<ion-option value="f">weiblich</ion-option>-->
+        <!--</ion-select>-->
+      <!--</ion-item>-->
+
+      <!--<ion-item *ngIf="(!editMode)">-->
+        <!--<ion-label class="form-label">Mannschaft:</ion-label>-->
+        <!--<ion-label class="form-value">{{utilities.userData.team | teams}}</ion-label>-->
+      <!--</ion-item>-->
+      <!--<ion-item *ngIf="(editMode)">-->
+        <!--<ion-label color="primary">Mannschaft:</ion-label>-->
+        <!--<ion-select class="form-value" #team formControlName="team" placeholder="Mannschaft"-->
+                    <!--[(ngModel)]="utilities.userData.team"-->
+                    <!--(ionChange)="teamSelectChanged(utilities.userData.team)" doneText="Ok" cancelText="Abbrechen" [disabled]="!utilities.userData.isTrainer">-->
+          <!--<ion-option value=0>keine Mannschaft</ion-option>-->
+          <!--<ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>-->
+        <!--</ion-select>-->
+      <!--</ion-item>-->
+
+      <!--<ion-item *ngIf="(!editMode)">-->
+        <!--<ion-label class="form-label">Anzahl Aushilfen:</ion-label>-->
+        <!--<ion-label class="form-value">{{utilities.userData.helpCounter}}</ion-label>-->
+      <!--</ion-item>-->
+      <!--<ion-item *ngIf="(editMode)">-->
+        <!--<ion-label color="primary">Anzahl Aushilfen:</ion-label>-->
+        <!--<ion-input type="number" #helpCounter formControlName="helpCounter"-->
+                   <!--[(ngModel)]="utilities.userData.helpCounter"-->
+                   <!--(input)="elementChanged(helpCounter)"-->
+                   <!--[class.invalid]="!profileForm.controls.helpCounter.valid && helpCounterChanged"></ion-input>-->
+      <!--</ion-item>-->
+    <!--</form>-->
+
+    <div class="bottomContainer">
+      <button class="button-width" ion-button round color="danger" icon-left outline (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+        Logout
+      </button>
+    </div>
+  </div>
+</ion-content>
