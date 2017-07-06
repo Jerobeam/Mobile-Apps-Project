@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { ActivitydetailsComponent } from '../activitydetails/activitydetails.component';
+import { ResolutionDetailsComponent } from '../resolutionDetails/resolutionDetails.component';
 import { ManageResolutionsComponent } from '../manageResolutions/manageResolutions.component';
 import { Utilities } from '../../app/utilities';
 import { ResolutionProvider } from '../../providers/resolution-provider';
@@ -8,7 +8,7 @@ import { AuthData } from '../../providers/auth-data';
 import firebase from 'firebase';
 
 @Component({
-  selector: 'page-home',
+  selector: 'page-myResolutions',
   templateUrl: 'myResolutions.component.html',
   providers: [AuthData, ResolutionProvider]
 })
@@ -39,7 +39,7 @@ export class MyResolutions {
   }
 
   goToPage(event, resolution) {
-    this.navCtrl.push(ActivitydetailsComponent, { activity: resolution });
+    this.navCtrl.push(ResolutionDetailsComponent, { resolution: resolution });
   }
 
   doneResolutionToday(event, resolution) {
