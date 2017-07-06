@@ -118,24 +118,24 @@ export class CreateResolutionComponent {
     var uploadTask = firebase.storage().ref().child('resolutionPictures/' + this.utilities.user.uid + "/" + this.utilities.user.uid
       + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'});
 
-    uploadTask.on('state_changed', function (snapshot) {
+    /*uploadTask.on('state_changed', function (snapshot) {
       that.loading = that.loadingCtrl.create({
         dismissOnPageChange: true,
       });
       that.loading.present();
 
     }, function (error) {
-      that.loading.dismiss();
-      alert(error.message);
-    }, function () {
-      that.utilities.userData.picUrl = uploadTask.snapshot.downloadURL;
-      firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions/').update({
-        iconUrl: that.utilities.userData.picUrl
-      });
-      that.loading.dismiss();
-      // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
-      that.setActionSheetOptions()
-    });
+     that.loading.dismiss();
+     alert(error.message);
+     }, function () {
+     that.utilities.userData.picUrl = uploadTask.snapshot.downloadURL;
+     firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions/').update({
+     iconUrl: that.utilities.userData.picUrl
+     });
+     that.loading.dismiss();
+     // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
+     that.setActionSheetOptions()
+     });*/
   }
 
   changeResolutionPicture(){
