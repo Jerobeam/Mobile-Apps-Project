@@ -91,10 +91,7 @@ export class Utilities {
   }
 
   public removeGeofence(geofenceID) {
-    console.log("geofence to remove" + geofenceID);
-    this.geofence.remove(geofenceID).then(() => {
-      console.log("Geofence removed");
-    });
+    this.geofence.remove(geofenceID);
   }
 
   public addGeofence(resolutionID, notificationTitle, notificationMessage) {
@@ -112,12 +109,9 @@ export class Utilities {
         openAppOnClick: true //open app when notification is tapped
       }
     }
-    console.log("addFence")
-    console.log(fence);
 
     return this.geofence.addOrUpdate(fence).then(() => {
       firebase.database().ref('users/' + this.user.uid + '/activeResolutions/' + resolutionID + '/geofences/' + fence.id).set(fence),
-        console.log(fence),
         (err) => console.log('Geofence failed to add');
     });
   }
@@ -146,9 +140,6 @@ export class Utilities {
   makeID() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    console.log("JapJepJup");
-
     for (var i = 0; i < 26; i++)
       text += possible.charAt(Math.floor(Math.random() * possible.length));
 
