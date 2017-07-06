@@ -26,7 +26,7 @@ export class MyApp {
 
   pages: Array<{ title: string, component: any }>;
   notificationPressed: boolean = false;
-  // authenticated: boolean = false;
+  authenticated: boolean = false;
 
   constructor(public geofence: Geofence, public alertCtrl: AlertController, public authData: AuthData, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public utilities: Utilities) {
     this.initializeApp();
@@ -44,14 +44,14 @@ export class MyApp {
         utilities.user = {};
         this.rootPage = LoginComponent;
       } else {
-       // if (this.nav.getActive() == undefined) {
-          //if (this.loadUserCredentials()) {
-          this.rootPage = MyResolutions;
-          //this.authenticated = true 
+        // if (this.nav.getActive() == undefined) {
+        //if (this.loadUserCredentials()) {
+        this.rootPage = MyResolutions;
+        this.authenticated = true;
         //}//
-       /* else {
-            this.rootPage = LoginComponent;
-          }*/
+        /* else {
+             this.rootPage = LoginComponent;
+           }*/
       }
       //this.utilities.countOpen();
       this.notificationPressed = false;
@@ -106,8 +106,21 @@ export class MyApp {
           console.log('Geofence Plugin Ready'),
             (err) => console.log(err);
         });
-      }
+        let notificationOpenedCallback = (jsonData) => {
+          console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+          if (this.authenticated) {
+            this.nav.push(MyResolutions);
+          }
+          else {
+            this.notificationPressed = true;
+          }
+        };
 
+        window["plugins"].OneSignal
+          .startInit("69c4c123-c0aa-481b-a5f3-253642300266", "630182428381")
+          .handleNotificationOpened(notificationOpenedCallback)
+          .endInit();
+      }
     });
 
   }
