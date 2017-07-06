@@ -11,6 +11,11 @@
   <h1></h1>
 
 
+    <div class="picture-container">
+      <img src='assets/images/running-icon.jpg'(click)="changeResolutionPicture()">
+    </div>
+
+
     <form [formGroup]="resolution" (ngSubmit)="createResolution()">
       <ion-item>
         <ion-label>Resolution Name</ion-label>
