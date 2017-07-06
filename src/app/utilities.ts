@@ -25,7 +25,7 @@ export class Utilities {
   currentDay = new Date();
   currentDayString: any;
 
-  constructor(public geofence: Geofence) {//public http: Http
+  constructor(public http: Http, public geofence: Geofence) {
     let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
     let firstDate = new Date(new Date().getFullYear(), 1, 1);
     let secondDate = new Date(new Date().getFullYear(), 12, 31);
@@ -78,7 +78,7 @@ export class Utilities {
       headers: headers
     });
 
-    //this.http.delete(url, options).toPromise().catch(this.handleError);
+    this.http.delete(url, options).toPromise().catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {
@@ -94,19 +94,18 @@ export class Utilities {
     this.geofence.remove(geofenceID);
   }
 
-  public addGeofence(resolutionID, notificationTitle, notificationMessage) {
-    //options describing geofence
+  public addGeofence(resolutionID, notificationTitle, notificationMessage, latitude, longitude) {
     let fence = {
-      id: this.makeID(), //any unique ID
-      latitude: 49.474797,  //center of geofence radius
-      longitude: 8.535164,
-      radius: 100, //radius to edge of geofence in meters
-      transitionType: 3, //see 'Transition Types' below
-      notification: { //notification settings
-        id: 1, //any unique ID
-        title: notificationTitle, //notification title
-        text: notificationMessage, //notification body
-        openAppOnClick: true //open app when notification is tapped
+      id: this.makeID(),
+      latitude: latitude,
+      longitude: longitude,
+      radius: 100, //radius in meters
+      transitionType: 3,
+      notification: {
+        id: this.makeID(),
+        title: notificationTitle,
+        text: notificationMessage,
+        openAppOnClick: true
       }
     }
 

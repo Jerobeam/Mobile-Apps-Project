@@ -15,7 +15,6 @@ import { AuthData } from '../../providers/auth-data';
 export class ManageResolutionsComponent {
 
   selection = "preconfigured";
-  activeResolutions = [];
 
   constructor(public authData: AuthData, public resolutionProvider: ResolutionProvider, public utilities: Utilities, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public toastCtrl: ToastController) {
 
@@ -62,7 +61,7 @@ export class ManageResolutionsComponent {
   }
 
   isActive(resolution) {
-    for (let i of this.activeResolutions) {
+    for (let i of this.resolutionProvider.activeResolutions) {
       if (i.id == resolution.id) {
         return true;
       }
@@ -124,7 +123,7 @@ export class ManageResolutionsComponent {
       this.resolutionProvider.updateResolutionStatus("active", resolutionItem.id,
         { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "", activeDays: resolutionItem.activeDays, isRecurring: resolutionItem.isRecurring })
         .then(() => {
-          this.utilities.addGeofence(resolutionItem.id, "Test", "Sie sind bei X").then(() => {
+          this.utilities.addGeofence(resolutionItem.id, "Test", "Sie sind bei X", 49.474797, 8.535164).then(() => {
             this.resolutionProvider.getActiveResolutions();
           });
           this.showToast("Resolution is now active");
