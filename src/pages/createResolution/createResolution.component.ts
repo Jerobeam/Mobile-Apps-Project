@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import {FormBuilder, Validators, FormControl, FormGroup} from '@angular/forms';
 import { Utilities } from '../../app/utilities';
 import {ResolutionProvider} from "../../providers/resolution-provider";
+import {Camera} from 'ionic-native';
 
 @Component({
   selector: 'page-createResolution',
@@ -19,7 +20,6 @@ export class CreateResolutionComponent {
     this.resolution = this.formBuilder.group({
       name: [''],
       type: [''],
-      reminder: [''],
       imageUrl:['']
     });
   }
@@ -45,5 +45,9 @@ export class CreateResolutionComponent {
         name: this.resolution.value.name,
         iconUrl: this.resolution.value.imageUrl
       });
+  }
+
+  changeResolutionPicture(){
+    console.log("Change Picture")
   }
 }

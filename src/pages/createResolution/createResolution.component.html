@@ -11,6 +11,11 @@
   <h1></h1>
 
 
+    <div class="picture-container">
+      <img src='assets/images/running-icon.jpg'(click)="changeResolutionPicture()">
+    </div>
+
+
     <form [formGroup]="resolution" (ngSubmit)="createResolution()">
       <ion-item>
         <ion-label>Resolution Name</ion-label>
@@ -24,15 +29,6 @@
           <ion-option>Single Activity</ion-option>
         </ion-select>
       </ion-item>
-
-        <ion-item>
-          <ion-label>Reminder</ion-label>
-          <ion-select formControlName="reminder" okText="Okay" cancelText="Dismiss">
-            <ion-option>Every Day</ion-option>
-            <ion-option>Every 3 Days</ion-option>
-            <ion-option>Every Week</ion-option>
-          </ion-select>
-        </ion-item>
 
       <ion-item>
         <ion-label>Picture</ion-label>
