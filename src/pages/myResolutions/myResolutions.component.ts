@@ -62,4 +62,8 @@ export class MyResolutions {
       isDone: resolution.isDone
     });
   }
+
+  goToPageManageResolutions() {
+    this.navCtrl.push(ManageResolutionsComponent);
+  }
 }
