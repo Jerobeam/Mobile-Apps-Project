@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar hideBackButton="true">
+  <ion-navbar>
     <!--<button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>-->
@@ -28,19 +28,17 @@
       <div *ngFor="let resolution of resolutionProvider.activeResolutions">
         <ion-item class="less-label-margin" (click)="goToPage($event, resolution)">
           <div class="item-left">
-            <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
+            <img src="{{resolution.iconUrl}}" class="resolution-list-icon" onError="this.src='assets/images/default_resolution_128.png'"/>
           </div>
 
           <button [disabled]="(this.utilities.currentDayString == resolution.lastActivity)" *ngIf="resolution.isRecurring" class="resolution-list-button"
-            ion-button icon-end round outline color="secondary" (click)="doneResolutionToday($event, resolution)">
+            ion-button round outline color="secondary" (click)="doneResolutionToday($event, resolution)">
             DONE TODAY
-            <ion-icon class="resolution-list-button-icon" name="checkmark"></ion-icon>
           </button>
 
-          <button [disabled]="resolution.isDone" *ngIf="!resolution.isRecurring" class="resolution-list-button" ion-button icon-end
+          <button [disabled]="resolution.isDone" *ngIf="!resolution.isRecurring" class="resolution-list-button" ion-button
             round outline color="secondary" (click)="doneSingleResolution($event, resolution)">
             DONE
-            <ion-icon class="resolution-list-button-icon" name="checkmark"></ion-icon>
           </button>
           <div class="item-right">
             <div class="resolution-list-name">{{resolution.name}}</div>
@@ -58,8 +56,8 @@
             </span>
           </div>
           <div *ngIf="resolution.isRecurring" class="datum-range">
-            01.01.2017
-            <span class="datum-range-end">31.12.2017</span>
+            01.01.{{this.utilities.currentDay.getFullYear()}}
+            <span class="datum-range-end">31.12.{{this.utilities.currentDay.getFullYear()}}</span>
           </div>
         </ion-item>
       </div>
@@ -72,13 +70,12 @@
       <div *ngFor="let resolution of resolutionProvider.activeResolutions">
         <ion-item class="less-label-margin" *ngIf="resolution.isRecurring" (click)="goToPage($event, resolution)">
           <div class="item-left">
-            <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
+            <img src="{{resolution.iconUrl}}" class="resolution-list-icon" onError="this.src='assets/images/default_resolution_128.png'"/>
           </div>
 
           <button [disabled]="(this.utilities.currentDayString == resolution.lastActivity)" class="resolution-list-button"
-                  ion-button icon-end round outline color="secondary" (click)="doneResolutionToday($event, resolution)">
+                  ion-button round outline color="secondary" (click)="doneResolutionToday($event, resolution)">
             DONE TODAY
-            <ion-icon class="resolution-list-button-icon" name="checkmark"></ion-icon>
           </button>
 
           <div class="item-right">
@@ -109,12 +106,11 @@
       <div *ngFor="let resolution of resolutionProvider.activeResolutions">
         <ion-item class="less-label-margin" *ngIf="!resolution.isRecurring" (click)="goToPage($event, resolution)">
           <div class="item-left">
-            <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
+            <img src="{{resolution.iconUrl}}" class="resolution-list-icon" onError="this.src='assets/images/default_resolution_128.png'"/>
           </div>
-          <button [disabled]="resolution.isDone" class="resolution-list-button" ion-button icon-end round outline color="secondary"
+          <button [disabled]="resolution.isDone" class="resolution-list-button" ion-button round outline color="secondary"
             (click)="doneSingleResolution($event, resolution)">
             DONE
-            <ion-icon class="resolution-list-button-icon" name="checkmark"></ion-icon>
           </button>
           <div class="item-right">
             <div class="resolution-list-name">{{resolution.name}}</div>

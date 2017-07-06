@@ -5,10 +5,12 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import firebase from 'firebase';
 import { Geofence } from '@ionic-native/geofence';
-/*import { Http, Response, Headers, RequestOptions } from "@angular/http";
+import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
-*/
+import { AlertController } from "ionic-angular";
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/toPromise';
 
 
 @Injectable()
@@ -22,102 +24,107 @@ export class Utilities {
   amountOfDaysInCurrentYear: any;
   currentDay = new Date();
   currentDayString: any;
-
-  resolutions = [
-    {
-      name: "Running", isSingleActivity: false, isPreconfigured: true, isActive: false, isDone: false, activeDays: [0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
-        , 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
-        1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
-        0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1], lastActivity: "2017-06-21", secondLastActivity: "2017-06-15", iconUrl: "assets/images/running-icon.jpg"
-    },
-    { name: "Stop Smoking", isSingleActivity: true, isPreconfigured: true, isActive: true, isDone: false, iconUrl: "assets/images/running-icon.jpg" },
-    { name: "Learn Spanish", isSingleActivity: true, isPreconfigured: true, isActive: true, isDone: true, iconUrl: "assets/images/running-icon.jpg" },
-    {
-      name: "Lose Weight", isSingleActivity: false, isPreconfigured: true, isActive: false, isDone: false, lastActivity: "2017-06-18", secondLastActivity: "2017-06-07",
-      iconUrl: "assets/images/running-icon.jpg"
-    },
-    {
-      name: "Football", isSingleActivity: false, isPreconfigured: false, isActive: true, isDone: true, activeDays: [0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0,
-        1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0,
-        1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1,
-        0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1], lastActivity: "2017-06-20", secondLastActivity: "2017-06-06", iconUrl: "assets/images/running-icon.jpg"
-    },
-    { name: "Socialize", isSingleActivity: false, isPreconfigured: true, isActive: false, isDone: false, contacts: [], iconUrl: "assets/images/running-icon.jpg" }
-  ];
+  currentDayNumber: any;
 
   constructor(public geofence: Geofence) {
-    this.addGeofence();
+    this.calculateCurrentDayNumber();
     let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
-    let firstDate = new Date(new Date().getFullYear(), 1, 1);
-    let secondDate = new Date(new Date().getFullYear(), 12, 31);
+    let firstDate = new Date(this.currentDay.getFullYear(), 1, 1);
+    let secondDate = new Date(this.currentDay.getFullYear(), 12, 31);
     this.amountOfDaysInCurrentYear = Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay));
 
     let mm = this.currentDay.getMonth() + 1;
     let dd = this.currentDay.getDate();
     this.currentDayString = [this.currentDay.getFullYear(),
-      (mm>9 ? '' : '0') + mm,
-      (dd>9 ? '' : '0') + dd
+    (mm > 9 ? '' : '0') + mm,
+    (dd > 9 ? '' : '0') + dd
     ].join('-');
+  }
+
+  sendPushNotification(pushIds: Array<any>, content: String) {
+    let notificationObj = {
+      contents: { en: content },
+      include_player_ids: pushIds
+    };
+    window["plugins"].OneSignal.postNotification(notificationObj,
+      function (successResponse) {
+      },
+      function (failedResponse) {
+        console.log("Notification Post Failed: ", failedResponse);
+      }
+    )
+  }
+
+  setReminder(pushIds: Array<any>, content: String, time: string) {
+    let reminderTime = new Date(time);
+    reminderTime.setDate(reminderTime.getDate());
+    let notificationObj = {
+      contents: { en: content },
+      send_after: reminderTime,
+      include_player_ids: pushIds
+    };
+    window["plugins"].OneSignal.postNotification(notificationObj,
+      function (successResponse) {
+        firebase.database().ref('users/').update({ delayedNotificationID: successResponse.id });
+      },
+      function (failedResponse) {
+        console.log("Notification Post Failed: ", failedResponse);
+      }
+    )
+  }
+
+  cancelPushNotification(notificationID: any) {
+    let url = 'https://onesignal.com/api/v1/notifications/' + notificationID + '?app_id=69c4c123-c0aa-481b-a5f3-253642300266';
+    let headers = new Headers({ 'Authorization': 'Basic ZWFlNjRiZTQtYjMwMy00NGEyLTk5Y2QtMmFhMGE5ZmY1NDgy' });
+    let options = new RequestOptions({
+      headers: headers
+    });
+
+    //this.http.delete(url, options).toPromise().catch(this.handleError);
+  }
+
+  calculateCurrentDayNumber() {
+    let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
+    let firstDate = new Date(new Date().getFullYear(), 0, 1);
+
+    let diffDays = Math.floor(Math.abs((firstDate.getTime() - this.currentDay.getTime()) / (oneDay)));
+
+    this.currentDayNumber = diffDays;
+  }
+
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error);
+    return Promise.reject(error.message || error);
   }
 
   setInRegister(): void {
     this.inRegister = !this.inRegister;
   }
 
-  public addGeofence() {
+  public removeGeofence(geofenceID) {
+    this.geofence.remove(geofenceID);
+  }
+
+  public addGeofence(resolutionID, notificationTitle, notificationMessage) {
     //options describing geofence
-    let fences = [];
     let fence = {
       id: this.makeID(), //any unique ID
-      latitude: 49.478557,  //center of geofence radius
-      longitude: 8.508034,
-      radius: 15, //radius to edge of geofence in meters
-      transitionType: 1, //see 'Transition Types' below
-      notification: { //notification settings
-        id: 1, //any unique ID
-        title: 'Neue Location', //notification title
-        text: 'Sie sind an Location 14', //notification body
-        openAppOnClick: true //open app when notification is tapped
-      }
-    }
-    fences.push(fence);
-    fence = {
-      id: this.makeID(), //any unique ID
-      latitude: 49.478381,  //center of geofence radius
-      longitude: 8.507825,
+      latitude: 49.474797,  //center of geofence radius
+      longitude: 8.535164,
       radius: 100, //radius to edge of geofence in meters
       transitionType: 3, //see 'Transition Types' below
       notification: { //notification settings
         id: 1, //any unique ID
-        title: 'Neue Location', //notification title
-        text: 'Sie sind an der Nr. 12', //notification body
+        title: notificationTitle, //notification title
+        text: notificationMessage, //notification body
         openAppOnClick: true //open app when notification is tapped
       }
     }
-    fences.push(fence);
-    fence = {
-      id: this.makeID(), //any unique ID
-      latitude: 49.474312,  //center of geofence radius
-      longitude: 8.534947,
-      radius: 100, //radius to edge of geofence in meters
-      transitionType: 3, //see 'Transition Types' below
-      notification: { //notification settings
-        id: 1, //any unique ID
-        title: 'Neue Location', //notification title
-        text: 'Sie sind an der DHBW', //notification body
-        openAppOnClick: true //open app when notification is tapped
-      }
-    }
-    fences.push(fence);
-    console.log("addFence")
-    console.log(fence);
 
-    this.geofence.addOrUpdate(fences).then(
-      () => console.log(fences),
-      (err) => console.log('Geofence failed to add'),
-    );
-    console.log(this.geofence.getWatched());
-    return fences;
+    return this.geofence.addOrUpdate(fence).then(() => {
+      firebase.database().ref('users/' + this.user.uid + '/activeResolutions/' + resolutionID + '/geofences/' + fence.id).set(fence),
+        (err) => console.log('Geofence failed to add');
+    });
   }
 
   /**
@@ -144,7 +151,6 @@ export class Utilities {
   makeID() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
     for (var i = 0; i < 26; i++)
       text += possible.charAt(Math.floor(Math.random() * possible.length));
 
