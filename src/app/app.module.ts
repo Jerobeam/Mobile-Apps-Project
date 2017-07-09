@@ -11,6 +11,7 @@ import { EditResolutionComponent } from '../pages/editResolution/editResolution.
 import { AddContactsComponent } from '../pages/addContacts/addContacts.component';
 import { LoginComponent } from '../pages/login/login.component';
 import { RegisterComponent } from '../pages/register/register.component';
+import { HttpModule } from '@angular/http';
 import { Date } from './pipes/date';
 import { Geofence } from '@ionic-native/geofence';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -34,6 +35,7 @@ import { Camera } from 'ionic-native';
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
@@ -46,7 +48,7 @@ import { Camera } from 'ionic-native';
     EditResolutionComponent,
     AddContactsComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
   providers: [
     StatusBar,

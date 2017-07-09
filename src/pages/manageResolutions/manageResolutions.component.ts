@@ -15,7 +15,6 @@ import { AuthData } from '../../providers/auth-data';
 export class ManageResolutionsComponent {
 
   selection = "preconfigured";
-  activeResolutions = [];
 
   constructor(public authData: AuthData, public resolutionProvider: ResolutionProvider, public utilities: Utilities, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public toastCtrl: ToastController) {
 
@@ -24,30 +23,6 @@ export class ManageResolutionsComponent {
   logout() {
     this.authData.logoutUser();
     this.navCtrl.setRoot(LoginComponent);
-  }
-
-  testReminder() {
-    let pushIDs = [];
-    for (let pushID in this.utilities.userData.pushid) {
-      pushIDs.push(pushID);
-    }
-    let message = 'Remindertest';
-    this.utilities.setReminder(pushIDs, message, "2017-07-07");
-  }
-
-  testCancel() {
-    if (this.utilities.userData.delayedNotificationID != undefined) {
-      this.utilities.cancelPushNotification(this.utilities.userData.delayedNotificationID);
-    }
-  }
-
-  testPush() {
-    let pushIDs = [];
-    for (let pushID in this.utilities.userData.pushid) {
-      pushIDs.push(pushID);
-    }
-    let message = 'Es Klappt :)';
-    this.utilities.sendPushNotification(pushIDs, message);
   }
 
   //Only used in order to test the method utilities.removeCustomRevolution()
@@ -62,7 +37,7 @@ export class ManageResolutionsComponent {
   }
 
   isActive(resolution) {
-    for (let i of this.activeResolutions) {
+    for (let i of this.resolutionProvider.activeResolutions) {
       if (i.id == resolution.id) {
         return true;
       }
@@ -122,21 +97,27 @@ export class ManageResolutionsComponent {
     }
     else {
       this.resolutionProvider.updateResolutionStatus("active", resolutionItem.id,
-        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "", activeDays: resolutionItem.activeDays, isRecurring: resolutionItem.isRecurring })
+        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "", activeDays: resolutionItem.activeDays, isRecurring: resolutionItem.isRecurring, reminderFrequency: 3 })
         .then(() => {
-          this.utilities.addGeofence(resolutionItem.id, "Test", "Sie sind bei X").then(() => {
+          this.utilities.addGeofence(resolutionItem.id, "Test", "Sie sind bei X", 49.474797, 8.535164).then(() => {
             this.resolutionProvider.getActiveResolutions();
           });
+          this.utilities.scheduleResolutionNotifications(resolutionItem);
+          this.utilities.setUserData();
           this.showToast("Resolution is now active");
         });
     }
   }
 
   removeFromActiveResolutions(resolutionItem) {
+    this.utilities.setUserData();
     for (let i of this.resolutionProvider.activeResolutions) {
       if (i.id == resolutionItem.id) {
         for (let j in i.geofences) {
-          this.utilities.removeGeofence(j);
+          this.utilities.removeGeofence(j, resolutionItem.id);
+        }
+        for (let k in i.scheduledNotifications) {
+          this.utilities.cancelPushNotification(k, resolutionItem.id);
         }
       }
     }
