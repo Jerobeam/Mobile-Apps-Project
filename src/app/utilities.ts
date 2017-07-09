@@ -55,18 +55,17 @@ export class Utilities {
     )
   }
 
-  setReminder(pushIds: Array<any>, content: String, time: string) {
-    let reminderTime = new Date(time);
-    reminderTime.setDate(reminderTime.getDate());
+  setReminder(pushIds: Array<any>, content: String, time: Date, resolutionID) {
+    //time.setDate(time.getDate());
     let notificationObj = {
       contents: { en: content },
-      send_after: reminderTime,
+      send_after: time,
       include_player_ids: pushIds
     };
     let user = this.user;
     window["plugins"].OneSignal.postNotification(notificationObj,
       function (successResponse) {
-        firebase.database().ref('users/' + user.uid + '/delayedNotificationID').set(successResponse.id);
+        firebase.database().ref('users/' + user.uid + '/activeResolutions/' + resolutionID + '/scheduledNotifications/' + successResponse.id).set(true);
       },
       function (failedResponse) {
         console.log("Notification Post Failed: ", failedResponse);
@@ -75,7 +74,30 @@ export class Utilities {
     this.setUserData();
   }
 
-  cancelPushNotification(notificationID: any) {
+  scheduleResolutionNotifications(resolutionItem) {
+    if (resolutionItem.isRecurring == true) {
+      let pushIDs = [];
+      for (let pushID in this.userData.pushid) {
+        pushIDs.push(pushID);
+      }
+      let content = "Denken Sie an ihren Vorsatz " + resolutionItem.name + "!";
+
+      let startDate = new Date();
+      startDate.setDate(startDate.getDate() + 1);
+      startDate.setHours(13);
+      startDate.setMinutes(5);
+      let endDate = new Date(startDate.getFullYear() + "-12-31");
+      endDate.setHours(13);
+      endDate.setMinutes(5);
+      //let firstIteration = true;
+      //this.setReminder(pushIDs, content, endDate, resolutionItem.id);
+      for (let i = startDate; i.getTime() < endDate.getTime(); i.setDate(i.getDate() + 3)) {
+        this.setReminder(pushIDs, content, i, resolutionItem.id);
+      }
+    }
+  }
+
+  cancelPushNotification(notificationID: any, resolutionID) {
     let url = 'https://onesignal.com/api/v1/notifications/' + notificationID + '?app_id=69c4c123-c0aa-481b-a5f3-253642300266';
     let headers = new Headers({ 'Authorization': 'Basic ZWFlNjRiZTQtYjMwMy00NGEyLTk5Y2QtMmFhMGE5ZmY1NDgy' });
     let options = new RequestOptions({
@@ -85,6 +107,7 @@ export class Utilities {
     this.http.delete(url, options)
       .toPromise()
       .catch(this.handleError);
+    return firebase.database().ref('users/' + this.user.uid + '/activeResolutions/' + resolutionID + "/scheduledNotifications/" + notificationID).remove();
   }
 
   calculateCurrentDayNumber() {
@@ -105,8 +128,11 @@ export class Utilities {
     this.inRegister = !this.inRegister;
   }
 
-  public removeGeofence(geofenceID) {
-    this.geofence.remove(geofenceID);
+  public removeGeofence(geofenceID, resolutionID) {
+    this.geofence.remove(geofenceID).then(() => {
+      console.log("geofence removed");
+      return firebase.database().ref('users/' + this.user.uid + '/activeResolutions/' + resolutionID + "/geofences/" + geofenceID).remove();
+    });
   }
 
   public addGeofence(resolutionID, notificationTitle, notificationMessage, latitude, longitude) {
@@ -117,7 +143,7 @@ export class Utilities {
       radius: 100, //radius in meters
       transitionType: 3,
       notification: {
-        id: 1,
+        id: this.makeID(),
         title: notificationTitle,
         text: notificationMessage,
         openAppOnClick: true

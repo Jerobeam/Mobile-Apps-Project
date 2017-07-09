@@ -25,34 +25,6 @@ export class ManageResolutionsComponent {
     this.navCtrl.setRoot(LoginComponent);
   }
 
-  testReminder() {
-    let pushIDs = [];
-    for (let pushID in this.utilities.userData.pushid) {
-      pushIDs.push(pushID);
-    }
-    let message = 'Remindertest';
-    this.utilities.setReminder(pushIDs, message, "2017-07-07");
-  }
-
-  testCancel() {
-    this.utilities.setUserData().then(() => {
-      if (this.utilities.userData.delayedNotificationID != undefined) {
-        this.utilities.cancelPushNotification(this.utilities.userData.delayedNotificationID);
-      } else {
-        console.log("No Notification ID");
-      }
-    })
-  }
-
-  testPush() {
-    let pushIDs = [];
-    for (let pushID in this.utilities.userData.pushid) {
-      pushIDs.push(pushID);
-    }
-    let message = 'Es Klappt :)';
-    this.utilities.sendPushNotification(pushIDs, message);
-  }
-
   //Only used in order to test the method utilities.removeCustomRevolution()
   testRemove(resolutionID) {
     this.resolutionProvider.removeCustomResolution(resolutionID).then(() => {
@@ -130,16 +102,22 @@ export class ManageResolutionsComponent {
           this.utilities.addGeofence(resolutionItem.id, "Test", "Sie sind bei X", 49.474797, 8.535164).then(() => {
             this.resolutionProvider.getActiveResolutions();
           });
+          this.utilities.scheduleResolutionNotifications(resolutionItem);
+          this.utilities.setUserData();
           this.showToast("Resolution is now active");
         });
     }
   }
 
   removeFromActiveResolutions(resolutionItem) {
+    this.utilities.setUserData();
     for (let i of this.resolutionProvider.activeResolutions) {
       if (i.id == resolutionItem.id) {
         for (let j in i.geofences) {
-          this.utilities.removeGeofence(j);
+          this.utilities.removeGeofence(j, resolutionItem.id);
+        }
+        for (let k in i.scheduledNotifications) {
+          this.utilities.cancelPushNotification(k, resolutionItem.id);
         }
       }
     }
