@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { ResolutionDetailsComponent } from '../resolutionDetails/resolutionDetails.component';
 import { ManageResolutionsComponent } from '../manageResolutions/manageResolutions.component';
 import { Utilities } from '../../app/utilities';
@@ -14,17 +14,28 @@ import firebase from 'firebase';
 })
 export class MyResolutions {
 
+  loadingElement: any;
   recurrance: string = "all";
   progressWidth: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public utilities: Utilities, public resolutionProvider: ResolutionProvider) {
+  constructor(public loadingCtrl: LoadingController, public navCtrl: NavController, public navParams: NavParams, public utilities: Utilities, public resolutionProvider: ResolutionProvider) {
     // this.progressWidth = 100 / amountOfDays;
 
   }
 
+  showLoadingElement() {
+    this.loadingElement = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
+    })
+    this.loadingElement.present();
+  }
+
   ionViewWillEnter() {
+    this.showLoadingElement();
     this.utilities.setUserData().then(() => {
       this.resolutionProvider.getActiveResolutions();
+      this.loadingElement.dismiss();
     });
   }
 

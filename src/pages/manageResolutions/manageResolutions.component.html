@@ -38,7 +38,7 @@
         <div *ngIf="resolution.isPreconfigured == true">
           <ion-item class="less-label-margin">
             <div item-left>
-              <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
+              <img src="{{resolution.iconUrl}}" onError="this.src='assets/images/default_resolution_128.png'" class="resolution-list-icon" />
             </div>
             <div>
               {{resolution.name}}
@@ -62,7 +62,7 @@
         <div *ngIf="resolution.isPreconfigured == false">
           <ion-item class="less-label-margin">
             <div item-left>
-              <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
+              <img src="{{resolution.iconUrl}}" onError="this.src='assets/images/default_resolution_128.png'" class="resolution-list-icon" />
             </div>
             <div>
               {{resolution.name}}

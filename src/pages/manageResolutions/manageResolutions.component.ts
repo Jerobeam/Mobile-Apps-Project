@@ -110,10 +110,10 @@ export class ManageResolutionsComponent {
           lastActivity: "",
           activeDays: resolutionItem.activeDays,
           isRecurring: resolutionItem.isRecurring,
-          reminderFrequency: 3
+          reminderFrequency: 1
         }).then(() => {
           if (this.utilities.cordova) {
-            this.utilities.addGeofence(resolutionItem.id, "Test", "DHBW Mannheim: ", 49.474797, 8.535164).then(() => {
+            this.utilities.addGeofence(resolutionItem.id, "Location: DHBW Library", "Remember your Resolution 'Study'!", 49.473169, 8.535130).then(() => {
               this.resolutionProvider.getActiveResolutions();
             });
             this.utilities.scheduleResolutionNotifications(resolutionItem, 3);
