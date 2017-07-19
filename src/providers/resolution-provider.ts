@@ -21,7 +21,7 @@ export class ResolutionProvider {
 
     updateResolutionStatus(toState: any, resolutionID, data: any): any {
         if (toState == "active") {
-            return firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolutionID).set(
+            return firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolutionID).update(
                 data
             );
         }

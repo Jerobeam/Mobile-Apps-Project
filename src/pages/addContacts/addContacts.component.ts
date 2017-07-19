@@ -18,11 +18,13 @@ export class AddContactsComponent {
     selectedContacts = [];
 
     constructor(public resolutionProvider: ResolutionProvider, public navCtrl: NavController, public toastCtrl: ToastController, public navParams: NavParams, public utilities: Utilities) {
-        Contacts.find(['displayName']).then((allContacts) => {
-            this.displayArray = allContacts;
-            this.contactArray = allContacts;
-            console.log(this.contactArray);
-        });
+        if (this.utilities.cordova) {
+            Contacts.find(['displayName']).then((allContacts) => {
+                this.displayArray = allContacts;
+                this.contactArray = allContacts;
+                console.log(this.contactArray);
+            });
+        }
     }
 
     ionViewWillEnter() {
@@ -77,15 +79,36 @@ export class AddContactsComponent {
     }
 
     confirm() {
-        console.log("Confirmed Contacts:");
-        console.log(this.selectedContacts);
         this.resolutionItem.contacts = this.selectedContacts;
-        console.log("Resolution Item");
-        console.log(this.resolutionItem.contacts);
-        this.resolutionProvider.updateResolutionStatus("active",this.resolutionItem.id,
+        /*this.resolutionProvider.updateResolutionStatus("active",this.resolutionItem.id,
             { id: this.resolutionItem.id, name: this.resolutionItem.name, lastActivity: "", contacts: this.selectedContacts });
-        this.showToast("Resolution is now active and will appear on the myResolutions screen");
-        this.navCtrl.pop();
+        */
+
+        this.resolutionProvider.updateResolutionStatus(
+            "active",
+            this.resolutionItem.id,
+            {
+                id: this.resolutionItem.id,
+                name: this.resolutionItem.name,
+                lastActivity: "",
+                activeDays: this.resolutionItem.activeDays,
+                isRecurring: this.resolutionItem.isRecurring,
+                reminderFrequency: 3,
+                contacts: this.selectedContacts
+            }).then(() => {
+                if (this.utilities.cordova) {
+                    this.utilities.addGeofence(this.resolutionItem.id, "Test", "Sie sind bei X", 49.474797, 8.535164).then(() => {
+                        this.resolutionProvider.getActiveResolutions();
+                    });
+                    this.utilities.scheduleResolutionNotifications(this.resolutionItem, 3);
+                }
+                else {
+                    this.resolutionProvider.getActiveResolutions();
+                }
+                this.utilities.setUserData();
+                this.showToast("Resolution is now active");
+                this.navCtrl.pop();
+            });
     }
 
     showToast(text) {
