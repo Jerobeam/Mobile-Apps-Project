@@ -16,8 +16,14 @@ export class ManageResolutionsComponent {
 
   selection = "preconfigured";
 
-  constructor(public authData: AuthData, public resolutionProvider: ResolutionProvider, public utilities: Utilities, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public toastCtrl: ToastController) {
-
+  constructor(
+    public authData: AuthData,
+    public resolutionProvider: ResolutionProvider,
+    public utilities: Utilities,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public alertCtrl: AlertController,
+    public toastCtrl: ToastController) {
   }
 
   logout() {
@@ -71,7 +77,6 @@ export class ManageResolutionsComponent {
         {
           text: 'No',
           handler: () => {
-            //this.showToast("Aborted");
           }
         },
         {
@@ -96,13 +101,26 @@ export class ManageResolutionsComponent {
       this.navCtrl.push(AddContactsComponent, { activity: resolutionItem });
     }
     else {
-      this.resolutionProvider.updateResolutionStatus("active", resolutionItem.id,
-        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "", activeDays: resolutionItem.activeDays, isRecurring: resolutionItem.isRecurring, reminderFrequency: 3 })
-        .then(() => {
-          this.utilities.addGeofence(resolutionItem.id, "Test", "Sie sind bei X", 49.474797, 8.535164).then(() => {
+      this.resolutionProvider.updateResolutionStatus(
+        "active",
+        resolutionItem.id,
+        {
+          id: resolutionItem.id,
+          name: resolutionItem.name,
+          lastActivity: "",
+          activeDays: resolutionItem.activeDays,
+          isRecurring: resolutionItem.isRecurring,
+          reminderFrequency: 3
+        }).then(() => {
+          if (this.utilities.cordova) {
+            this.utilities.addGeofence(resolutionItem.id, "Test", "DHBW Mannheim: ", 49.474797, 8.535164).then(() => {
+              this.resolutionProvider.getActiveResolutions();
+            });
+            this.utilities.scheduleResolutionNotifications(resolutionItem, 3);
+          }
+          else {
             this.resolutionProvider.getActiveResolutions();
-          });
-          this.utilities.scheduleResolutionNotifications(resolutionItem);
+          }
           this.utilities.setUserData();
           this.showToast("Resolution is now active");
         });
@@ -111,16 +129,19 @@ export class ManageResolutionsComponent {
 
   removeFromActiveResolutions(resolutionItem) {
     this.utilities.setUserData();
-    for (let i of this.resolutionProvider.activeResolutions) {
-      if (i.id == resolutionItem.id) {
-        for (let j in i.geofences) {
-          this.utilities.removeGeofence(j, resolutionItem.id);
-        }
-        for (let k in i.scheduledNotifications) {
-          this.utilities.cancelPushNotification(k, resolutionItem.id);
+    if (this.utilities.cordova) {
+      for (let i of this.resolutionProvider.activeResolutions) {
+        if (i.id == resolutionItem.id) {
+          for (let j in i.geofences) {
+            this.utilities.removeGeofence(j, resolutionItem.id);
+          }
+          for (let k in i.scheduledNotifications) {
+            this.utilities.cancelPushNotification(k, resolutionItem.id);
+          }
         }
       }
     }
+
     this.resolutionProvider.updateResolutionStatus("inactive", resolutionItem.id, {}).then(() => {
       this.resolutionProvider.getActiveResolutions();
       this.showToast("Resolution is no longer active");

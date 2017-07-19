@@ -17,6 +17,7 @@ import { Geofence } from '@ionic-native/geofence';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from 'ionic-native';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { Camera } from 'ionic-native';
     SplashScreen,
     Camera,
     Geofence,
+    Geolocation,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

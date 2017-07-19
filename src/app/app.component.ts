@@ -11,6 +11,7 @@ import { AuthData } from '../providers/auth-data';
 import { Utilities } from './utilities';
 import { AlertController } from "ionic-angular";
 import { Geofence } from '@ionic-native/geofence';
+import { Geolocation } from '@ionic-native/geolocation'
 
 firebase.initializeApp(firebaseConfig);
 
@@ -28,7 +29,7 @@ export class MyApp {
   notificationPressed: boolean = false;
   authenticated: boolean = false;
 
-  constructor(public geofence: Geofence, public alertCtrl: AlertController, public authData: AuthData, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public utilities: Utilities) {
+  constructor(private geolocation: Geolocation, public geofence: Geofence, public alertCtrl: AlertController, public authData: AuthData, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public utilities: Utilities) {
     this.initializeApp();
 
 
@@ -101,6 +102,7 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       // Check for cordova, since it is only available on native iOS/Android
+      this.utilities.cordova = this.platform.is('cordova');
       if (this.platform.is('cordova')) {
         this.geofence.initialize().then(() => {
           console.log('Geofence Plugin Ready'),
@@ -121,6 +123,16 @@ export class MyApp {
           .handleNotificationOpened(notificationOpenedCallback)
           .endInit();
       }
+      let watch = this.geolocation.watchPosition();
+      watch.subscribe((data) => {
+        /*console.log("Daten");
+        console.log(data.coords.latitude);
+        console.log(data.coords.longitude);
+        console.log("==================");*/
+        // data can be a set of coordinates, or an error (if an error occurred).
+        // data.coords.latitude
+        // data.coords.longitude
+      });
     });
 
   }

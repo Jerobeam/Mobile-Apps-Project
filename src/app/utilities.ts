@@ -25,6 +25,7 @@ export class Utilities {
   currentDay = new Date();
   currentDayString: any;
   currentDayNumber: any;
+  cordova: any;
 
   constructor(public http: Http, public geofence: Geofence) {
     this.calculateCurrentDayNumber();
@@ -56,7 +57,6 @@ export class Utilities {
   }
 
   setReminder(pushIds: Array<any>, content: String, time: Date, resolutionID) {
-    //time.setDate(time.getDate());
     let notificationObj = {
       contents: { en: content },
       send_after: time,
@@ -74,14 +74,14 @@ export class Utilities {
     this.setUserData();
   }
 
-  scheduleResolutionNotifications(resolutionItem) {
+  scheduleResolutionNotifications(resolutionItem, frequency) {
+    console.log("schedule push");
     if (resolutionItem.isRecurring == true) {
       let pushIDs = [];
       for (let pushID in this.userData.pushid) {
         pushIDs.push(pushID);
       }
-      let content = "Denken Sie an ihren Vorsatz " + resolutionItem.name + "!";
-
+      let content = "Reminder: " + resolutionItem.name + "?";
       let startDate = new Date();
       startDate.setDate(startDate.getDate() + 1);
       startDate.setHours(13);
@@ -89,15 +89,14 @@ export class Utilities {
       let endDate = new Date(startDate.getFullYear() + "-12-31");
       endDate.setHours(13);
       endDate.setMinutes(5);
-      //let firstIteration = true;
-      //this.setReminder(pushIDs, content, endDate, resolutionItem.id);
-      for (let i = startDate; i.getTime() < endDate.getTime(); i.setDate(i.getDate() + 3)) {
+      for (let i = startDate; i.getTime() < endDate.getTime(); i.setDate(i.getDate() + frequency)) {
         this.setReminder(pushIDs, content, i, resolutionItem.id);
       }
     }
   }
 
   cancelPushNotification(notificationID: any, resolutionID) {
+    console.log("cancel push");
     let url = 'https://onesignal.com/api/v1/notifications/' + notificationID + '?app_id=69c4c123-c0aa-481b-a5f3-253642300266';
     let headers = new Headers({ 'Authorization': 'Basic ZWFlNjRiZTQtYjMwMy00NGEyLTk5Y2QtMmFhMGE5ZmY1NDgy' });
     let options = new RequestOptions({
@@ -143,7 +142,7 @@ export class Utilities {
       radius: 100, //radius in meters
       transitionType: 3,
       notification: {
-        id: this.makeID(),
+        id: 1,
         title: notificationTitle,
         text: notificationMessage,
         openAppOnClick: true
