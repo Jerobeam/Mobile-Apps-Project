@@ -37,11 +37,14 @@ export class MyResolutions {
     resolution.secondLastActivity = resolution.lastActivity;
     resolution.lastActivity = this.utilities.currentDayString;
     resolution.activeDays[this.utilities.currentDayNumber] = true;
-    firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolution.id + '/').update({
-      secondLastActivity: resolution.secondLastActivity,
+    this.resolutionProvider.updateResolution(resolution, {secondLastActivity: resolution.secondLastActivity,
       lastActivity: resolution.lastActivity,
-      activeDays: resolution.activeDays
-    });
+      activeDays: resolution.activeDays});
+    // firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolution.id + '/').update({
+    //   secondLastActivity: resolution.secondLastActivity,
+    //   lastActivity: resolution.lastActivity,
+    //   activeDays: resolution.activeDays
+    // });
   }
 
   doneSingleResolution(event, resolution) {

@@ -39,6 +39,12 @@ export class ResolutionProvider {
         });
     }
 
+    updateResolution(resolutionID, data: any): any {
+      return firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolutionID).update(
+        data
+      );
+    }
+
     makeID() {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

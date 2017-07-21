@@ -37,10 +37,12 @@ export class ResolutionDetailsComponent implements OnInit {
       } else if (this.resolution.reminderFrequency == 4) {
         frequency = 21;
       }
-      this.updateFrequency(frequency).then(() => {
-        this.resolutionProvider.getActiveResolutions();
-        this.navCtrl.pop();
-      });
+      if(this.utilities.cordova) {
+        this.updateFrequency(frequency).then(() => {
+          this.resolutionProvider.getActiveResolutions();
+          this.navCtrl.pop();
+        });
+      }
     }
     else {
       this.navCtrl.pop();

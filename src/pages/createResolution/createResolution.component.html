@@ -8,37 +8,40 @@
 
 
 <ion-content padding>
-  <h1></h1>
 
-  <div>
-    <div class="picture-container">
-      <img  src='assets/images/ball.png'(click)="changeResolutionPicture()">
-    </div>
+  <div class="picture-container">
+    <img class="picture-click resolution-image" src="{{iconUrl}}" (click)="changeResolutionPicture()">
   </div>
+  <p>Click image to change it</p>
+
+  <br/>
+  <form class="align-center" [formGroup]="createResolutionForm">
+    <ion-item>
+      <ion-label>Resolution name</ion-label>
+      <ion-input type="text" formControlName="resolutionName"
+        [(ngModel)]="resolutionName"
+        [class.invalid]="!createResolutionForm.controls.resolutionName.valid"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!createResolutionForm.controls.name.valid">
+      <p>The resolution name must at least be 3 characters long</p>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Type</ion-label>
+      <!--TODO ion toggle-->
+      <ion-toggle formControlName="resolutionType">
+        <ion-option>Recurring resolution</ion-option>
+        <ion-option>Single resolution</ion-option>
+      </ion-toggle>
+    </ion-item>
 
 
-    <form [formGroup]="resolution" (ngSubmit)="createResolution()">
-      <ion-item>
-        <ion-label>Resolution Name</ion-label>
-        <ion-input type="text" formControlName="name"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Type</ion-label>
-        <ion-select formControlName="type" okText="Okay" cancelText="Dismiss">
-          <ion-option>Recurring Activity</ion-option>
-          <ion-option>Single Activity</ion-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Picture</ion-label>
-        <ion-input type="text" formControlName="imageUrl"></ion-input>
-      </ion-item>
-
-
-      <button ion-button type="submit">Submit</button>
-    </form>
+    <div [disabled]="createResolutionForm.controls.name.valid" class="bottom-container">
+      <button class="button-width" ion-button round icon-left outline (click)="createResolution()">
+        CREATE RESOLUTION
+      </button>
+    </div>
+  </form>
 
 
 </ion-content>
