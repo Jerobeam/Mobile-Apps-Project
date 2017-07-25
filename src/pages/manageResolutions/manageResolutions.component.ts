@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { CreateResolutionComponent } from '../createResolution/createResolution.component';
+import { EditResolutionComponent } from '../editResolution/editResolution.component';
 import { AddContactsComponent } from '../addContacts/addContacts.component';
 import { LoginComponent } from '../login/login.component';
 import { Utilities } from '../../app/utilities';
@@ -69,7 +70,8 @@ export class ManageResolutionsComponent {
     toast.present();
   }
 
-  showRemovalConfirmationAlert(resolutionItem) {
+  showRemovalConfirmationAlert(event, resolutionItem) {
+    event.stopPropagation();
     let confirm = this.alertCtrl.create({
       title: 'Remove Resolution?',
       message: 'Do you want to deactivate this resolution? Your progress will be lost!',
@@ -90,7 +92,8 @@ export class ManageResolutionsComponent {
     confirm.present();
   }
 
-  addToActiveResolutions(resolutionItem) {
+  addToActiveResolutions(event, resolutionItem) {
+    event.stopPropagation();
     if (resolutionItem.isRecurring) {
       resolutionItem.activeDays = new Array(this.utilities.amountOfDaysInCurrentYear);
       resolutionItem.activeDays.fill(false);
@@ -154,5 +157,9 @@ export class ManageResolutionsComponent {
 
   popPage() {
     this.navCtrl.pop();
+  }
+
+  editResolution(resolution) {
+    this.navCtrl.push(EditResolutionComponent, { resolution: resolution });
   }
 }
