@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {FormBuilder, Validators, FormControl, FormGroup} from '@angular/forms';
+import {NavController} from 'ionic-angular';
+import {FormBuilder, Validators} from '@angular/forms';
 import {Utilities} from '../../app/utilities';
 import {ResolutionProvider} from "../../providers/resolution-provider";
 import {Camera} from 'ionic-native';
 import {ActionSheetController, LoadingController,} from 'ionic-angular'
+import firebase from 'firebase';
 
 @Component({
   selector: 'page-createResolution',
@@ -31,7 +32,6 @@ export class CreateResolutionComponent {
       resolutionType: [''],
       iconUrl: ['']
     });
-    this.setActionSheetOptions();
   }
 
   setActionSheetOptions() {
@@ -85,6 +85,7 @@ export class CreateResolutionComponent {
   }
 
   changeResolutionPicture() {
+    this.setActionSheetOptions();
     let actionSheet = this.actionSheetCtrl.create(this.actionSheetOptions);
     actionSheet.present();
   }
@@ -120,8 +121,7 @@ export class CreateResolutionComponent {
         // imageData is a base64 encoded string
         this.base64String = imageData;
         // this.uploadPicture();
-        this.iconUrl = this.base64String;
-        this.setActionSheetOptions();
+        this.iconUrl = "data:image/JPEG;base64," + this.base64String;
       }, (err) => {
         console.log(err);
       });
@@ -129,12 +129,11 @@ export class CreateResolutionComponent {
 
   deleteResolutionPicture() {
     this.iconUrl = "assets/images/default_resolution_256.png";
-    this.setActionSheetOptions()
   }
 
   createResolution() {
+    this.resolutionId = this.makeResolutionId();
     if(this.iconUrl != "assets/images/default_resolution_256.png") {
-      this.resolutionId = this.makeResolutionId();
       var that = this;
       var uploadTask = firebase.storage().ref().child('resolutionPictures/' + this.utilities.user.uid + "/" + this.resolutionId + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'});
 
@@ -148,17 +147,19 @@ export class CreateResolutionComponent {
         that.loading.dismiss();
         alert(error.message);
       }, function () {
-        firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions').child(this.resolutionId).set({
-          name: this.resolutionName,
-          isRecurring: this.isRecurring,
-          iconUrl: uploadTask.snapshot.downloadURL
+        firebase.database().ref('users/' + that.utilities.user.uid + '/customResolutions').child(that.resolutionId).set({
+          name: that.resolutionName,
+          isRecurring: that.isRecurring,
+          iconUrl: uploadTask.snapshot.downloadURL,
+          isPreconfigured: false
         });
         that.loading.dismiss();
       });
     }else{
       firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions').child(this.resolutionId).set({
         name: this.resolutionName,
-        isRecurring: this.isRecurring
+        isRecurring: this.isRecurring,
+        isPreconfigured: false
       });
     }
     this.navCtrl.pop();

@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+    <ion-buttons left>
+      <button ion-button (click)="cancel()">Cancel</button>
+    </ion-buttons>
+    <ion-title>Edit custom resolution {{resolution.name}}</ion-title>
+    <ion-buttons right>
+      <button
+        [disabled]="(!resolutionNameChanged && !isRecurringChanged && !resolutionImageChanged) || !formValid"
+        ion-button (click)="finishEditResolution()">Done
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="picture-container">
+    <img class="picture-click resolution-image" src="{{resolution.iconUrl}}"
+         onError="this.src='assets/images/default_resolution_256.png'" (click)="changeResolutionPicture()">
+  </div>
+  <p class="align-center">Click image to change it</p>
+
+  <br/>
+  <form class="align-center" [formGroup]="editResolutionForm">
+    <ion-item>
+      <ion-label class="form-label">Resolution name:</ion-label>
+      <ion-input class="form-value" type="text" formControlName="resolutionName"
+                 [(ngModel)]="resolution.name"
+                 (input)="elementChanged(resolutionName)"
+                 [class.invalid]="!editResolutionForm.controls.resolutionName.valid"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!editResolutionForm.controls.resolutionName.valid">
+      <p>The resolution name must at least be 3 characters long</p>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class="form-label">Type</ion-label>
+      <!--TODO ion toggle-->
+      <ion-toggle formControlName="resolutionType">
+        <ion-option>Recurring resolution</ion-option>
+        <ion-option>Single resolution</ion-option>
+      </ion-toggle>
+    </ion-item>
+
+
+    <div class="bottom-container">
+      <button class="button-width" ion-button round icon-left outline (click)="deleteResolution()">
+        DELETE RESOLUTION
+      </button>
+    </div>
+  </form>
+
+</ion-content>
