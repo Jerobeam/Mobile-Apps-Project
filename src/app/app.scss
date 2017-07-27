@@ -73,6 +73,36 @@
   margin-top: 30px;
   text-align: center;
 }
+
+.align-center {
+  text-align: center;
+}
+
+.picture-container{
+  text-align: center;
+  margin-top: 20px;
+}
+
+.form-label {
+  font-weight: bold;
+  color: black !important;
+}
+
+.form-value {
+  font-size: 14px;
+}
+
+.error-message .item-inner {
+  border-bottom: 0 !important;
+}
+
+.invalid .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner{
+  border-bottom: 1px solid #FF6153;
+}
+
+.color-gray{
+  color: $lightgray
+}
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These

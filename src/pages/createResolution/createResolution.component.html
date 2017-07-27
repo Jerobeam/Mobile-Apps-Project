@@ -1,44 +1,50 @@
 <ion-header>
-
   <ion-navbar>
-    <ion-title>Create your own Resolution</ion-title>
+    <ion-title>Create Resolution</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
-<ion-content padding>
-  <h1></h1>
-
-  <div>
-    <div class="picture-container">
-      <img  src='assets/images/ball.png'(click)="changeResolutionPicture()">
-    </div>
+<ion-content>
+  <div class="picture-container">
+    <img class="picture-click resolution-image" src="{{iconUrl}}" (click)="changeResolutionPicture()">
+    <p class="align-center color-gray">Click image to change it</p>
   </div>
 
 
-    <form [formGroup]="resolution" (ngSubmit)="createResolution()">
-      <ion-item>
-        <ion-label>Resolution Name</ion-label>
-        <ion-input type="text" formControlName="name"></ion-input>
-      </ion-item>
+  <br/>
+  <form class="align-center" [formGroup]="createResolutionForm" novalidate>
+    <ion-item>
+      <ion-label class="form-label">Resolution name:</ion-label>
+      <ion-input class="form-value" type="text" formControlName="resolutionName"
+                 [(ngModel)]="resolutionName"
+                 [class.invalid]="!createResolutionForm.controls.resolutionName.valid"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!createResolutionForm.controls.resolutionName.valid">
+      <p>The resolution name must at least be 3 characters</p>
+      <p>long</p>
+    </ion-item>
 
-      <ion-item>
-        <ion-label>Type</ion-label>
-        <ion-select formControlName="type" okText="Okay" cancelText="Dismiss">
-          <ion-option>Recurring Activity</ion-option>
-          <ion-option>Single Activity</ion-option>
-        </ion-select>
-      </ion-item>
+    <ion-item>
+      <ion-label class="form-label">Occurance type:</ion-label>
+    </ion-item>
+      <ion-list radio-group [ngModelOptions]="{standalone:true}" [(ngModel)]="isRecurring">
+        <ion-item>
+          <ion-label>Recurring activity</ion-label>
+          <ion-radio value="true"></ion-radio>
+        </ion-item>
 
-      <ion-item>
-        <ion-label>Picture</ion-label>
-        <ion-input type="text" formControlName="imageUrl"></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label>Single activity</ion-label>
+          <ion-radio value="false"></ion-radio>
+        </ion-item>
+      </ion-list>
 
 
-      <button ion-button type="submit">Submit</button>
-    </form>
-
+    <div class="bottom-container">
+      <button class="button-width" [disabled]="!createResolutionForm.controls.resolutionName.valid" ion-button round icon-left outline (click)="createResolution()">
+        CREATE RESOLUTION
+      </button>
+    </div>
+  </form>
 
 </ion-content>

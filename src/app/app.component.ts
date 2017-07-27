@@ -103,7 +103,7 @@ export class MyApp {
       this.splashScreen.hide();
       // Check for cordova, since it is only available on native iOS/Android
       this.utilities.cordova = this.platform.is('cordova');
-      if (this.platform.is('cordova')) {
+      if (this.utilities.cordova) {
         this.geofence.initialize().then(() => {
           console.log('Geofence Plugin Ready'),
             (err) => console.log(err);
