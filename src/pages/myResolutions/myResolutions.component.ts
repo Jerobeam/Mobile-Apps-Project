@@ -34,8 +34,9 @@ export class MyResolutions {
   ionViewWillEnter() {
     this.showLoadingElement();
     this.utilities.setUserData().then(() => {
-      this.resolutionProvider.getActiveResolutions();
-      this.loadingElement.dismiss();
+      this.resolutionProvider.getActiveResolutions().then(() => {
+        this.loadingElement.dismiss();
+      });
     });
   }
 

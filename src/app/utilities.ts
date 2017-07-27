@@ -27,6 +27,45 @@ export class Utilities {
   currentDayNumber: any;
   cordova: any;
 
+  geolocations = [
+    { name: "DHBW Library", latitude: 49.473169, longitude: 8.535130, category: "study" },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 },
+    { name: "DHBW Mannheim", latitude: 49.473169, longitude: 8.535130 }
+  ];
+
+  /*  {}, { }, { },
+  { }, { }, { }, { },
+  { }, { }, { }, { },
+  { }, { }, { }, { },
+  { }, { }, { }, { },
+  { }, { }, { }, { },
+  { }, { }, { }, { },
+  { }, { }, { }, { },
+  { }, { }, { }, { },*/
+
   constructor(public http: Http, public geofence: Geofence) {
     this.calculateCurrentDayNumber();
     let oneDay = 24 * 60 * 60 * 1000;	// hours*minutes*seconds*milliseconds
@@ -135,6 +174,7 @@ export class Utilities {
   }
 
   public addGeofence(resolutionID, notificationTitle, notificationMessage, latitude, longitude) {
+    console.log("Add Geofence triggered");
     let fence = {
       id: this.makeID(),
       latitude: latitude,

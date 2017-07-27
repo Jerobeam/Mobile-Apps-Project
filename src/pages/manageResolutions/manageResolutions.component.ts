@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
 import { CreateResolutionComponent } from '../createResolution/createResolution.component';
 import { AddContactsComponent } from '../addContacts/addContacts.component';
 import { LoginComponent } from '../login/login.component';
@@ -15,8 +15,10 @@ import { AuthData } from '../../providers/auth-data';
 export class ManageResolutionsComponent {
 
   selection = "preconfigured";
+  loadingElement: any;
 
   constructor(
+    public loadingCtrl: LoadingController,
     public authData: AuthData,
     public resolutionProvider: ResolutionProvider,
     public utilities: Utilities,
@@ -51,15 +53,24 @@ export class ManageResolutionsComponent {
     return false;
   }
 
+  showLoadingElement() {
+    this.loadingElement = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
+    })
+    this.loadingElement.present();
+  }
+
   ionViewWillEnter() {
-    //this.showLoadingElement();
+    this.showLoadingElement();
     this.utilities.setUserData();
     this.resolutionProvider.getPreconfiguredResolutions().then(() => {
       this.resolutionProvider.getCustomResolutions();
     });
     this.resolutionProvider.getActiveResolutions();
-    //this.loadingElement.dismiss();
+    this.loadingElement.dismiss();
   }
+
 
   showToast(text) {
     let toast = this.toastCtrl.create({
@@ -82,7 +93,9 @@ export class ManageResolutionsComponent {
         {
           text: 'Yes',
           handler: () => {
-            this.removeFromActiveResolutions(resolutionItem);
+            this.removeFromActiveResolutions(resolutionItem).then(() => {
+                this.loadingElement.dismiss();
+            });
           }
         }
       ]
@@ -101,6 +114,7 @@ export class ManageResolutionsComponent {
       this.navCtrl.push(AddContactsComponent, { activity: resolutionItem });
     }
     else {
+      this.showLoadingElement();
       this.resolutionProvider.updateResolutionStatus(
         "active",
         resolutionItem.id,
@@ -110,24 +124,36 @@ export class ManageResolutionsComponent {
           lastActivity: "",
           activeDays: resolutionItem.activeDays,
           isRecurring: resolutionItem.isRecurring,
-          reminderFrequency: 1
+          reminderFrequency: 1,
+          iconUrl: resolutionItem.iconUrl
         }).then(() => {
           if (this.utilities.cordova) {
-            this.utilities.addGeofence(resolutionItem.id, "Location: DHBW Library", "Remember your Resolution 'Study'!", 49.473169, 8.535130).then(() => {
-              this.resolutionProvider.getActiveResolutions();
-            });
+            if (resolutionItem.isPreconfigured){
+              for (let i of this.utilities.geolocations) {
+                this.utilities.addGeofence(resolutionItem.id, "Location: " + i.name
+                  , "Remember your Resolution '" + resolutionItem.name + "'!", i.latitude, i.longitude)
+                  .then(() => {
+                    this.resolutionProvider.getActiveResolutions();
+                  });
+              }
+            }
+
             this.utilities.scheduleResolutionNotifications(resolutionItem, 3);
+            this.loadingElement.dismiss();
           }
           else {
             this.resolutionProvider.getActiveResolutions();
+            this.loadingElement.dismiss();
           }
           this.utilities.setUserData();
           this.showToast("Resolution is now active");
         });
     }
+    this.resolutionProvider.getActiveResolutions();
   }
 
   removeFromActiveResolutions(resolutionItem) {
+    this.showLoadingElement();
     this.utilities.setUserData();
     if (this.utilities.cordova) {
       for (let i of this.resolutionProvider.activeResolutions) {
@@ -140,12 +166,13 @@ export class ManageResolutionsComponent {
           }
         }
       }
-    }
 
+    }
     this.resolutionProvider.updateResolutionStatus("inactive", resolutionItem.id, {}).then(() => {
       this.resolutionProvider.getActiveResolutions();
       this.showToast("Resolution is no longer active");
     });
+    return Promise.resolve();
   }
 
   openWindowCreateResolution() {
