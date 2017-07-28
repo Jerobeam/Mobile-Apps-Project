@@ -27,21 +27,22 @@
     <ion-item>
       <ion-label class="form-label">Occurance type:</ion-label>
     </ion-item>
-      <ion-list radio-group [ngModelOptions]="{standalone:true}" [(ngModel)]="isRecurring">
-        <ion-item>
-          <ion-label>Recurring activity</ion-label>
-          <ion-radio value="true"></ion-radio>
-        </ion-item>
+    <ion-list radio-group [ngModelOptions]="{standalone:true}" [(ngModel)]="isRecurring">
+      <ion-item>
+        <ion-label>Recurring activity</ion-label>
+        <ion-radio value=true></ion-radio>
+      </ion-item>
 
-        <ion-item>
-          <ion-label>Single activity</ion-label>
-          <ion-radio value="false"></ion-radio>
-        </ion-item>
-      </ion-list>
+      <ion-item>
+        <ion-label>Single activity</ion-label>
+        <ion-radio value=false></ion-radio>
+      </ion-item>
+    </ion-list>
 
 
     <div class="bottom-container">
-      <button class="button-width" [disabled]="!createResolutionForm.controls.resolutionName.valid" ion-button round icon-left outline (click)="createResolution()">
+      <button class="button-width" [disabled]="!createResolutionForm.controls.resolutionName.valid" ion-button round
+              icon-left outline (click)="createResolution()">
         CREATE RESOLUTION
       </button>
     </div>

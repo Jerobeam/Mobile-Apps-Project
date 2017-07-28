@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Utilities } from '../../app/utilities';
-import { ResolutionProvider } from "../../providers/resolution-provider";
-import { Camera } from 'ionic-native';
-import { ActionSheetController, LoadingController, } from 'ionic-angular'
+
+import {Component} from '@angular/core';
+import {NavController} from 'ionic-angular';
+import {FormBuilder, Validators} from '@angular/forms';
+import {Utilities} from '../../app/utilities';
+import {ResolutionProvider} from "../../providers/resolution-provider";
+import {Camera} from 'ionic-native';
+import {ActionSheetController, LoadingController, AlertController} from 'ionic-angular'
 import firebase from 'firebase';
 
 @Component({
@@ -22,11 +23,12 @@ export class CreateResolutionComponent {
   iconUrl = "assets/images/default_resolution_256.png";
   resolutionId;
   resolutionName = "";
-  isRecurring = true;
+  isRecurring: any = true;
 
   constructor(public navCtrl: NavController, public utilities: Utilities,
-    public actionSheetCtrl: ActionSheetController, public resolutionProvider: ResolutionProvider,
-    private formBuilder: FormBuilder, public loadingCtrl: LoadingController) {
+
+              public actionSheetCtrl: ActionSheetController, public resolutionProvider: ResolutionProvider,
+              private formBuilder: FormBuilder, public loadingCtrl: LoadingController, public alertCtrl: AlertController) {
     this.createResolutionForm = this.formBuilder.group({
       resolutionName: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       resolutionType: [''],
@@ -91,28 +93,54 @@ export class CreateResolutionComponent {
   }
 
   takePicture() {
-    let options = {
-      destinationType: Camera.DestinationType.DATA_URL,
-      allowEdit: true,
-      quality: 100,
-      targetWidth: 500,
-      targetHeight: 500
-    };
+    if (this.utilities.cordova) {
+      let options = {
+        destinationType: Camera.DestinationType.DATA_URL,
+        allowEdit: true,
+        quality: 100,
+        targetWidth: 500,
+        targetHeight: 500
+      };
 
-    this.callCamera(options);
+      this.callCamera(options);
+    } else {
+      let alert = this.alertCtrl.create({
+        message: "Image capturing is only possible on Android or iOS",
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present()
+    }
   }
 
   getPicture() {
-    let options = {
-      destinationType: Camera.DestinationType.DATA_URL,
-      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-      allowEdit: true,
-      quality: 100,
-      targetWidth: 500,
-      targetHeight: 500
-    };
+    if (this.utilities.cordova) {
+      let options = {
+        destinationType: Camera.DestinationType.DATA_URL,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        allowEdit: true,
+        quality: 100,
+        targetWidth: 500,
+        targetHeight: 500
+      };
 
-    this.callCamera(options);
+      this.callCamera(options);
+    } else {
+      let alert = this.alertCtrl.create({
+        message: "Image upload is only possible on Android or iOS",
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present()
+    }
   }
 
   callCamera(options) {
@@ -120,8 +148,6 @@ export class CreateResolutionComponent {
       .then((imageData) => {
         // imageData is a base64 encoded string
         this.base64String = imageData;
-        // this.uploadPicture();
-        this.iconUrl = "data:image/JPEG;base64," + this.base64String;
       }, (err) => {
         console.log(err);
       });
@@ -147,9 +173,10 @@ export class CreateResolutionComponent {
         that.loading.dismiss();
         alert(error.message);
       }, function () {
+        let localIsRecurring = (that.isRecurring == "true" || that.isRecurring == true);
         firebase.database().ref('users/' + that.utilities.user.uid + '/customResolutions').child(that.resolutionId).set({
           name: that.resolutionName,
-          isRecurring: that.isRecurring,
+          isRecurring: localIsRecurring,
           iconUrl: uploadTask.snapshot.downloadURL,
           isPreconfigured: false
         }).then(() => {
@@ -158,9 +185,10 @@ export class CreateResolutionComponent {
         that.loading.dismiss();
       });
     } else {
+      let localIsRecurring = (this.isRecurring == "true" || this.isRecurring == true);
       firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions').child(this.resolutionId).set({
         name: this.resolutionName,
-        isRecurring: this.isRecurring,
+        isRecurring: localIsRecurring,
         isPreconfigured: false
       }).then(() => {
         this.navCtrl.pop();
