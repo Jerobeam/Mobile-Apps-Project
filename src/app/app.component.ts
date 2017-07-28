@@ -67,9 +67,6 @@ export class MyApp {
   checkIfUserDeleted(userID: any): any {
     return this.utilities.getUser(userID)
       .then(user => {
-        console.log("in then");
-        console.log(user);
-        console.log(user.val());
         if (user.val() != null) {
           if (!this.utilities.inRegister) {
             this.checkForVerification();
