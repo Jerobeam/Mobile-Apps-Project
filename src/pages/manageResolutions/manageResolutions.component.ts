@@ -118,10 +118,9 @@ export class ManageResolutionsComponent {
     }
     else {
       this.showLoadingElement();
-      this.resolutionProvider.updateResolutionStatus(
-        "active",
-        resolutionItem.id,
-        {
+      let resolutionData;
+      if(resolutionItem.iconUrl != undefined){
+        resolutionData = {
           id: resolutionItem.id,
           name: resolutionItem.name,
           lastActivity: "",
@@ -129,7 +128,20 @@ export class ManageResolutionsComponent {
           isRecurring: resolutionItem.isRecurring,
           reminderFrequency: 1,
           iconUrl: resolutionItem.iconUrl
-        }).then(() => {
+        }
+      }else{
+        resolutionData = {
+          id: resolutionItem.id,
+          name: resolutionItem.name,
+          lastActivity: "",
+          activeDays: resolutionItem.activeDays,
+          isRecurring: resolutionItem.isRecurring,
+          reminderFrequency: 1
+        }
+      }
+      this.resolutionProvider.updateResolutionStatus(
+        "active",
+        resolutionItem.id,resolutionData).then(() => {
           if (this.utilities.cordova) {
             if (resolutionItem.isPreconfigured){
               for (let i of this.utilities.geolocations) {
@@ -186,7 +198,7 @@ export class ManageResolutionsComponent {
     this.navCtrl.pop();
   }
 
-  editResolution(resolution) {
+  editResolution($event, resolution) {
     this.navCtrl.push(EditResolutionComponent, { resolution: resolution });
   }
 }
