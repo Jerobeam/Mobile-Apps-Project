@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
-import {NavController} from 'ionic-angular';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Utilities} from '../../app/utilities';
-import {ResolutionProvider} from "../../providers/resolution-provider";
-import {Camera} from 'ionic-native';
-import {ActionSheetController, LoadingController,} from 'ionic-angular'
+import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Utilities } from '../../app/utilities';
+import { ResolutionProvider } from "../../providers/resolution-provider";
+import { Camera } from 'ionic-native';
+import { ActionSheetController, LoadingController, } from 'ionic-angular'
 import firebase from 'firebase';
 
 @Component({
@@ -25,8 +25,8 @@ export class CreateResolutionComponent {
   isRecurring = true;
 
   constructor(public navCtrl: NavController, public utilities: Utilities,
-              public actionSheetCtrl: ActionSheetController, public resolutionProvider: ResolutionProvider,
-              private formBuilder: FormBuilder, public loadingCtrl: LoadingController) {
+    public actionSheetCtrl: ActionSheetController, public resolutionProvider: ResolutionProvider,
+    private formBuilder: FormBuilder, public loadingCtrl: LoadingController) {
     this.createResolutionForm = this.formBuilder.group({
       resolutionName: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       resolutionType: [''],
@@ -133,9 +133,9 @@ export class CreateResolutionComponent {
 
   createResolution() {
     this.resolutionId = this.makeResolutionId();
-    if(this.iconUrl != "assets/images/default_resolution_256.png") {
+    if (this.iconUrl != "assets/images/default_resolution_256.png") {
       var that = this;
-      var uploadTask = firebase.storage().ref().child('resolutionPictures/' + this.utilities.user.uid + "/" + this.resolutionId + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'});
+      var uploadTask = firebase.storage().ref().child('resolutionPictures/' + this.utilities.user.uid + "/" + this.resolutionId + ".jpg").putString(this.base64String, 'base64', { contentType: 'image/JPEG' });
 
       uploadTask.on('state_changed', function (snapshot) {
         that.loading = that.loadingCtrl.create({
@@ -152,17 +152,20 @@ export class CreateResolutionComponent {
           isRecurring: that.isRecurring,
           iconUrl: uploadTask.snapshot.downloadURL,
           isPreconfigured: false
+        }).then(() => {
+          that.navCtrl.pop();
         });
         that.loading.dismiss();
       });
-    }else{
+    } else {
       firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions').child(this.resolutionId).set({
         name: this.resolutionName,
         isRecurring: this.isRecurring,
         isPreconfigured: false
+      }).then(() => {
+        this.navCtrl.pop();
       });
     }
-    this.navCtrl.pop();
   }
 
   makeResolutionId() {
