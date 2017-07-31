@@ -26,7 +26,7 @@ export class MyResolutions {
   showLoadingElement() {
     this.loadingElement = this.loadingCtrl.create({
       spinner: 'ios',
-      content: 'Lade Daten'
+      content: 'Load Data'
     })
     this.loadingElement.present();
   }
@@ -49,7 +49,7 @@ export class MyResolutions {
     resolution.secondLastActivity = resolution.lastActivity;
     resolution.lastActivity = this.utilities.currentDayString;
     resolution.activeDays[this.utilities.currentDayNumber] = true;
-    this.resolutionProvider.updateResolution(resolution, {secondLastActivity: resolution.secondLastActivity,
+    this.resolutionProvider.updateResolution(resolution.id, {secondLastActivity: resolution.secondLastActivity,
       lastActivity: resolution.lastActivity,
       activeDays: resolution.activeDays});
     // firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolution.id + '/').update({

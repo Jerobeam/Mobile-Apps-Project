@@ -10,13 +10,12 @@ export class ResolutionProvider {
     activeResolutions: Array<any> = [];
     noRecurringResolutions: boolean = true;
     noSingleResolutions: boolean = true;
-    // allUsers: Array<any>;
     customResolutions: Array<any>;
 
 
     constructor(public utilities: Utilities) {
         // this.getUsers();
-        //this.getActiveResolutions();
+        // this.getActiveResolutions();
     }
 
     updateResolutionStatus(toState: any, resolutionID, data: any): any {
@@ -62,6 +61,7 @@ export class ResolutionProvider {
     }
 
     getPreconfiguredResolutions() {
+      this.allResolutions = [];
         return firebase.database().ref('resolutions').once('value', snapshot => {
             let resolutionArray = [];
             let counter = 0;
@@ -89,18 +89,32 @@ export class ResolutionProvider {
       this.noRecurringResolutions = true;
       this.noSingleResolutions = true;
       this.activeResolutions = [];
+      var that = this;
       return firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions').once('value', snapshot => {
         let counter = 0;
         for (let i in snapshot.val()) {
-          this.activeResolutions[counter] = snapshot.val()[i];
-          this.activeResolutions[counter].id = i;
+          that.activeResolutions[counter] = snapshot.val()[i];
+          that.activeResolutions[counter].id = i;
           counter++;
-          if(snapshot.val()[i].isRecurring){
-            this.noRecurringResolutions = false;
-          }else{
-            this.noSingleResolutions = false;
-          }
         }
+        that.getPreconfiguredResolutions().then(() => {
+          that.getCustomResolutions().then(() => {
+            for(let i in that.allResolutions){
+              for(let j in that.activeResolutions){
+                if(that.allResolutions[i].id == that.activeResolutions[j].id){
+                  that.activeResolutions[j].name = that.allResolutions[i].name;
+                  that.activeResolutions[j].isRecurring = that.allResolutions[i].isRecurring;
+                  that.activeResolutions[j].iconUrl = that.allResolutions[i].iconUrl;
+                  if(that.allResolutions[i].isRecurring){
+                    that.noRecurringResolutions = false;
+                  }else{
+                    that.noSingleResolutions = false;
+                  }
+                }
+              }
+            }
+          });
+        });
       })
     }
 
