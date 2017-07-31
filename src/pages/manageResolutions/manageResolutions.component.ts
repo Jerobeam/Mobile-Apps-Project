@@ -7,6 +7,7 @@ import { LoginComponent } from '../login/login.component';
 import { Utilities } from '../../app/utilities';
 import { ResolutionProvider } from '../../providers/resolution-provider';
 import { AuthData } from '../../providers/auth-data';
+import { Http, Response, Headers, RequestOptions } from "@angular/http";
 
 @Component({
   selector: 'page-manageResolutions',
@@ -17,6 +18,7 @@ export class ManageResolutionsComponent {
 
   selection = "preconfigured";
   loadingElement: any;
+  mapData: any;
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -26,7 +28,15 @@ export class ManageResolutionsComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
-    public toastCtrl: ToastController) {
+    public toastCtrl: ToastController,
+    public http: Http) {
+    console.log("Über map");
+    console.log(this.loadMapData());
+    console.log("unter map");
+  }
+
+  loadMapData() {
+    
   }
 
   logout() {
@@ -96,7 +106,7 @@ export class ManageResolutionsComponent {
           text: 'Yes',
           handler: () => {
             this.removeFromActiveResolutions(resolutionItem).then(() => {
-                this.loadingElement.dismiss();
+              this.loadingElement.dismiss();
             });
           }
         }
@@ -119,7 +129,7 @@ export class ManageResolutionsComponent {
     else {
       this.showLoadingElement();
       let resolutionData;
-      if(resolutionItem.iconUrl != undefined){
+      if (resolutionItem.iconUrl != undefined) {
         resolutionData = {
           id: resolutionItem.id,
           name: resolutionItem.name,
@@ -129,7 +139,7 @@ export class ManageResolutionsComponent {
           reminderFrequency: 1,
           iconUrl: resolutionItem.iconUrl
         }
-      }else{
+      } else {
         resolutionData = {
           id: resolutionItem.id,
           name: resolutionItem.name,
@@ -141,9 +151,9 @@ export class ManageResolutionsComponent {
       }
       this.resolutionProvider.updateResolutionStatus(
         "active",
-        resolutionItem.id,resolutionData).then(() => {
+        resolutionItem.id, resolutionData).then(() => {
           if (this.utilities.cordova) {
-            if (resolutionItem.isPreconfigured){
+            if (resolutionItem.isPreconfigured) {
               for (let i of this.utilities.geolocations) {
                 this.utilities.addGeofence(resolutionItem.id, "Location: " + i.name
                   , "Remember your Resolution '" + resolutionItem.name + "'!", i.latitude, i.longitude)
