@@ -36,8 +36,7 @@ export class ManageResolutionsComponent {
   }
 
   loadMapData() {
-    let data = this.http.get("http://overpass.osm.rambler.ru/cgi/interpreter?data=[out:json];node[amenity=restaurant](50.7,7.1,50.8,7.25);out;");
-    console.log(data);
+   
   }
 
   logout() {
