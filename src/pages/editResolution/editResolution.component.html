@@ -7,7 +7,7 @@
     <ion-buttons right>
       <button
         [disabled]="(!resolutionNameChanged && !isRecurringChanged && !resolutionImageChanged) || !editResolutionForm.controls.resolutionName.valid"
-        ion-button (click)="finishEditResolution()">Done
+        ion-button (click)="showFinishConfirm()">Done
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -51,8 +51,8 @@
 
 
     <div class="bottom-container">
-      <button class="button-width" ion-button round icon-left outline color="danger" (click)="deleteResolution()">
-        DELETE RESOLUTION
+      <button class="button-width" ion-button round icon-left outline color="danger" (click)="showDeletionConfirm()">
+        Delete Resolution
       </button>
     </div>
   </form>

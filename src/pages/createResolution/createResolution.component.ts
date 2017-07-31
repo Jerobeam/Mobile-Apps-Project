@@ -25,10 +25,13 @@ export class CreateResolutionComponent {
   resolutionName = "";
   isRecurring: any = true;
 
-  constructor(public navCtrl: NavController, public utilities: Utilities,
-
-              public actionSheetCtrl: ActionSheetController, public resolutionProvider: ResolutionProvider,
-              private formBuilder: FormBuilder, public loadingCtrl: LoadingController, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController,
+              public utilities: Utilities,
+              public actionSheetCtrl: ActionSheetController,
+              public resolutionProvider: ResolutionProvider,
+              private formBuilder: FormBuilder,
+              public loadingCtrl: LoadingController,
+              public alertCtrl: AlertController){
     this.createResolutionForm = this.formBuilder.group({
       resolutionName: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       resolutionType: [''],

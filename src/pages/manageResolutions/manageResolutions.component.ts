@@ -75,9 +75,9 @@ export class ManageResolutionsComponent {
   ionViewWillEnter() {
     this.showLoadingElement();
     this.utilities.setUserData();
-    this.resolutionProvider.getPreconfiguredResolutions().then(() => {
-      this.resolutionProvider.getCustomResolutions();
-    });
+    // this.resolutionProvider.getPreconfiguredResolutions().then(() => {
+    //   this.resolutionProvider.getCustomResolutions();
+    // });
     this.resolutionProvider.getActiveResolutions();
     this.loadingElement.dismiss();
   }
@@ -132,20 +132,20 @@ export class ManageResolutionsComponent {
       if (resolutionItem.iconUrl != undefined) {
         resolutionData = {
           id: resolutionItem.id,
-          name: resolutionItem.name,
+          // name: resolutionItem.name,
           lastActivity: "",
           activeDays: resolutionItem.activeDays,
-          isRecurring: resolutionItem.isRecurring,
+          // isRecurring: resolutionItem.isRecurring,
           reminderFrequency: 1,
-          iconUrl: resolutionItem.iconUrl
+          // iconUrl: resolutionItem.iconUrl
         }
       } else {
         resolutionData = {
           id: resolutionItem.id,
-          name: resolutionItem.name,
+          // name: resolutionItem.name,
           lastActivity: "",
           activeDays: resolutionItem.activeDays,
-          isRecurring: resolutionItem.isRecurring,
+          // isRecurring: resolutionItem.isRecurring,
           reminderFrequency: 1
         }
       }
@@ -174,7 +174,7 @@ export class ManageResolutionsComponent {
           this.showToast("Resolution is now active");
         });
     }
-    this.resolutionProvider.getActiveResolutions();
+    // this.resolutionProvider.getActiveResolutions();
   }
 
   removeFromActiveResolutions(resolutionItem) {

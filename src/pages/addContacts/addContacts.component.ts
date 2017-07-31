@@ -89,11 +89,11 @@ export class AddContactsComponent {
             this.resolutionItem.id,
             {
                 id: this.resolutionItem.id,
-                name: this.resolutionItem.name,
+                // name: this.resolutionItem.name,
                 lastActivity: "",
                 activeDays: this.resolutionItem.activeDays,
-                isRecurring: this.resolutionItem.isRecurring,
-                reminderFrequency: 3,
+                // isRecurring: this.resolutionItem.isRecurring,
+                reminderFrequency: 1,
                 contacts: this.selectedContacts
             }).then(() => {
                 if (this.utilities.cordova) {

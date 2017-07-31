@@ -4,14 +4,17 @@ import {FormBuilder, Validators} from '@angular/forms';
 import {ActionSheetController, LoadingController, AlertController} from 'ionic-angular';
 import {Utilities} from '../../app/utilities';
 import firebase from 'firebase';
+import {ResolutionProvider} from "../../providers/resolution-provider";
 import {Camera} from 'ionic-native';
 
 @Component({
   selector: 'page-editResolution',
-  templateUrl: 'editResolution.component.html'
+  templateUrl: 'editResolution.component.html',
+  providers: [ResolutionProvider]
 })
 export class EditResolutionComponent {
 
+  loadingElement: any;
   public base64String: string;
   loading: any;
   resolution: any;
@@ -23,7 +26,14 @@ export class EditResolutionComponent {
   resolutionNameChanged = false;
   isRecurringChanged = false;
 
-  constructor(public navCtrl: NavController, public utilities: Utilities, public navParams: NavParams, private formBuilder: FormBuilder, public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController,
+              public resolutionProvider: ResolutionProvider,
+              public utilities: Utilities,
+              public navParams: NavParams,
+              private formBuilder: FormBuilder,
+              public loadingCtrl: LoadingController,
+              public actionSheetCtrl: ActionSheetController,
+              public alertCtrl: AlertController) {
     this.resolution = navParams.get('resolution');
     this.editResolutionForm = this.formBuilder.group({
       resolutionName: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
@@ -32,6 +42,22 @@ export class EditResolutionComponent {
     });
     this.resolutionNameOld = this.resolution.name;
     this.isRecurringOld = this.resolution.isRecurring;
+  }
+
+  ionViewWillEnter() {
+    this.showLoadingElement();
+    this.utilities.setUserData().then(() => {
+      this.resolutionProvider.getActiveResolutions().then(() => {
+        this.loadingElement.dismiss();
+      });
+    });
+  }
+  showLoadingElement() {
+    this.loadingElement = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Load Data'
+    })
+    this.loadingElement.present();
   }
 
   nameChanged() {
@@ -154,7 +180,7 @@ export class EditResolutionComponent {
           }
         ]
       });
-      alert.present()
+      alert.present();
     }
   }
 
@@ -164,6 +190,7 @@ export class EditResolutionComponent {
         // imageData is a base64 encoded string
         this.base64String = imageData;
         this.resolution.iconUrl = "data:image/JPEG;base64," + this.base64String;
+        this.resolutionImageChanged = true;
       }, (err) => {
         console.log(err);
       });
@@ -171,13 +198,38 @@ export class EditResolutionComponent {
 
   deleteResolutionPicture() {
     var that = this;
-    firebase.storage().ref().child('resolutionPictures/' + this.utilities.user.uid + "/" + this.resolution.id + ".jpg").delete().then(function () {
+    return firebase.storage().ref().child('resolutionPictures/' + this.utilities.user.uid + "/" + this.resolution.id + ".jpg").delete().then(function () {
       // Change remote and local picUrl
       delete that.resolution.iconUrl;
       that.resolutionImageChanged = true;
     }).catch(function (error) {
       alert(error.message);
     });
+  }
+
+  showFinishConfirm(){
+    if(this.isActive(this.resolution) && this.isRecurringChanged){
+      let alert = this.alertCtrl.create({
+        title: 'Occurance type changed',
+        message: 'You changed the occurance type. This will remove this resolution from "My Resolutions" and all progress will be lost. Are you sure you want to continue?',
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel'
+          },
+          {
+            text: 'Yes',
+            handler: () => {
+              this.removeFromActiveResolutions(this.resolution);
+              this.finishEditResolution();
+            }
+          }
+        ]
+      });
+      alert.present()
+    }else{
+      this.finishEditResolution();
+    }
   }
 
   finishEditResolution() {
@@ -201,6 +253,8 @@ export class EditResolutionComponent {
           isRecurring: localIsRecurring,
           iconUrl: uploadTask.snapshot.downloadURL,
           isPreconfigured: false
+        }).then(() => {
+          that.navCtrl.pop();
         });
         that.loading.dismiss();
       });
@@ -210,14 +264,79 @@ export class EditResolutionComponent {
         name: this.resolution.name,
         isRecurring: localIsRecurring,
         isPreconfigured: false
+      }).then(() => {
+        this.navCtrl.pop();
       });
     }
-    this.navCtrl.pop();
+
+  }
+
+  showDeletionConfirm(){
+    let alert = this.alertCtrl.create({
+      title: 'Delete resolution?',
+      message: 'Are you sure you want to delete this resolution? If this resolution is active your progress will be lost!',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel'
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.deleteResolution();
+          }
+        }
+      ]
+    });
+    alert.present()
   }
 
   deleteResolution() {
-    firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions/' + this.resolution.id).remove();
-    this.navCtrl.pop();
+    if(this.isActive(this.resolution)){
+      this.removeFromActiveResolutions(this.resolution);
+    }
+    if (this.resolution.iconUrl != undefined) {
+      this.deleteResolutionPicture().then(() => {
+        firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions/' + this.resolution.id).remove().then(() => {
+          this.navCtrl.pop();
+        });
+      });
+
+    } else {
+      firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions/' + this.resolution.id).remove().then(() => {
+        this.navCtrl.pop();
+      });
+    }
+
+  }
+
+  isActive(resolution) {
+    for (let i of this.resolutionProvider.activeResolutions) {
+      if (i.id == resolution.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  removeFromActiveResolutions(resolutionItem) {
+    this.utilities.setUserData();
+    if (this.utilities.cordova) {
+      for (let i of this.resolutionProvider.activeResolutions) {
+        if (i.id == resolutionItem.id) {
+          for (let j in i.geofences) {
+            this.utilities.removeGeofence(j, resolutionItem.id);
+          }
+          for (let k in i.scheduledNotifications) {
+            this.utilities.cancelPushNotification(k, resolutionItem.id);
+          }
+        }
+      }
+    }
+    this.resolutionProvider.updateResolutionStatus("inactive", resolutionItem.id, {}).then(() => {
+      this.resolutionProvider.getActiveResolutions();
+    });
+    return Promise.resolve();
   }
 
   cancel() {
