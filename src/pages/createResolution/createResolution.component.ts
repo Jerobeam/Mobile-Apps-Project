@@ -151,6 +151,7 @@ export class CreateResolutionComponent {
       .then((imageData) => {
         // imageData is a base64 encoded string
         this.base64String = imageData;
+        this.iconUrl = "data:image/JPEG;base64," + this.base64String;
       }, (err) => {
         console.log(err);
       });
@@ -183,9 +184,10 @@ export class CreateResolutionComponent {
           iconUrl: uploadTask.snapshot.downloadURL,
           isPreconfigured: false
         }).then(() => {
+
+          that.loading.dismiss();
           that.navCtrl.pop();
         });
-        that.loading.dismiss();
       });
     } else {
       let localIsRecurring = (this.isRecurring == "true" || this.isRecurring == true);
