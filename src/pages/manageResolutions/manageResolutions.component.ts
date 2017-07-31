@@ -151,6 +151,8 @@ export class ManageResolutionsComponent {
                     this.resolutionProvider.getActiveResolutions();
                   });
               }
+            }else{
+              this.resolutionProvider.getActiveResolutions();
             }
 
             this.utilities.scheduleResolutionNotifications(resolutionItem, 3);
@@ -164,7 +166,6 @@ export class ManageResolutionsComponent {
           this.showToast("Resolution is now active");
         });
     }
-    // this.resolutionProvider.getActiveResolutions();
   }
 
   removeFromActiveResolutions(resolutionItem) {
