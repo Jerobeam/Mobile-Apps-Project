@@ -8,19 +8,20 @@ import { Utilities } from '../../app/utilities';
 import { ResolutionProvider } from '../../providers/resolution-provider';
 import { AuthData } from '../../providers/auth-data';
 import { Http, Response, Headers, RequestOptions } from "@angular/http";
+import { MapData } from "../../app/mapData";
 
 @Component({
   selector: 'page-manageResolutions',
   templateUrl: 'manageResolutions.component.html',
-  providers: [AuthData, ResolutionProvider]
+  providers: [AuthData, ResolutionProvider, MapData]
 })
 export class ManageResolutionsComponent {
 
   selection = "preconfigured";
   loadingElement: any;
-  mapData: any;
 
   constructor(
+    public mapData: MapData,
     public loadingCtrl: LoadingController,
     public authData: AuthData,
     public resolutionProvider: ResolutionProvider,
@@ -29,14 +30,7 @@ export class ManageResolutionsComponent {
     public navParams: NavParams,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
-    public http: Http) {
-    console.log("Über map");
-    console.log(this.loadMapData());
-    console.log("unter map");
-  }
-
-  loadMapData() {
-   
+    public http: Http, ) {
   }
 
   logout() {
@@ -154,14 +148,17 @@ export class ManageResolutionsComponent {
         resolutionItem.id, resolutionData).then(() => {
           if (this.utilities.cordova) {
             if (resolutionItem.isPreconfigured) {
-              for (let i of this.utilities.geolocations) {
-                this.utilities.addGeofence(resolutionItem.id, "Location: " + i.name
-                  , "Remember your Resolution '" + resolutionItem.name + "'!", i.latitude, i.longitude)
-                  .then(() => {
-                    this.resolutionProvider.getActiveResolutions();
-                  });
+              for (let i of this.mapData.elements) {
+                if (i.tags.amenity == resolutionItem.category){
+                  this.utilities.addGeofence(resolutionItem.id, "Location: " + i.tags.name
+                    , "Remember your Resolution '" + resolutionItem.name + "'!", i.lat, i.lon)
+                    .then(() => {
+                      this.resolutionProvider.getActiveResolutions();
+                    });
+                }
+
               }
-            }else{
+            } else {
               this.resolutionProvider.getActiveResolutions();
             }
 

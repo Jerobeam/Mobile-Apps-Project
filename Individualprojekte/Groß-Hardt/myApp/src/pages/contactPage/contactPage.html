@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Contacts</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="selection">
+      <ion-segment-button value="myContacts">
+        My Contacts
+      </ion-segment-button>
+      <ion-segment-button value="addContact">
+        Add Contact
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <div [ngSwitch]="selection">
+    <ion-list *ngSwitchCase="'myContacts'">
+      <div *ngFor="let p of contactArray">
+        <ion-item>
+          {{p.name.formatted}}
+          <div *ngIf="p.phoneNumbers != null">
+            <br>
+            <p>{{p.phoneNumbers[0].value}}</p>
+          </div>
+          <div *ngIf="p.phoneNumbers == null">
+            <br>
+            <p>No number available</p>
+          </div>
+          <button ion-button clear icon-only item-right (click)="showConfirm(p.id)">
+            <ion-icon md="md-trash" ios="ios-trash"> </ion-icon>
+          </button>
+        </ion-item>
+      </div>
+    </ion-list>
+    <ion-list *ngSwitchCase="'addContact'">
+      <ion-item>
+        Add contact
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary" stacked>First name</ion-label>
+        <ion-input type="text" [(ngModel)]="contactInfo.firstname" [ngModelOptions]="{standalone: true}" name="firstname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary" stacked>Last name</ion-label>
+        <ion-input type="text" [(ngModel)]="contactInfo.lastname" [ngModelOptions]="{standalone: true}" name="lastname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary" stacked>Mobile</ion-label>
+        <ion-input type="tel" [(ngModel)]="contactInfo.mobile" [ngModelOptions]="{standalone: true}" name="mobile"></ion-input>
+      </ion-item>
+      <button ion-button (click)="createContact()">
+    Create new Contact
+  </button>
+    </ion-list>
+  </div>
+</ion-content>
