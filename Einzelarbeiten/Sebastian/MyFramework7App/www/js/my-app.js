@@ -74,7 +74,7 @@ myApp.onPageInit('about', function (page) {
 })
 
 function onSendMessagePress() {
-    window.plugins.socialsharing.shareViaSMS('Sick af Boiii ❤❤❤💯👌🏻', null, function (msg) {
+    window.plugins.socialsharing.shareViaSMS('My awesome message', null, function (msg) {
         console.log('ok: ' + msg)
     }, function (msg) {
         alert('error: ' + msg)
