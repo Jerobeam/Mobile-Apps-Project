@@ -8,7 +8,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AuthData } from '../../providers/auth-data';
 import { MyResolutions } from '../myResolutions/myResolutions.component';
 import {RegisterComponent} from "../register/register.component";
-//import { ResetPasswordComponent } from '../resetPassword/resetPassword.component';*/
 
 @Component({
   selector: 'page-login',

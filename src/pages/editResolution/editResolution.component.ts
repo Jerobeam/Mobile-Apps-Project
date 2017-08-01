@@ -233,7 +233,7 @@ export class EditResolutionComponent {
   }
 
   finishEditResolution() {
-    if (this.resolution.iconUrl != undefined) {
+    if (this.resolution.iconUrl != undefined && this.resolutionImageChanged) {
       var that = this;
       var uploadTask = firebase.storage().ref().child('resolutionPictures/' + this.utilities.user.uid + "/" + this.resolution.id + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'});
 
@@ -260,7 +260,7 @@ export class EditResolutionComponent {
       });
     } else {
       let localIsRecurring = (this.resolution.isRecurring == "true" || this.resolution.isRecurring == true);
-      firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions').child(this.resolution.id).set({
+      firebase.database().ref('users/' + this.utilities.user.uid + '/customResolutions').child(this.resolution.id).update({
         name: this.resolution.name,
         isRecurring: localIsRecurring,
         isPreconfigured: false
