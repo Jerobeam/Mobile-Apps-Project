@@ -1,17 +1,17 @@
-import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { MyResolutions } from '../pages/myResolutions/myResolutions.component';
-import { LoginComponent } from '../pages/login/login.component';
-import { ManageResolutionsComponent } from '../pages/manageResolutions/manageResolutions.component';
+import {Component, ViewChild} from '@angular/core';
+import {Nav, Platform} from 'ionic-angular';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
+import {MyResolutions} from '../pages/myResolutions/myResolutions.component';
+import {LoginComponent} from '../pages/login/login.component';
+import {ManageResolutionsComponent} from '../pages/manageResolutions/manageResolutions.component';
 import firebase from 'firebase';
-import { firebaseConfig } from "./firebaseAppData";
-import { AuthData } from '../providers/auth-data';
-import { Utilities } from './utilities';
-import { AlertController } from "ionic-angular";
-import { Geofence } from '@ionic-native/geofence';
-import { Geolocation } from '@ionic-native/geolocation'
+import {firebaseConfig} from "./firebaseAppData";
+import {AuthData} from '../providers/auth-data';
+import {Utilities} from './utilities';
+import {AlertController} from "ionic-angular";
+import {Geofence} from '@ionic-native/geofence';
+import {Geolocation} from '@ionic-native/geolocation'
 
 firebase.initializeApp(firebaseConfig);
 
@@ -25,7 +25,6 @@ export class MyApp {
 
   rootPage: any;
 
-  pages: Array<{ title: string, component: any }>;
   notificationPressed: boolean = false;
   authenticated: boolean = false;
 
@@ -34,64 +33,20 @@ export class MyApp {
 
 
     firebase.auth().onAuthStateChanged((user) => {
-      //utilities.user = user;
       if (user != undefined) {
         utilities.user = user;
         utilities.setUserData();
-        this.checkIfUserDeleted(user.uid);
       }
       if (!user) {
         utilities.loggedIn = false;
         utilities.user = {};
         this.rootPage = LoginComponent;
       } else {
-        // if (this.nav.getActive() == undefined) {
-        //if (this.loadUserCredentials()) {
         this.rootPage = MyResolutions;
         this.authenticated = true;
-        //}//
-        /* else {
-             this.rootPage = LoginComponent;
-           }*/
       }
-      //this.utilities.countOpen();
       this.notificationPressed = false;
     });
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'MyResolutions', component: MyResolutions },
-      { title: 'Resolution Management', component: ManageResolutionsComponent }
-    ];
-  }
-
-  checkIfUserDeleted(userID: any): any {
-    return this.utilities.getUser(userID)
-      .then(user => {
-        if (user.val() != null) {
-          if (!this.utilities.inRegister) {
-            this.checkForVerification();
-          }
-          // if (user.val().email) {
-          //   this.checkPlatform(userID);
-          // }
-          this.utilities.loggedIn = true;
-        } else {
-          this.logout();
-          let alert = this.alertCtrl.create({
-            title: 'Ihr Account wurde gelöscht',
-            message: 'Es scheint so als wäre Ihr Account gelöscht worden. Bitte kontaktieren Sie Ihren Trainer.',
-            buttons: [
-              {
-                text: "Ok",
-                handler: () => {
-
-                }
-              }
-            ]
-          });
-          alert.present();
-        }
-      })
   }
 
   initializeApp() {
@@ -115,23 +70,24 @@ export class MyApp {
           }
         };
 
-        window["plugins"].OneSignal
-          .startInit("69c4c123-c0aa-481b-a5f3-253642300266", "630182428381")
-          .handleNotificationOpened(notificationOpenedCallback)
-          .endInit();
+        if (this.utilities.cordova) {
+          window["plugins"].OneSignal
+            .startInit("69c4c123-c0aa-481b-a5f3-253642300266", "630182428381")
+            .handleNotificationOpened(notificationOpenedCallback)
+            .endInit();
+        }
       }
       let watch = this.geolocation.watchPosition();
       watch.subscribe((data) => {
         /*console.log("Daten");
-        console.log(data.coords.latitude);
-        console.log(data.coords.longitude);
-        console.log("==================");*/
+         console.log(data.coords.latitude);
+         console.log(data.coords.longitude);
+         console.log("==================");*/
         // data can be a set of coordinates, or an error (if an error occurred).
         // data.coords.latitude
         // data.coords.longitude
       });
     });
-
   }
 
   logout() {
@@ -139,34 +95,18 @@ export class MyApp {
     this.nav.setRoot(LoginComponent);
   }
 
-  // checkPlatform(userID) {
-  //   let flag = false;
-  //   let tempPlat = "";
-  //
-  //   if (this.platform.is('ios')) {
-  //     tempPlat = "ios";
-  //   } else if (this.platform.is('android')) {
-  //     tempPlat = "android";
-  //   } else {
-  //     tempPlat = "web";
-  //   }
-  //
-  //   this.utilities.updateUser(userID, { platform: tempPlat });
-  // }
-
   checkForVerification() {
     if (!this.utilities.user.emailVerified) {
       let confirm = this.alertCtrl.create({
-        title: 'Bitte bestätigen Sie Ihre Email Adresse',
-        message: 'Bestätigunsmail erneut senden?',
+        title: 'Please confirm your mail adress',
+        message: 'Send another confirmation mail?',
         buttons: [
           {
-            text: 'Nein',
-            handler: () => {
-            }
+            text: 'No',
+            role: 'cancel'
           },
           {
-            text: 'Ja',
+            text: 'Yes',
             handler: () => {
               this.utilities.user.sendEmailVerification();
             }
@@ -175,9 +115,5 @@ export class MyApp {
       });
       confirm.present();
     }
-  }
-
-  openPage(page) {
-    this.nav.setRoot(page.component);
   }
 }
