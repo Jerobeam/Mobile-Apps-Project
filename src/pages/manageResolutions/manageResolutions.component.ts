@@ -6,12 +6,14 @@ import { AddContactsComponent } from '../addContacts/addContacts.component';
 import { Utilities } from '../../app/utilities';
 import { ResolutionProvider } from '../../providers/resolution-provider';
 import { AuthData } from '../../providers/auth-data';
+import { Http, Response, Headers, RequestOptions } from "@angular/http";
+import { MapData } from "../../app/mapData";
 import {LoginComponent} from '../../pages/login/login.component';
 
 @Component({
   selector: 'page-manageResolutions',
   templateUrl: 'manageResolutions.component.html',
-  providers: [ResolutionProvider]
+  providers: [AuthData, ResolutionProvider, MapData]
 })
 export class ManageResolutionsComponent {
 
@@ -19,6 +21,7 @@ export class ManageResolutionsComponent {
   loadingElement: any;
 
   constructor(
+    public mapData: MapData,
     public loadingCtrl: LoadingController,
     public resolutionProvider: ResolutionProvider,
     public utilities: Utilities,
@@ -92,7 +95,7 @@ export class ManageResolutionsComponent {
           text: 'Yes',
           handler: () => {
             this.removeFromActiveResolutions(resolutionItem).then(() => {
-                this.loadingElement.dismiss();
+              this.loadingElement.dismiss();
             });
           }
         }
@@ -115,7 +118,7 @@ export class ManageResolutionsComponent {
     else {
       this.showLoadingElement();
       let resolutionData;
-      if(resolutionItem.iconUrl != undefined){
+      if (resolutionItem.iconUrl != undefined) {
         resolutionData = {
           id: resolutionItem.id,
           // name: resolutionItem.name,
@@ -125,7 +128,7 @@ export class ManageResolutionsComponent {
           reminderFrequency: 1,
           // iconUrl: resolutionItem.iconUrl
         }
-      }else{
+      } else {
         resolutionData = {
           id: resolutionItem.id,
           // name: resolutionItem.name,
@@ -137,17 +140,20 @@ export class ManageResolutionsComponent {
       }
       this.resolutionProvider.updateResolutionStatus(
         "active",
-        resolutionItem.id,resolutionData).then(() => {
+        resolutionItem.id, resolutionData).then(() => {
           if (this.utilities.cordova) {
-            if (resolutionItem.isPreconfigured){
-              for (let i of this.utilities.geolocations) {
-                this.utilities.addGeofence(resolutionItem.id, "Location: " + i.name
-                  , "Remember your Resolution '" + resolutionItem.name + "'!", i.latitude, i.longitude)
-                  .then(() => {
-                    this.resolutionProvider.getActiveResolutions();
-                  });
+            if (resolutionItem.isPreconfigured) {
+              for (let i of this.mapData.elements) {
+                if (i.tags.amenity == resolutionItem.category){
+                  this.utilities.addGeofence(resolutionItem.id, "Location: " + i.tags.name
+                    , "Remember your Resolution '" + resolutionItem.name + "'!", i.lat, i.lon)
+                    .then(() => {
+                      this.resolutionProvider.getActiveResolutions();
+                    });
+                }
+
               }
-            }else{
+            } else {
               this.resolutionProvider.getActiveResolutions();
             }
 

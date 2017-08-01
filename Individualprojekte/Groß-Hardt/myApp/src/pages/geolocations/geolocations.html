@@ -1,0 +1,28 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Geolocations</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <h3>Current Position</h3>
+    <button ion-button (click)="track()">Track position</button>
+    <button ion-button (click)="stop()">Stop tracking</button>
+    <p class={{trackingMessageStyle}}>
+        {{trackingMessage}}
+    </p>
+    <p>
+        <br> Latitude: {{utilities.latitude}}
+        <br> Longitude: {{utilities.longitude}}
+    </p>
+    <div *ngIf="isTracking == true && (utilities.longitude == null || utilities.latitude == null)">
+        <p>{{errorMessage}}
+            <p>
+    </div>
+    <div *ngIf="isTracking == false && (utilities.longitude != null || utilities.latitude !=null)">
+        <p>(Last known position)</p>
+    </div>
+</ion-content>

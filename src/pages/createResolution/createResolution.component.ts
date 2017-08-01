@@ -1,3 +1,4 @@
+
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {FormBuilder, Validators} from '@angular/forms';
@@ -164,7 +165,7 @@ export class CreateResolutionComponent {
     this.resolutionId = this.makeResolutionId();
     if (this.iconUrl != "assets/images/default_resolution_256.png") {
       var that = this;
-      var uploadTask = firebase.storage().ref().child('resolutionPictures/' + this.utilities.user.uid + "/" + this.resolutionId + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'});
+      var uploadTask = firebase.storage().ref().child('resolutionPictures/' + this.utilities.user.uid + "/" + this.resolutionId + ".jpg").putString(this.base64String, 'base64', { contentType: 'image/JPEG' });
 
       uploadTask.on('state_changed', function (snapshot) {
         that.loading = that.loadingCtrl.create({
@@ -183,6 +184,7 @@ export class CreateResolutionComponent {
           iconUrl: uploadTask.snapshot.downloadURL,
           isPreconfigured: false
         }).then(() => {
+
           that.loading.dismiss();
           that.navCtrl.pop();
         });
