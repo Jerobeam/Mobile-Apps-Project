@@ -4,7 +4,6 @@ import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {MyResolutions} from '../pages/myResolutions/myResolutions.component';
 import {LoginComponent} from '../pages/login/login.component';
-import {ManageResolutionsComponent} from '../pages/manageResolutions/manageResolutions.component';
 import firebase from 'firebase';
 import {firebaseConfig} from "./firebaseAppData";
 import {AuthData} from '../providers/auth-data';
