@@ -1,4 +1,4 @@
-# Mobile Apps Projekt Gruppe 1 - Achieve it!
+# Achieve it! (Mobile Apps Projekt Gruppe 1)
 
 
 # Einzelarbeiten des ersten Teils der Vorlesung
