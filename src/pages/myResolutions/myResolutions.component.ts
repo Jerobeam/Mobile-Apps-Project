@@ -1,47 +1,49 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController } from 'ionic-angular';
-import { ResolutionDetailsComponent } from '../resolutionDetails/resolutionDetails.component';
-import { ManageResolutionsComponent } from '../manageResolutions/manageResolutions.component';
-import { Utilities } from '../../app/utilities';
-import { ResolutionProvider } from '../../providers/resolution-provider';
-import { AuthData } from '../../providers/auth-data';
+import {Component} from '@angular/core';
+import {NavController, LoadingController, ActionSheetController } from 'ionic-angular';
+import {ResolutionDetailsComponent} from '../resolutionDetails/resolutionDetails.component';
+import {ManageResolutionsComponent} from '../manageResolutions/manageResolutions.component';
+import {Utilities} from '../../app/utilities';
+import {ResolutionProvider} from '../../providers/resolution-provider';
 import firebase from 'firebase';
+import {AuthData} from '../../providers/auth-data';
+import {LoginComponent} from '../../pages/login/login.component';
+
 
 @Component({
   selector: 'page-myResolutions',
   templateUrl: 'myResolutions.component.html',
-  providers: [AuthData, ResolutionProvider]
+  providers: [ResolutionProvider]
 })
-export class MyResolutions {
-
+export class MyResolutions{
   loadingElement: any;
   recurrance: string = "all";
-  progressWidth: any;
 
-  constructor(public loadingCtrl: LoadingController, public navCtrl: NavController, public navParams: NavParams, public utilities: Utilities, public resolutionProvider: ResolutionProvider) {
-    // this.progressWidth = 100 / amountOfDays;
+  constructor(public loadingCtrl: LoadingController,
+              public navCtrl: NavController,
+              public utilities: Utilities,
+              public resolutionProvider: ResolutionProvider,
+              public actionSheetCtrl: ActionSheetController,
+              public authData: AuthData) {}
 
-  }
-
-  showLoadingElement() {
-    this.loadingElement = this.loadingCtrl.create({
-      spinner: 'ios',
-      content: 'Load Data'
-    })
-    this.loadingElement.present();
-  }
 
   ionViewWillEnter() {
     this.showLoadingElement();
     this.utilities.setUserData().then(() => {
       this.resolutionProvider.getActiveResolutions().then(() => {
         this.loadingElement.dismiss();
-      });
+      })
     });
   }
 
+  showLoadingElement() {
+    this.loadingElement = this.loadingCtrl.create({
+      spinner: 'ios'
+    })
+    this.loadingElement.present();
+  }
+
   goToPage(event, resolution) {
-    this.navCtrl.push(ResolutionDetailsComponent, { resolution: resolution });
+    this.navCtrl.push(ResolutionDetailsComponent, {resolution: resolution});
   }
 
   doneResolutionToday(event, resolution) {
@@ -49,14 +51,11 @@ export class MyResolutions {
     resolution.secondLastActivity = resolution.lastActivity;
     resolution.lastActivity = this.utilities.currentDayString;
     resolution.activeDays[this.utilities.currentDayNumber] = true;
-    this.resolutionProvider.updateResolution(resolution.id, {secondLastActivity: resolution.secondLastActivity,
+    this.resolutionProvider.updateResolution(resolution.id, {
+      secondLastActivity: resolution.secondLastActivity,
       lastActivity: resolution.lastActivity,
-      activeDays: resolution.activeDays});
-    // firebase.database().ref('users/' + this.utilities.user.uid + '/activeResolutions/' + resolution.id + '/').update({
-    //   secondLastActivity: resolution.secondLastActivity,
-    //   lastActivity: resolution.lastActivity,
-    //   activeDays: resolution.activeDays
-    // });
+      activeDays: resolution.activeDays
+    });
   }
 
   doneSingleResolution(event, resolution) {
@@ -69,5 +68,26 @@ export class MyResolutions {
 
   goToPageManageResolutions() {
     this.navCtrl.push(ManageResolutionsComponent);
+  }
+
+  presentLogOutActionSheet(){
+    let actionSheetOptions = {
+      buttons: [
+        {
+          text: "Logout",
+          icon: "log-out",
+          handler: () => {
+            this.authData.logoutUser();
+            this.navCtrl.setRoot(LoginComponent);
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    };
+    let actionSheet = this.actionSheetCtrl.create(actionSheetOptions);
+    actionSheet.present();
   }
 }

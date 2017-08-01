@@ -1,18 +1,19 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController, LoadingController, ActionSheetController } from 'ionic-angular';
 import { CreateResolutionComponent } from '../createResolution/createResolution.component';
 import { EditResolutionComponent } from '../editResolution/editResolution.component';
 import { AddContactsComponent } from '../addContacts/addContacts.component';
-import { LoginComponent } from '../login/login.component';
 import { Utilities } from '../../app/utilities';
 import { ResolutionProvider } from '../../providers/resolution-provider';
 import { AuthData } from '../../providers/auth-data';
 import { Http, Response, Headers, RequestOptions } from "@angular/http";
+import {LoginComponent} from '../../pages/login/login.component';
+
 
 @Component({
   selector: 'page-manageResolutions',
   templateUrl: 'manageResolutions.component.html',
-  providers: [AuthData, ResolutionProvider]
+  providers: [ResolutionProvider]
 })
 export class ManageResolutionsComponent {
 
@@ -22,27 +23,15 @@ export class ManageResolutionsComponent {
 
   constructor(
     public loadingCtrl: LoadingController,
-    public authData: AuthData,
     public resolutionProvider: ResolutionProvider,
     public utilities: Utilities,
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
-    public toastCtrl: ToastController,
-    public http: Http) {
-    console.log("Über map");
-    console.log(this.loadMapData());
-    console.log("unter map");
-  }
+    public actionSheetCtrl: ActionSheetController,
+    public authData: AuthData,
+    public toastCtrl: ToastController) {
 
-  loadMapData() {
-    let data = this.http.get("http://overpass.osm.rambler.ru/cgi/interpreter?data=[out:json];node[amenity=restaurant](50.7,7.1,50.8,7.25);out;");
-    console.log(data);
-  }
-
-  logout() {
-    this.authData.logoutUser();
-    this.navCtrl.setRoot(LoginComponent);
   }
 
   //Only used in order to test the method utilities.removeCustomRevolution()
@@ -212,5 +201,26 @@ export class ManageResolutionsComponent {
 
   editResolution($event, resolution) {
     this.navCtrl.push(EditResolutionComponent, { resolution: resolution });
+  }
+
+  presentLogOutActionSheet(){
+    let actionSheetOptions = {
+      buttons: [
+        {
+          text: "Logout",
+          icon: "log-out",
+          handler: () => {
+            this.authData.logoutUser();
+            this.navCtrl.setRoot(LoginComponent);
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    };
+    let actionSheet = this.actionSheetCtrl.create(actionSheetOptions);
+    actionSheet.present();
   }
 }

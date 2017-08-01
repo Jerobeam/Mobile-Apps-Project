@@ -92,20 +92,25 @@ export class AuthData {
   }*/
 
   changePushid(userid: string): any {
-    window["plugins"].OneSignal.getIds(ids => {
-      return firebase.database().ref('users/' + userid + '/pushid/' + ids.userId).set(
-        true
-      );
-    });
+    if(this.utilities.cordova){
+      window["plugins"].OneSignal.getIds(ids => {
+        return firebase.database().ref('users/' + userid + '/pushid/' + ids.userId).set(
+          true
+        );
+      });
+    }
   }
 
   logoutUser(): any {
-    //this.menuCtrl.close('mainMenu');
-    window["plugins"].OneSignal.getIds(ids => {
-      firebase.database().ref('users/' + this.utilities.user.uid + '/pushid').child(ids.userId).remove().then(() => {
-        return this.fireAuth.signOut();
+    if(this.utilities.cordova){
+      window["plugins"].OneSignal.getIds(ids => {
+        firebase.database().ref('users/' + this.utilities.user.uid + '/pushid').child(ids.userId).remove().then(() => {
+          return this.fireAuth.signOut();
+        })
       })
-    })
+    }else{
+      return this.fireAuth.signOut();
+    }
   }
 
   getErrorMessage(error): string {
