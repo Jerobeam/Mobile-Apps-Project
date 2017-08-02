@@ -11,6 +11,7 @@ import {Utilities} from './utilities';
 import {AlertController} from "ionic-angular";
 import {Geofence} from '@ionic-native/geofence';
 import {Geolocation} from '@ionic-native/geolocation'
+import { Deeplinks } from '@ionic-native/deeplinks';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -27,7 +28,11 @@ export class MyApp {
   notificationPressed: boolean = false;
   authenticated: boolean = false;
 
-  constructor(private geolocation: Geolocation, public geofence: Geofence, public alertCtrl: AlertController, public authData: AuthData, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public utilities: Utilities) {
+  constructor(private geolocation: Geolocation, public geofence: Geofence,
+              public alertCtrl: AlertController,
+              public authData: AuthData, public platform: Platform,
+              public statusBar: StatusBar, public splashScreen: SplashScreen,
+              public utilities: Utilities, public deeplinks: Deeplinks) {
     this.initializeApp();
 
 

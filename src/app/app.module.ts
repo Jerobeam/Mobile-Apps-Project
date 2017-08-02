@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-
+import { Deeplinks } from '@ionic-native/deeplinks';
 import { MyApp } from './app.component';
 import { MyResolutions } from '../pages/myResolutions/myResolutions.component';
 import { ResolutionDetailsComponent } from '../pages/resolutionDetails/resolutionDetails.component';
@@ -18,6 +18,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from 'ionic-native';
 import { Geolocation } from '@ionic-native/geolocation';
+
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { Geolocation } from '@ionic-native/geolocation';
     Camera,
     Geofence,
     Geolocation,
+    Deeplinks,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
