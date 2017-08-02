@@ -16,14 +16,10 @@ export class RegisterComponent {
   public signupForm;
   public passwordGroup;
   gender: string = '';
-  // team: string = '';
-  // teams: any = [];
-  // relevantTeams = this.utilities.allTeams;
   firstnameChanged: boolean = false;
   lastnameChanged: boolean = false;
   birthdayChanged: boolean = false;
   genderChanged: boolean = false;
-  // teamChanged: boolean = false;
   emailChanged: boolean = false;
   passwordChanged: boolean = false;
   passwordConfirmChanged: boolean = false;
@@ -37,9 +33,6 @@ export class RegisterComponent {
     public alertCtrl: AlertController,
     public utilities: Utilities) {
     this.signupForm = formBuilder.group({
-      firstname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
-      lastname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
-      birthday: ['', Validators.compose([Validators.required])],
       email: ['', Validators.compose([Validators.required, this.isAMail])],
       passwords: formBuilder.group({
         password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
@@ -63,15 +56,6 @@ export class RegisterComponent {
     this[field + "Changed"] = true;
   }
 
-  startsWithACapital(c: FormControl) {
-    let NAME_REGEXP = new RegExp("[A-Z]");
-    if (!NAME_REGEXP.test(c.value.charAt(0))) {
-      return { "incorrectNameFormat": true }
-    }
-    let field = "firstname";
-    return null;
-  }
-
   isAMail(c: FormControl) {
     let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
 
@@ -85,20 +69,37 @@ export class RegisterComponent {
   signupUser() {
     this.submitAttempt = true;
 
-    // if (!this.signupForm.valid || !this.gender || !this.team) {
-    if (!this.signupForm.valid || !this.gender) {
-      console.log(this.signupForm.value);
-    } else {
-      window["plugins"].OneSignal.getIds(ids => {
-        console.log('getIds: ' + JSON.stringify(ids));
+    if (this.signupForm.valid) {
+      if(this.utilities.cordova){
+        window["plugins"].OneSignal.getIds(ids => {
+          console.log('getIds: ' + JSON.stringify(ids));
+          this.utilities.setInRegister();
+          this.authData.signupUser(
+            this.signupForm.value.email,
+            this.passwordGroup.value.password,
+            ids.userId
+          ).then(() => {
+            this.showVerificationAlert();
+          }, (error) => {
+            this.loading.dismiss();
+            let alert = this.alertCtrl.create({
+              message: this.authData.getErrorMessage(error),
+              buttons: [
+                {
+                  text: "Ok",
+                  role: 'cancel'
+                }
+              ]
+            });
+            alert.present();
+          });
+        });
+      }else{
         this.utilities.setInRegister();
         this.authData.signupUser(
           this.signupForm.value.email,
           this.passwordGroup.value.password,
-          this.signupForm.value.firstname,
-          this.signupForm.value.lastname,
-          this.signupForm.value.birthday,
-          ids.userId
+          "0"
         ).then(() => {
           this.showVerificationAlert();
         }, (error) => {
@@ -114,8 +115,7 @@ export class RegisterComponent {
           });
           alert.present();
         });
-      });
-
+      }
       this.loading = this.loadingCtrl.create({
         dismissOnPageChange: true,
       });
@@ -125,8 +125,8 @@ export class RegisterComponent {
 
   private showVerificationAlert() {
     let confirm = this.alertCtrl.create({
-      title: 'Bitte bestätigen Sie Ihre Email Adresse',
-      message: 'Ihnen wurde eine Bestäigungsmail zugesandt. Bitte bestätigen Sie Ihre Mail-Adresse.',
+      title: 'Please confirm your mail adress',
+      message: 'Send another confirmation mail?',
       buttons: [
         {
           text: 'Ok',

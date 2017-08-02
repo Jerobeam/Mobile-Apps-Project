@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import firebase from 'firebase';
 import { Utilities } from '../app/utilities';
-import { MenuController } from "ionic-angular";
 /*
   Generated class for the AuthData provider.
 
@@ -14,7 +13,7 @@ export class AuthData {
   public fireAuth: any;
   public userProfile: any;
 
-  constructor(public utilities: Utilities, public menuCtrl: MenuController) {
+  constructor(public utilities: Utilities) {
     this.fireAuth = firebase.auth();
     this.userProfile = firebase.database().ref('users');
   }
@@ -23,14 +22,11 @@ export class AuthData {
     return this.fireAuth.signInWithEmailAndPassword(email, password);
   }
 
-  signupUser(email: string, password: string, firstname: string, lastname: string, birthday: string, pushid: string): any {
+  signupUser(email: string, password: string, pushid: string): any {
     return this.fireAuth.createUserWithEmailAndPassword(email, password)
       .then((newUser) => {
         this.userProfile.child(newUser.uid).set({
           email: email,
-          firstname: firstname,
-          lastname: lastname,
-          birthday: birthday,
           pushid: {},
         });
         firebase.database().ref('users/' + newUser.uid + '/pushid/' + pushid).set(
