@@ -44,6 +44,16 @@ export class ManageResolutionsComponent {
     });
   }
 
+  getAmountOfCustomResolutions(){
+    let counter = 0;
+    for(let i of this.resolutionProvider.allResolutions){
+      if(!i.isPreconfigured){
+        counter = counter + 1;
+      }
+    }
+    return counter;
+  }
+  
   isActive(resolution) {
     for (let i of this.resolutionProvider.activeResolutions) {
       if (i.id == resolution.id) {
