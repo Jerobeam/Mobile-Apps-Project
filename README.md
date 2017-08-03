@@ -3,7 +3,7 @@ Ausführen der Anwendung:
 1. ´npm install´
 2. ´ionic serve´ (im Browser) oder ´ionic cordova emulate android´ (auf einem Android Emulator)
 
-Die Präsentation und das Video sind im Ordner `Presentation` zu finden.
+Die Präsentation und das Video sind im Ordner `Presentation` oder unter [Link](https://htmlpreview.github.io/?https://github.com/Jerobeam/Mobile-Apps-Project-Gruppe-1/blob/master/Presentation/index.html#simplequote) zu finden.
 Die Individualprojekte liegen in `Individualprojekte`.
 
 
