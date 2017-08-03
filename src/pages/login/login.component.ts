@@ -61,9 +61,4 @@ export class LoginComponent {
   goToSignup(){
     this.navCtrl.push(RegisterComponent);
   }
-
-  goToResetPassword(){
-    //this.navCtrl.push(ResetPasswordComponent);
-  }
-
 }
