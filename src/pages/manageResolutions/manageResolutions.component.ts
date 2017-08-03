@@ -53,7 +53,7 @@ export class ManageResolutionsComponent {
     }
     return counter;
   }
-  
+
   isActive(resolution) {
     for (let i of this.resolutionProvider.activeResolutions) {
       if (i.id == resolution.id) {

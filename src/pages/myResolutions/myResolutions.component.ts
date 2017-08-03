@@ -23,20 +23,23 @@ export class MyResolutions{
               public utilities: Utilities,
               public resolutionProvider: ResolutionProvider,
               public actionSheetCtrl: ActionSheetController,
-              public authData: AuthData) {
-    this.loadingElement = this.loadingCtrl.create({
-      spinner: 'ios'
-    });
-  }
+              public authData: AuthData) {}
 
 
   ionViewWillEnter() {
-    this.loadingElement.present();
+    this.showLoadingElement();
     this.utilities.setUserData().then(() => {
       this.resolutionProvider.getActiveResolutions().then(() => {
         this.loadingElement.dismiss();
       })
     });
+  }
+
+  showLoadingElement() {
+    this.loadingElement = this.loadingCtrl.create({
+      spinner: 'ios'
+    })
+    this.loadingElement.present();
   }
 
   goToPage(event, resolution) {
