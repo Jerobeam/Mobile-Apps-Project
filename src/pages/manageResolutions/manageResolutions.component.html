@@ -52,6 +52,8 @@
       </div>
     </ion-list>
     <ion-list *ngSwitchCase="'custom'">
+      <div class="no-data-label" *ngIf="getAmountOfCustomResolutions() == 0">No custom resolutions currently available
+      </div>
       <div *ngFor="let resolution of resolutionProvider.allResolutions">
         <div *ngIf="resolution.isPreconfigured == false">
           <ion-item class="less-label-margin" (click)="editResolution($event, resolution)">
