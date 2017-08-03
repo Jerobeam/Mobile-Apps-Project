@@ -22,7 +22,6 @@ export class AddContactsComponent {
             Contacts.find(['displayName']).then((allContacts) => {
                 this.displayArray = allContacts;
                 this.contactArray = allContacts;
-                console.log(this.contactArray);
             });
         }
     }
@@ -44,8 +43,6 @@ export class AddContactsComponent {
 
     addContactToList(contactItem) {
         this.selectedContacts.push(contactItem);
-        console.log("Selected Contacts:");
-        console.log(this.selectedContacts);
     }
 
     removeContactFromList(contactItem) {
@@ -54,8 +51,6 @@ export class AddContactsComponent {
             return ((item.name.formatted.toLowerCase().indexOf(value.toLowerCase()) <= -1));
             // || (item.name.formatted.toLowerCase().indexOf(value.toLowerCase()) < -1)
         })
-        console.log("Selected Contacts:");
-        console.log(this.selectedContacts);
     }
 
     contactIsInArray(contactItem) {

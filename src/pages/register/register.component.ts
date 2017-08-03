@@ -72,7 +72,6 @@ export class RegisterComponent {
     if (this.signupForm.valid) {
       if(this.utilities.cordova){
         window["plugins"].OneSignal.getIds(ids => {
-          console.log('getIds: ' + JSON.stringify(ids));
           this.utilities.setInRegister();
           this.authData.signupUser(
             this.signupForm.value.email,

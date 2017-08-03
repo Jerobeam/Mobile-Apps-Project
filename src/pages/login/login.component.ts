@@ -43,9 +43,7 @@ export class LoginComponent {
   loginUser(){
     this.submitAttempt = true;
 
-    if (!this.loginForm.valid){
-      console.log(this.loginForm.value);
-    } else {
+    if (this.loginForm.valid){
       this.authData.loginUser(this.loginForm.value.email, this.loginForm.value.password).then( authData => {
         this.authData.changePushid(authData.uid);
         this.navCtrl.setRoot(MyResolutions);

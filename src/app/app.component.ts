@@ -65,7 +65,6 @@ export class MyApp {
             (err) => console.log(err);
         });
         let notificationOpenedCallback = (jsonData) => {
-          console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
           if (this.authenticated) {
             this.nav.push(MyResolutions);
           }
