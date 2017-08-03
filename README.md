@@ -45,12 +45,12 @@ Inhalt:
     - Ausführbare Android App
 - Ionic App `myApp`
   - Ionic-Installation benötigt
-  - npm install benötigt, um dependencies zu installieren
+  - `npm install` benötigt, um dependencies zu installieren
   - Ausführbar mit `ionic run browser`, dazu zunächst `cordova platform add browser` ausführen 
   - mit Ionic 3 u.U. `ionic cordova run browser`
   - Ausführbar mit `ionic run android` bei angeschlossenem Androidgerät
   - mit Ionic 3 u.U. `ionic cordova run android`
-  - Oder ausführbar im Emulator
+  - Oder ausführbar im `Emulator`
   - Funktionsumfang:
     - Bilderaufnahme und -anzeige (Nur im Emulator und am Handy)
     - Auslese des Batteriestatus (einmal Menü triggern nötig um Status anzuzeigen)
