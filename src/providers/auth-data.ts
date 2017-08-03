@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
 import firebase from 'firebase';
-import { Utilities } from '../app/utilities';
+import {Utilities} from '../app/utilities';
 /*
-  Generated class for the AuthData provider.
+ Generated class for the AuthData provider.
 
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
+ See https://angular.io/docs/ts/latest/guide/dependency-injection.html
+ for more info on providers and Angular 2 DI.
+ */
 @Injectable()
 export class AuthData {
   public fireAuth: any;
@@ -78,17 +78,17 @@ export class AuthData {
   }
 
   /*changePushid(userid: string): any {
-    window["plugins"].OneSignal.getIds(ids => {
-      console.log('getIds: ' + JSON.stringify(ids));
-      //alert("userId = " + ids.userId + ", pushToken = " + ids.pushToken);
-      return firebase.database().ref('users/' + userid + '/pushid/' + ids.userId).set(
-        true
-      );
-    });
-  }*/
+   window["plugins"].OneSignal.getIds(ids => {
+   console.log('getIds: ' + JSON.stringify(ids));
+   //alert("userId = " + ids.userId + ", pushToken = " + ids.pushToken);
+   return firebase.database().ref('users/' + userid + '/pushid/' + ids.userId).set(
+   true
+   );
+   });
+   }*/
 
   changePushid(userid: string): any {
-    if(this.utilities.cordova){
+    if (this.utilities.cordova) {
       window["plugins"].OneSignal.getIds(ids => {
         return firebase.database().ref('users/' + userid + '/pushid/' + ids.userId).set(
           true
@@ -98,13 +98,13 @@ export class AuthData {
   }
 
   logoutUser(): any {
-    if(this.utilities.cordova){
+    if (this.utilities.cordova) {
       window["plugins"].OneSignal.getIds(ids => {
         firebase.database().ref('users/' + this.utilities.user.uid + '/pushid').child(ids.userId).remove().then(() => {
           return this.fireAuth.signOut();
         })
       })
-    }else{
+    } else {
       return this.fireAuth.signOut();
     }
   }
@@ -112,16 +112,16 @@ export class AuthData {
   getErrorMessage(error): string {
     let code: string = error.code;
     if (code === "auth/invalid-email") {
-      return "Die eingegebene E-Mail Adresse ist ungültig."
+      return "The mail address you entered is invalid."
     }
     else if (code === "auth/wrong-password") {
-      return "Ihr eingegebenes Passwort ist falsch."
+      return "The password you entered is wrong."
     }
     else if (code === "auth/user-not-found") {
-      return "Unter dieser E-Mail Adresse ist kein User registriert."
+      return "No registered user with this mail address."
     }
     else if (code === "auth/internal-error") {
-      return "Es scheint etwas schief gelaufen zu sein. Bitte versuchen Sie es erneut."
+      return "Something went wrong. Please try again later."
     }
     else {
       return error.message;

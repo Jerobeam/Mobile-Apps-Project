@@ -10,11 +10,9 @@ export class ResolutionProvider {
     activeResolutions: Array<any> = [];
     noRecurringResolutions: boolean = true;
     noSingleResolutions: boolean = true;
-    customResolutions: Array<any>;
 
 
     constructor(public utilities: Utilities) {
-        // this.getUsers();
         // this.getActiveResolutions();
     }
 
@@ -117,17 +115,4 @@ export class ResolutionProvider {
         });
       })
     }
-
-    // getUsers() {
-    //     return firebase.database().ref('users').once('value').then((snapshot) => {
-    //         let userArray = [];
-    //         let counter = 0;
-    //         for (let i in snapshot.val()) {
-    //             userArray[counter] = snapshot.val()[i];
-    //             userArray[counter].id = i;
-    //             counter++;
-    //         }
-    //         this.allUsers = userArray;
-    //     });
-    // }
 }

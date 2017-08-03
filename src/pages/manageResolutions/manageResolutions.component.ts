@@ -113,7 +113,20 @@ export class ManageResolutionsComponent {
       resolutionItem.activeDays = "";
     }
     if (resolutionItem.name == "Socialize") {
-      this.navCtrl.push(AddContactsComponent, { activity: resolutionItem });
+      if(this.utilities.cordova) {
+        this.navCtrl.push(AddContactsComponent, {activity: resolutionItem});
+      }else{
+        let alert = this.alertCtrl.create({
+          message: "Access to your contacts is only possible on Android or iOS",
+          buttons: [
+            {
+              text: "Ok",
+              role: 'cancel'
+            }
+          ]
+        });
+        alert.present()
+      }
     }
     else {
       this.showLoadingElement();
