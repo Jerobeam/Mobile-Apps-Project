@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Create Resolution</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="picture-container">
+    <img class="picture-click resolution-image" src="{{iconUrl}}" (click)="changeResolutionPicture()">
+    <p class="align-center color-gray">Click image to change it</p>
+  </div>
+
+
+  <br/>
+  <form class="align-center" [formGroup]="createResolutionForm" novalidate>
+    <ion-item>
+      <ion-label class="form-label">Resolution name:</ion-label>
+      <ion-input class="form-value" type="text" formControlName="resolutionName"
+                 [(ngModel)]="resolutionName"
+                 [class.invalid]="!createResolutionForm.controls.resolutionName.valid"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!createResolutionForm.controls.resolutionName.valid">
+      <p>The resolution name must at least be 3 characters</p>
+      <p>long</p>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class="form-label">Occurance type:</ion-label>
+    </ion-item>
+    <ion-list radio-group [ngModelOptions]="{standalone:true}" [(ngModel)]="isRecurring">
+      <ion-item>
+        <ion-label>Recurring activity</ion-label>
+        <ion-radio value=true></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Single activity</ion-label>
+        <ion-radio value=false></ion-radio>
+      </ion-item>
+    </ion-list>
+
+
+    <div class="bottom-container">
+      <button class="button-width" [disabled]="!createResolutionForm.controls.resolutionName.valid" ion-button round
+              icon-left outline (click)="createResolution()">
+        CREATE RESOLUTION
+      </button>
+    </div>
+  </form>
+
+</ion-content>

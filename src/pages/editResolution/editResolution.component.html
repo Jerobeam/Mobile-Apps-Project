@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+    <ion-buttons left>
+      <button ion-button (click)="cancel()">Cancel</button>
+    </ion-buttons>
+    <ion-title>Edit "{{resolution.name}}"</ion-title>
+    <ion-buttons right>
+      <button
+        [disabled]="(!resolutionNameChanged && !isRecurringChanged && !resolutionImageChanged) || !editResolutionForm.controls.resolutionName.valid"
+        ion-button (click)="showFinishConfirm()">Done
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="picture-container">
+    <img class="picture-click resolution-image" src="{{resolution.iconUrl}}"
+         onError="this.src='assets/images/default_resolution_256.png'" (click)="changeResolutionPicture()">
+  </div>
+  <p class="align-center">Click image to change it</p>
+
+  <br/>
+  <form class="align-center" [formGroup]="editResolutionForm" novalidate>
+    <ion-item>
+      <ion-label class="form-label">Resolution name:</ion-label>
+      <ion-input class="form-value" type="text" formControlName="resolutionName"
+                 [(ngModel)]="resolution.name"
+                 (input)="nameChanged()"
+                 [class.invalid]="!editResolutionForm.controls.resolutionName.valid"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!editResolutionForm.controls.resolutionName.valid">
+      <p>The resolution name must at least be 3 characters</p>
+      <p>long</p>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class="form-label">Occurance type:</ion-label>
+    </ion-item>
+    <ion-list radio-group [ngModelOptions]="{standalone:true}" [(ngModel)]="resolution.isRecurring" (ionChange)="occuranceChanged()">
+      <ion-item>
+        <ion-label>Recurring activity</ion-label>
+        <ion-radio value=true></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Single activity</ion-label>
+        <ion-radio value=false></ion-radio>
+      </ion-item>
+    </ion-list>
+
+
+    <div class="bottom-container">
+      <button class="button-width" ion-button round icon-left outline color="danger" (click)="showDeletionConfirm()">
+        Delete Resolution
+      </button>
+    </div>
+  </form>
+
+</ion-content>

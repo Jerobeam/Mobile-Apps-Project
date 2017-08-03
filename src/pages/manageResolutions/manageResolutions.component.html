@@ -6,10 +6,15 @@
       </button>
     </ion-buttons>
     <ion-title>Resolution Management</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentLogOutActionSheet()">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-toolbar no-border-top>
     <ion-segment [(ngModel)]="selection">
       <ion-segment-button value="preconfigured">
@@ -27,18 +32,18 @@
         <div *ngIf="resolution.isPreconfigured == true">
           <ion-item class="less-label-margin">
             <div item-left>
-              <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
+              <img src="{{resolution.iconUrl}}" onError="this.src='assets/images/default_resolution_128.png'" class="resolution-list-icon" />
             </div>
             <div>
               {{resolution.name}}
             </div>
             <div item-right *ngIf="isActive(resolution) == false">
-              <button color="secondary" class="listButton" ion-button round outline icon-only item-right (click)="addToActiveResolutions(resolution)">
+              <button color="secondary" class="listButton" ion-button round outline icon-only item-right (click)="addToActiveResolutions($event, resolution)">
                 <ion-icon name="add"></ion-icon>
               </button>
             </div>
             <div item-right *ngIf="isActive(resolution) == true">
-              <button color="danger" class="listButton" ion-button round outline icon-only item-right (click)="showRemovalConfirmationAlert(resolution)">
+              <button color="danger" class="listButton" ion-button round outline icon-only item-right (click)="showRemovalConfirmationAlert($event, resolution)">
                   <ion-icon name="remove"></ion-icon>
                 </button>
             </div>
@@ -49,20 +54,20 @@
     <ion-list *ngSwitchCase="'custom'">
       <div *ngFor="let resolution of resolutionProvider.allResolutions">
         <div *ngIf="resolution.isPreconfigured == false">
-          <ion-item class="less-label-margin">
+          <ion-item class="less-label-margin" (click)="editResolution($event, resolution)">
             <div item-left>
-              <img src="{{resolution.iconUrl}}" class="resolution-list-icon" />
+              <img src="{{resolution.iconUrl}}" onError="this.src='assets/images/default_resolution_128.png'" class="resolution-list-icon" />
             </div>
             <div>
               {{resolution.name}}
             </div>
             <div item-right *ngIf="isActive(resolution) == false">
-              <button color="secondary" class="listButton" ion-button round outline icon-only item-right (click)="addToActiveResolutions(resolution)">
+              <button color="secondary" class="listButton" ion-button round outline icon-only item-right (click)="addToActiveResolutions($event, resolution)">
                 <ion-icon name="add"></ion-icon>
               </button>
             </div>
             <div item-right *ngIf="isActive(resolution) == true">
-              <button color="danger" class="listButton" ion-button round outline icon-only item-right (click)="showRemovalConfirmationAlert(resolution)">
+              <button color="danger" class="listButton" ion-button round outline icon-only item-right (click)="showRemovalConfirmationAlert($event, resolution)">
                 <ion-icon name="remove"></ion-icon>
               </button>
             </div>

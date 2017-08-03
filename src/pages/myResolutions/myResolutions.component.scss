@@ -1,0 +1,61 @@
+page-myResolutions {
+
+  .less-label-margin .label-md {
+    margin-top: 5px;
+    margin-bottom: 8px;
+  }
+
+  .less-label-margin .label-ios {
+    margin-top: 5px;
+    margin-bottom: 8px;
+  }
+
+  .item-left {
+    float: left;
+    margin-top: 4px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 3px;
+  }
+
+  .resolution-list-icon {
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    background-color: $primary;
+    padding: 3px;
+  }
+
+  .item-right {
+    padding: 18px 8px 8px 15px;
+    color: $lightgray;
+    margin-left: 60px;
+    font-size: 14px;
+  }
+
+  .resolution-list-name {
+    font-size: 16px;
+    color: black;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .resolution-list-button {
+    float: right;
+    height: 28px !important;
+    margin-top: 18px;
+  }
+
+  .resolution-list-done{
+    margin-top: 6px;
+    color: $secondary;
+    font-size: 12px;
+  }
+
+  .resolution-list-not-done{
+    margin-top: 6px;
+    color: $danger;
+    font-size: 12px;
+  }
+}
+

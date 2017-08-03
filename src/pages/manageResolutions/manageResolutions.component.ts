@@ -1,68 +1,51 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController, LoadingController, ActionSheetController } from 'ionic-angular';
 import { CreateResolutionComponent } from '../createResolution/createResolution.component';
+import { EditResolutionComponent } from '../editResolution/editResolution.component';
 import { AddContactsComponent } from '../addContacts/addContacts.component';
-import { LoginComponent } from '../login/login.component';
 import { Utilities } from '../../app/utilities';
 import { ResolutionProvider } from '../../providers/resolution-provider';
 import { AuthData } from '../../providers/auth-data';
+import { Http, Response, Headers, RequestOptions } from "@angular/http";
+import { MapData } from "../../app/mapData";
+import {LoginComponent} from '../../pages/login/login.component';
 
 @Component({
   selector: 'page-manageResolutions',
   templateUrl: 'manageResolutions.component.html',
-  providers: [AuthData, ResolutionProvider]
+  providers: [AuthData, ResolutionProvider, MapData]
 })
 export class ManageResolutionsComponent {
 
   selection = "preconfigured";
-  activeResolutions = [];
+  loadingElement: any;
 
-  constructor(public authData: AuthData, public resolutionProvider: ResolutionProvider, public utilities: Utilities, public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public toastCtrl: ToastController) {
-
-  }
-
-  logout() {
-    this.authData.logoutUser();
-    this.navCtrl.setRoot(LoginComponent);
-  }
-
-//Only used in order to test the method utilities.createNewCustomRevolution()
-  testCreate() {
-    this.utilities.createNewCustomResolution({ isPreconfigured: false, isRecurring: false, name: "1 nice Methode", iconUrl: "assets/images/running-icon.jpg" }, this.utilities.user.uid).then(() => {
-      this.utilities.setUserData();
-      this.resolutionProvider.setPreconfiguredResolutions().then(() => {
-        this.resolutionProvider.setCustomResolutions(this.utilities.user).then(() => {
-          this.findActiveResolutions();
-        });
-      });
-    });
+  constructor(
+    public mapData: MapData,
+    public loadingCtrl: LoadingController,
+    public resolutionProvider: ResolutionProvider,
+    public utilities: Utilities,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public alertCtrl: AlertController,
+    public actionSheetCtrl: ActionSheetController,
+    public authData: AuthData,
+    public toastCtrl: ToastController) {
   }
 
   //Only used in order to test the method utilities.removeCustomRevolution()
   testRemove(resolutionID) {
-    this.utilities.removeCustomResolution(resolutionID, this.utilities.user.uid).then(() => {
+    this.resolutionProvider.removeCustomResolution(resolutionID).then(() => {
       this.utilities.setUserData();
-      this.resolutionProvider.setPreconfiguredResolutions().then(() => {
-        this.resolutionProvider.setCustomResolutions(this.utilities.user).then(() => {
-          this.findActiveResolutions();
-        });
+      this.resolutionProvider.getPreconfiguredResolutions().then(() => {
+        this.resolutionProvider.getCustomResolutions();
       });
+      this.resolutionProvider.getActiveResolutions();
     });
   }
 
-  findActiveResolutions() {
-    for (let resolution of this.resolutionProvider.allResolutions) {
-      console.log(resolution);
-      for (let i in this.utilities.userData.activeResolutions) {
-        if (resolution.id == i) {
-          this.activeResolutions.push(resolution);
-        }
-      }
-    }
-  }
-
   isActive(resolution) {
-    for (let i of this.activeResolutions) {
+    for (let i of this.resolutionProvider.activeResolutions) {
       if (i.id == resolution.id) {
         return true;
       }
@@ -70,16 +53,24 @@ export class ManageResolutionsComponent {
     return false;
   }
 
-  ionViewWillEnter() {
-    //this.showLoadingElement();
-    this.utilities.setUserData();
-    this.resolutionProvider.setPreconfiguredResolutions().then(() => {
-      this.resolutionProvider.setCustomResolutions(this.utilities.user).then(() => {
-        this.findActiveResolutions();
-      });
-    });
-    //this.loadingElement.dismiss();
+  showLoadingElement() {
+    this.loadingElement = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
+    })
+    this.loadingElement.present();
   }
+
+  ionViewWillEnter() {
+    this.showLoadingElement();
+    this.utilities.setUserData();
+    // this.resolutionProvider.getPreconfiguredResolutions().then(() => {
+    //   this.resolutionProvider.getCustomResolutions();
+    // });
+    this.resolutionProvider.getActiveResolutions();
+    this.loadingElement.dismiss();
+  }
+
 
   showToast(text) {
     let toast = this.toastCtrl.create({
@@ -89,7 +80,8 @@ export class ManageResolutionsComponent {
     toast.present();
   }
 
-  showRemovalConfirmationAlert(resolutionItem) {
+  showRemovalConfirmationAlert(event, resolutionItem) {
+    event.stopPropagation();
     let confirm = this.alertCtrl.create({
       title: 'Remove Resolution?',
       message: 'Do you want to deactivate this resolution? Your progress will be lost!',
@@ -97,13 +89,14 @@ export class ManageResolutionsComponent {
         {
           text: 'No',
           handler: () => {
-            //this.showToast("Aborted");
           }
         },
         {
           text: 'Yes',
           handler: () => {
-            this.removeFromActiveResolutions(resolutionItem);
+            this.removeFromActiveResolutions(resolutionItem).then(() => {
+              this.loadingElement.dismiss();
+            });
           }
         }
       ]
@@ -111,34 +104,106 @@ export class ManageResolutionsComponent {
     confirm.present();
   }
 
-  addToActiveResolutions(resolutionItem) {
+  addToActiveResolutions(event, resolutionItem) {
+    event.stopPropagation();
+    if (resolutionItem.isRecurring) {
+      resolutionItem.activeDays = new Array(this.utilities.amountOfDaysInCurrentYear);
+      resolutionItem.activeDays.fill(false);
+    } else {
+      resolutionItem.activeDays = "";
+    }
     if (resolutionItem.name == "Socialize") {
-      this.navCtrl.push(AddContactsComponent, { activity: resolutionItem });
+      if(this.utilities.cordova) {
+        this.navCtrl.push(AddContactsComponent, {activity: resolutionItem});
+      }else{
+        let alert = this.alertCtrl.create({
+          message: "Access to your contacts is only possible on Android or iOS",
+          buttons: [
+            {
+              text: "Ok",
+              role: 'cancel'
+            }
+          ]
+        });
+        alert.present()
+      }
     }
     else {
-      this.activeResolutions.push(resolutionItem);
-      //this.activeResolutionsIDs.push(resolutionItem.id);
-      this.utilities.updateResolutionStatus("active", this.utilities.user.uid,
-        resolutionItem.id,
-        { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "" , activeDays: "" });
-      this.showToast("Resolution is now active and will appear on the home screen");
+      this.showLoadingElement();
+      let resolutionData;
+      if (resolutionItem.iconUrl != undefined) {
+        resolutionData = {
+          id: resolutionItem.id,
+          // name: resolutionItem.name,
+          lastActivity: "",
+          activeDays: resolutionItem.activeDays,
+          // isRecurring: resolutionItem.isRecurring,
+          reminderFrequency: 1,
+          // iconUrl: resolutionItem.iconUrl
+        }
+      } else {
+        resolutionData = {
+          id: resolutionItem.id,
+          // name: resolutionItem.name,
+          lastActivity: "",
+          activeDays: resolutionItem.activeDays,
+          // isRecurring: resolutionItem.isRecurring,
+          reminderFrequency: 1
+        }
+      }
+      this.resolutionProvider.updateResolutionStatus(
+        "active",
+        resolutionItem.id, resolutionData).then(() => {
+          if (this.utilities.cordova) {
+            if (resolutionItem.isPreconfigured) {
+              for (let i of this.mapData.elements) {
+                if (i.tags.amenity == resolutionItem.category){
+                  this.utilities.addGeofence(resolutionItem.id, "Location: " + i.tags.name
+                    , "Remember your Resolution '" + resolutionItem.name + "'!", i.lat, i.lon)
+                    .then(() => {
+                      this.resolutionProvider.getActiveResolutions();
+                    });
+                }
+
+              }
+            } else {
+              this.resolutionProvider.getActiveResolutions();
+            }
+
+            this.utilities.scheduleResolutionNotifications(resolutionItem, 3);
+            this.loadingElement.dismiss();
+          }
+          else {
+            this.resolutionProvider.getActiveResolutions();
+            this.loadingElement.dismiss();
+          }
+          this.utilities.setUserData();
+          this.showToast("Resolution is now active");
+        });
     }
   }
 
   removeFromActiveResolutions(resolutionItem) {
-    if (resolutionItem.name == "Socialize") {
-      resolutionItem.contacts = [];
-      console.log("Cleared Array:");
-      console.log(resolutionItem.contacts);
-    }
-    this.utilities.updateResolutionStatus("inactive", this.utilities.user.uid,
-      resolutionItem.id,
-      { id: resolutionItem.id, name: resolutionItem.name, lastActivity: "" });
+    this.showLoadingElement();
+    this.utilities.setUserData();
+    if (this.utilities.cordova) {
+      for (let i of this.resolutionProvider.activeResolutions) {
+        if (i.id == resolutionItem.id) {
+          for (let j in i.geofences) {
+            this.utilities.removeGeofence(j, resolutionItem.id);
+          }
+          for (let k in i.scheduledNotifications) {
+            this.utilities.cancelPushNotification(k, resolutionItem.id);
+          }
+        }
+      }
 
-    this.activeResolutions = this.activeResolutions.filter((item) => {
-      return ((item.id.toLowerCase().indexOf(resolutionItem.id.toLowerCase()) <= -1));
-    })
-    this.showToast("Resolution is no longer active and was removed from the home screen");
+    }
+    this.resolutionProvider.updateResolutionStatus("inactive", resolutionItem.id, {}).then(() => {
+      this.resolutionProvider.getActiveResolutions();
+      this.showToast("Resolution is no longer active");
+    });
+    return Promise.resolve();
   }
 
   openWindowCreateResolution() {
@@ -147,5 +212,30 @@ export class ManageResolutionsComponent {
 
   popPage() {
     this.navCtrl.pop();
+  }
+
+  editResolution($event, resolution) {
+    this.navCtrl.push(EditResolutionComponent, { resolution: resolution });
+  }
+
+  presentLogOutActionSheet(){
+    let actionSheetOptions = {
+      buttons: [
+        {
+          text: "Logout",
+          icon: "log-out",
+          handler: () => {
+            this.authData.logoutUser();
+            this.navCtrl.setRoot(LoginComponent);
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    };
+    let actionSheet = this.actionSheetCtrl.create(actionSheetOptions);
+    actionSheet.present();
   }
 }

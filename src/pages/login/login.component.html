@@ -4,21 +4,21 @@
     <ion-item>
       <ion-label stacked>E-Mail</ion-label>
       <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)"
-                 placeholder="Ihre E-Mail Addresse"
+                 placeholder="Your email address"
                  [class.invalid]="!loginForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid  && (emailChanged || submitAttempt)">
-      <p>Bitte geben Sie eine gültige E-Mail-Adresse ein.</p>
+      <p>Please enter a valid email address.</p>
     </ion-item>
 
     <ion-item>
       <ion-label stacked>Passwort</ion-label>
       <ion-input #password formControlName="password" type="password" (change)="elementChanged(password)"
-                 placeholder="Ihr Passwort"
+                 placeholder="Your password"
                  [class.invalid]="!loginForm.controls.password.valid && (passwordChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid  && (passwordChanged || submitAttempt)">
-      <p>Ihr Passwort besteht aus mindestens 6 Zeichen.</p>
+      <p>Your password must at least be 6 characters long.</p>
     </ion-item>
     <br>
     <button ion-button round icon-left outline type="submit">
@@ -30,11 +30,11 @@
 
   <div class="align-center">
     <button ion-button round clear (click)="goToSignup()">
-      Registrieren
+      Sign up
     </button>
     <br>
     <button ion-button round clear (click)="goToResetPassword()">
-      Ich habe mein Passwort vergessen
+      Forgot Password?
     </button>
   </div>
 </ion-content>

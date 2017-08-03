@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
 import { Contacts } from 'ionic-native';
+import { ResolutionProvider } from '../../providers/resolution-provider'
 //import { Contacts, Contact, ContactField, ContactName } from 'ionic-native';
 
 @Component({
     selector: 'page-addContacts',
-    templateUrl: 'addContacts.component.html'
+    templateUrl: 'addContacts.component.html',
+    providers: [ResolutionProvider]
 })
 export class AddContactsComponent {
 
@@ -15,12 +17,13 @@ export class AddContactsComponent {
     resolutionItem: any;
     selectedContacts = [];
 
-    constructor(public navCtrl: NavController, public toastCtrl: ToastController, public navParams: NavParams, public utilities: Utilities) {
-        Contacts.find(['displayName']).then((allContacts) => {
-            this.displayArray = allContacts;
-            this.contactArray = allContacts;
-            console.log(this.contactArray);
-        });
+    constructor(public resolutionProvider: ResolutionProvider, public navCtrl: NavController, public toastCtrl: ToastController, public navParams: NavParams, public utilities: Utilities) {
+        if (this.utilities.cordova) {
+            Contacts.find(['displayName']).then((allContacts) => {
+                this.displayArray = allContacts;
+                this.contactArray = allContacts;
+            });
+        }
     }
 
     ionViewWillEnter() {
@@ -40,8 +43,6 @@ export class AddContactsComponent {
 
     addContactToList(contactItem) {
         this.selectedContacts.push(contactItem);
-        console.log("Selected Contacts:");
-        console.log(this.selectedContacts);
     }
 
     removeContactFromList(contactItem) {
@@ -50,8 +51,6 @@ export class AddContactsComponent {
             return ((item.name.formatted.toLowerCase().indexOf(value.toLowerCase()) <= -1));
             // || (item.name.formatted.toLowerCase().indexOf(value.toLowerCase()) < -1)
         })
-        console.log("Selected Contacts:");
-        console.log(this.selectedContacts);
     }
 
     contactIsInArray(contactItem) {
@@ -75,19 +74,36 @@ export class AddContactsComponent {
     }
 
     confirm() {
-        console.log("Confirmed Contacts:");
-        console.log(this.selectedContacts);
         this.resolutionItem.contacts = this.selectedContacts;
-        console.log("Resolution Item");
-        console.log(this.resolutionItem.contacts);
-
-        this.utilities.updateResolutionStatus("active", this.utilities.user.uid,
-            this.resolutionItem.id,
+        /*this.resolutionProvider.updateResolutionStatus("active",this.resolutionItem.id,
             { id: this.resolutionItem.id, name: this.resolutionItem.name, lastActivity: "", contacts: this.selectedContacts });
-        this.showToast("Resolution is now active and will appear on the home screen");
+        */
 
-        this.showToast("Resolution is now active and will appear on the home screen");
-        this.navCtrl.pop();
+        this.resolutionProvider.updateResolutionStatus(
+            "active",
+            this.resolutionItem.id,
+            {
+                id: this.resolutionItem.id,
+                // name: this.resolutionItem.name,
+                lastActivity: "",
+                activeDays: this.resolutionItem.activeDays,
+                // isRecurring: this.resolutionItem.isRecurring,
+                reminderFrequency: 1,
+                contacts: this.selectedContacts
+            }).then(() => {
+                if (this.utilities.cordova) {
+                    this.utilities.addGeofence(this.resolutionItem.id, "Test", "Sie sind bei X", 49.474797, 8.535164).then(() => {
+                        this.resolutionProvider.getActiveResolutions();
+                    });
+                    this.utilities.scheduleResolutionNotifications(this.resolutionItem, 3);
+                }
+                else {
+                    this.resolutionProvider.getActiveResolutions();
+                }
+                this.utilities.setUserData();
+                this.showToast("Resolution is now active");
+                this.navCtrl.pop();
+            });
     }
 
     showToast(text) {

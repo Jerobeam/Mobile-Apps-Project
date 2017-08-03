@@ -1,0 +1,155 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title item-center>My Resolutions</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentLogOutActionSheet()">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="recurrance">
+      <ion-segment-button value="all">
+        All
+      </ion-segment-button>
+      <ion-segment-button value="recurring">
+        Recurring
+      </ion-segment-button>
+      <ion-segment-button value="once">
+        Once
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <div [ngSwitch]="recurrance">
+    <ion-list *ngSwitchCase="'all'">
+      <div class="no-data-label" *ngIf="resolutionProvider.activeResolutions.length === 0">No resolution currently
+        selected
+      </div>
+      <div *ngFor="let resolution of resolutionProvider.activeResolutions">
+        <ion-item class="less-label-margin" (click)="goToPage($event, resolution)">
+          <div class="item-left">
+            <img src="{{resolution.iconUrl}}" class="resolution-list-icon"
+                 onError="this.src='assets/images/default_resolution_128.png'"/>
+          </div>
+
+          <button [disabled]="(this.utilities.currentDayString == resolution.lastActivity)"
+                  *ngIf="resolution.isRecurring" class="resolution-list-button"
+                  ion-button round outline color="secondary" (click)="doneResolutionToday($event, resolution)">
+            DONE TODAY
+          </button>
+
+          <button [disabled]="resolution.isDone" *ngIf="!resolution.isRecurring" class="resolution-list-button"
+                  ion-button
+                  round outline color="secondary" (click)="doneSingleResolution($event, resolution)">
+            DONE
+          </button>
+          <div class="item-right">
+            <div class="resolution-list-name">{{resolution.name}}</div>
+            <div
+              *ngIf="resolution.isRecurring && (resolution.lastActivity != '' && resolution.lastActivity != undefined)">
+              Last activity: {{resolution.lastActivity | date}}
+            </div>
+            <div
+              *ngIf="resolution.isRecurring && (resolution.lastActivity === '' || resolution.lastActivity === undefined)">
+              No activity yet
+            </div>
+            <div class="resolution-list-done" *ngIf="!resolution.isRecurring && resolution.isDone">- DONE -</div>
+            <div class="resolution-list-not-done" *ngIf="!resolution.isRecurring && !resolution.isDone">- NOT DONE -
+            </div>
+          </div>
+          <div *ngIf="resolution.isRecurring" class="progress">
+            <span *ngFor="let item of resolution.activeDays; let i = index;">
+              <div *ngIf="!item" class="progress-bar default-background" role="progressbar"
+                   style="width:0.275%"></div>
+              <div *ngIf="item" class="progress-bar green-background" role="progressbar"
+                   style="width:0.275%"></div>
+            </span>
+          </div>
+          <div *ngIf="resolution.isRecurring" class="datum-range">
+            01.01.{{this.utilities.currentDay.getFullYear()}}
+            <span class="datum-range-end">31.12.{{this.utilities.currentDay.getFullYear()}}</span>
+          </div>
+        </ion-item>
+      </div>
+    </ion-list>
+  </div>
+
+  <div [ngSwitch]="recurrance">
+    <ion-list *ngSwitchCase="'recurring'">
+      <div class="no-data-label" *ngIf="resolutionProvider.noRecurringResolutions">No recurring resolution currently
+        selected
+      </div>
+      <div *ngFor="let resolution of resolutionProvider.activeResolutions">
+        <ion-item class="less-label-margin" *ngIf="resolution.isRecurring" (click)="goToPage($event, resolution)">
+          <div class="item-left">
+            <img src="{{resolution.iconUrl}}" class="resolution-list-icon"
+                 onError="this.src='assets/images/default_resolution_128.png'"/>
+          </div>
+
+          <button [disabled]="(this.utilities.currentDayString == resolution.lastActivity)"
+                  class="resolution-list-button"
+                  ion-button round outline color="secondary" (click)="doneResolutionToday($event, resolution)">
+            DONE TODAY
+          </button>
+
+          <div class="item-right">
+            <div class="resolution-list-name">{{resolution.name}}</div>
+            <div *ngIf="resolution.lastActivity != '' && resolution.lastActivity != undefined">Last activity:
+              {{resolution.lastActivity | date}}
+            </div>
+            <div *ngIf="resolution.lastActivity === '' || resolution.lastActivity === undefined">No activity yet</div>
+          </div>
+          <div class="progress">
+            <span *ngFor="let item of resolution.activeDays; let i = index;">
+              <div *ngIf="!item" class="progress-bar default-background" role="progressbar"
+                   style="width:0.275%"></div>
+              <div *ngIf="item" class="progress-bar green-background" role="progressbar"
+                   style="width:0.275%"></div>
+            </span>
+          </div>
+          <div class="datum-range">
+            01.01.{{this.utilities.currentDay.getFullYear()}}
+            <span class="datum-range-end">31.12.{{this.utilities.currentDay.getFullYear()}}</span>
+          </div>
+        </ion-item>
+      </div>
+    </ion-list>
+  </div>
+
+  <div [ngSwitch]="recurrance">
+    <ion-list *ngSwitchCase="'once'">
+      <div class="no-data-label" *ngIf="resolutionProvider.noSingleResolutions">No single resolution currently
+        selected
+      </div>
+      <div *ngFor="let resolution of resolutionProvider.activeResolutions">
+        <ion-item class="less-label-margin" *ngIf="!resolution.isRecurring" (click)="goToPage($event, resolution)">
+          <div class="item-left">
+            <img src="{{resolution.iconUrl}}" class="resolution-list-icon"
+                 onError="this.src='assets/images/default_resolution_128.png'"/>
+          </div>
+          <button [disabled]="resolution.isDone" class="resolution-list-button" ion-button round outline
+                  color="secondary"
+                  (click)="doneSingleResolution($event, resolution)">
+            DONE
+          </button>
+          <div class="item-right">
+            <div class="resolution-list-name">{{resolution.name}}</div>
+            <div class="resolution-list-done" *ngIf="resolution.isDone">- DONE -</div>
+            <div class="resolution-list-not-done" *ngIf="!resolution.isDone">- NOT DONE -</div>
+          </div>
+        </ion-item>
+      </div>
+    </ion-list>
+  </div>
+
+  <ion-fab right bottom>
+    <button ion-fab icon-only (click)="goToPageManageResolutions()">
+      <ion-icon name="md-create"></ion-icon>
+    </button>
+  </ion-fab>
+
+</ion-content>

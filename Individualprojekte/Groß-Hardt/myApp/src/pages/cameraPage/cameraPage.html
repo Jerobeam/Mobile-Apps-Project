@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Camera</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <button ion-button (click)="takePicture()" name="Hallo">
+  Take Picture
+  </button>
+  <button ion-button (click)="share()">
+  Share
+  </button>
+  <ion-item>
+      <img class="own-image" src="{{base64Image}}">
+  </ion-item>
+</ion-content>

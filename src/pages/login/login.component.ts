@@ -6,9 +6,8 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController, AlertController, MenuController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthData } from '../../providers/auth-data';
-import { Home } from '../home/home.component';
+import { MyResolutions } from '../myResolutions/myResolutions.component';
 import {RegisterComponent} from "../register/register.component";
-//import { ResetPasswordComponent } from '../resetPassword/resetPassword.component';*/
 
 @Component({
   selector: 'page-login',
@@ -44,12 +43,10 @@ export class LoginComponent {
   loginUser(){
     this.submitAttempt = true;
 
-    if (!this.loginForm.valid){
-      console.log(this.loginForm.value);
-    } else {
+    if (this.loginForm.valid){
       this.authData.loginUser(this.loginForm.value.email, this.loginForm.value.password).then( authData => {
-        //this.authData.changePushid(authData.uid);
-        this.navCtrl.setRoot(Home);
+        this.authData.changePushid(authData.uid);
+        this.navCtrl.setRoot(MyResolutions);
         //this.menuCtrl.enable(true, 'mainMenu');
       }, error => {
         this.loading.dismiss().then( () => {
