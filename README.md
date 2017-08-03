@@ -50,11 +50,12 @@ Inhalt:
   - mit Ionic 3 u.U. `ionic cordova run browser`
   - Ausführbar mit `ionic run android` bei angeschlossenem Androidgerät
   - mit Ionic 3 u.U. `ionic cordova run android`
+  - Oder ausführbar im Emulator
   - Funktionsumfang:
-    - Bilderaufnahme und -anzeige
+    - Bilderaufnahme und -anzeige (Nur im Emulator und am Handy)
     - Auslese des Batteriestatus (einmal Menü triggern nötig um Status anzuzeigen)
-    - Auslese der Internetverbindung (einmal Menü triggern nötig um Status anzuzeigen)
+    - Auslese der Internetverbindung (einmal Menü triggern nötig um Status anzuzeigen) (Nur im Emulator und am Handy)
     - Standortabfrage
     - Orientierung (Ausrichtung des Geräts)
     - Share-Funktion für Fotos (Whatsapp, E-Mail, )
-    - Kontaktliste in App anzeigen (+ Kontakte löschen und neu anlegen)
+    - Kontaktliste in App anzeigen (+ Kontakte löschen und neu anlegen) (Nur im Emulator und am Handy, sonst keine Kontakte vorhanden)
