@@ -1,9 +1,20 @@
 # Achieve it! (Mobile Apps Projekt Gruppe 1)
+Ausführen der Anwendung:
+1. ´npm install´
+2. ´ionic serve´ (im Browser) oder ´ionic cordova emulate android´ (auf einem Android Emulator)
+
+Die Präsentation und das Video sind im Ordner `Presentation` oder unter [Link](https://htmlpreview.github.io/?https://github.com/Jerobeam/Mobile-Apps-Project-Gruppe-1/blob/master/Presentation/index.html#simplequote) zu finden.
+Die Individualprojekte liegen in `Individualprojekte`.
 
 
-# Einzelarbeiten des ersten Teils der Vorlesung
-## Sebastian Röhling (MAT_NR)
-Zu finden unter `Einzelarbeiten/Sebastian`.
+Beteiligt am Projekt waren:
+- Lucas Groß-Hardt (MAT_GOES_HERE)
+- Julia Rosenboom (MAT_GOES_HERE)
+- Sebastian Röhling (4502972)
+
+# Individualprojekte
+## Sebastian Röhling (4502972)
+Zu finden unter `Individualprojekte/Sebastian`.
 
 Inhalt:
 - Android Tutorial
