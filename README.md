@@ -37,14 +37,14 @@ Inhalt:
 
 
 ## Lucas Groß-Hardt (4719129)
-Zu finden unter 'Individualprojekte/Groß-Hardt
+Zu finden unter `Individualprojekte/Groß-Hardt`
 
 Inhalt:
-- Android Tutorial App
+- Android Tutorial App `myFirstApp`
   - Inhalt:
     - Ausführbare Android App
-- Ionic App
-  - npm install benötigt, um dependencies zu installieren (App-Ordner separat extrahieren)
+- Ionic App `myApp`
+  - npm install benötigt, um dependencies zu installieren (App-Ordner vom Gruppenprojekt extrahieren)
   - Ausführbar mit `ionic serve` bzw. `ionic cordova run android` bei angeschlossenem Android- oder iOS-Gerät
   - Funktionsumfang:
     - Bilderaufnahme und -anzeige
