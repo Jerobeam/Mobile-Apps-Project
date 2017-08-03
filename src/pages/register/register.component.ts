@@ -125,7 +125,7 @@ export class RegisterComponent {
 
   private showVerificationAlert() {
     let confirm = this.alertCtrl.create({
-      title: 'Please confirm your mail adress',
+      title: 'Please confirm your mail address',
       message: 'Send another confirmation mail?',
       buttons: [
         {

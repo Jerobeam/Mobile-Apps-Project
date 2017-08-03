@@ -4,11 +4,11 @@
     <ion-item>
       <ion-label stacked>E-Mail</ion-label>
       <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)"
-                 placeholder="Your email adress"
+                 placeholder="Your email address"
                  [class.invalid]="!loginForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid  && (emailChanged || submitAttempt)">
-      <p>Please enter a valid email adress</p>
+      <p>Please enter a valid email address.</p>
     </ion-item>
 
     <ion-item>

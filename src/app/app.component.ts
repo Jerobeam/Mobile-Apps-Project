@@ -102,7 +102,7 @@ export class MyApp {
   checkForVerification() {
     if (!this.utilities.user.emailVerified) {
       let confirm = this.alertCtrl.create({
-        title: 'Please confirm your mail adress',
+        title: 'Please confirm your mail address',
         message: 'Send another confirmation mail?',
         buttons: [
           {
