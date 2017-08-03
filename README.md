@@ -8,13 +8,13 @@ Die Individualprojekte liegen in `Individualprojekte`. Der Deeplink der App laut
 
 
 Beteiligt am Projekt waren:
-- Lucas Groß-Hardt (MAT_GOES_HERE)
+- Lucas Groß-Hardt (4719129)
 - Julia Rosenboom (MAT_GOES_HERE)
 - Sebastian Röhling (4502972)
 
 # Individualprojekte
 ## Sebastian Röhling (4502972)
-Zu finden unter `Individualprojekte/Sebastian`.
+Zu finden unter `Individualprojekte/Röhling`.
 
 Inhalt:
 - Android Tutorial
@@ -34,3 +34,23 @@ Inhalt:
     - Universal Link
     - Auslesen der Bildschirmausrichtung
     - SMS-Integration
+
+
+## Lucas Groß-Hardt (4719129)
+Zu finden unter 'Individualprojekte/Groß-Hardt
+
+Inhalt:
+- Android Tutorial App
+  - Inhalt:
+    - Ausführbare Android App
+- Ionic App
+  - npm install benötigt, um dependencies zu installieren (App-Ordner separat extrahieren)
+  - Ausführbar mit `ionic serve` bzw. `ionic cordova run android` bei angeschlossenem Android- oder iOS-Gerät
+  - Funktionsumfang:
+    - Bilderaufnahme und -anzeige
+    - Auslese des Batteriestatus (einmal Menü triggern nötig um Status anzuzeigen)
+    - Auslese der Internetverbindung (einmal Menü triggern nötig um Status anzuzeigen)
+    - Standortabfrage
+    - Orientierung (Ausrichtung des Geräts)
+    - Share-Funktion für Fotos (Whatsapp, E-Mail, )
+    - Kontaktliste in App anzeigen (+ Kontakte löschen und neu anlegen)
