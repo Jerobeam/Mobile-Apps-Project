@@ -2,13 +2,11 @@
  * Created by Sebastian on 20.12.2016.
  */
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
 import firebase from 'firebase';
 import { Geofence } from '@ionic-native/geofence';
 import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
-import { AlertController } from "ionic-angular";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
 

@@ -1,9 +1,6 @@
-/**
- * Created by kochsiek on 08.12.2016.
- */
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, AlertController, MenuController } from 'ionic-angular';
+import { NavController, AlertController, MenuController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthData } from '../../providers/auth-data';
 import { MyResolutions } from '../myResolutions/myResolutions.component';
@@ -19,11 +16,10 @@ export class LoginComponent {
   emailChanged: boolean = false;
   passwordChanged: boolean = false;
   submitAttempt: boolean = false;
-  loading: any;
 
   constructor(public navCtrl: NavController, public authData: AuthData,
               public formBuilder: FormBuilder,public alertCtrl: AlertController,
-              public loadingCtrl: LoadingController, public menuCtrl: MenuController) {
+              public menuCtrl: MenuController) {
 
 
     this.menuCtrl.enable(false, 'mainMenu');
@@ -47,9 +43,7 @@ export class LoginComponent {
       this.authData.loginUser(this.loginForm.value.email, this.loginForm.value.password).then( authData => {
         this.authData.changePushid(authData.uid);
         this.navCtrl.setRoot(MyResolutions);
-        //this.menuCtrl.enable(true, 'mainMenu');
       }, error => {
-        this.loading.dismiss().then( () => {
           let alert = this.alertCtrl.create({
             message: this.authData.getErrorMessage(error),
             buttons: [
@@ -60,13 +54,7 @@ export class LoginComponent {
             ]
           });
           alert.present();
-        });
       });
-
-      this.loading = this.loadingCtrl.create({
-        dismissOnPageChange: true,
-      });
-      this.loading.present();
     }
   }
 

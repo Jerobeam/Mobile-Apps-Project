@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AuthData } from '../../providers/auth-data';
 import { MyResolutions } from "../myResolutions/myResolutions.component";
@@ -29,7 +29,6 @@ export class RegisterComponent {
   constructor(public navCtrl: NavController,
     public authData: AuthData,
     public formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public utilities: Utilities) {
     this.signupForm = formBuilder.group({
@@ -80,7 +79,6 @@ export class RegisterComponent {
           ).then(() => {
             this.showVerificationAlert();
           }, (error) => {
-            this.loading.dismiss();
             let alert = this.alertCtrl.create({
               message: this.authData.getErrorMessage(error),
               buttons: [
@@ -102,7 +100,6 @@ export class RegisterComponent {
         ).then(() => {
           this.showVerificationAlert();
         }, (error) => {
-          this.loading.dismiss();
           let alert = this.alertCtrl.create({
             message: this.authData.getErrorMessage(error),
             buttons: [
@@ -115,17 +112,13 @@ export class RegisterComponent {
           alert.present();
         });
       }
-      this.loading = this.loadingCtrl.create({
-        dismissOnPageChange: true,
-      });
-      this.loading.present();
     }
   }
 
   private showVerificationAlert() {
     let confirm = this.alertCtrl.create({
-      title: 'Please confirm your mail address',
-      message: 'Send another confirmation mail?',
+      title: 'Confirm mail address',
+      message: 'Please confirm your mail address.',
       buttons: [
         {
           text: 'Ok',
