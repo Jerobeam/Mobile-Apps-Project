@@ -9,7 +9,7 @@ Die Individualprojekte liegen in `Individualprojekte`. Der Deeplink der App laut
 
 Beteiligt am Projekt waren:
 - Lucas Groß-Hardt (4719129)
-- Julia Rosenboom (MAT_GOES_HERE)
+- Julia Rosenboom (1719634)
 - Sebastian Röhling (4502972)
 
 # Individualprojekte
@@ -59,3 +59,20 @@ Inhalt:
     - Orientierung (Ausrichtung des Geräts)
     - Share-Funktion für Fotos (Whatsapp, E-Mail, )
     - Kontaktliste in App anzeigen (+ Kontakte löschen und neu anlegen) (Nur im Emulator und am Handy, sonst keine Kontakte vorhanden)
+
+
+## Julia Rosenboom (1719634)
+Zu finden unter `Individualprojekte/Rosenboom`
+
+Inhalt
+- Android Tutorial App "MyFirst App"
+  - Ausführbares Android Studio Programm
+- Ionic und Cordova, ausführbar über 'ionic emulate android' oder 'ionic run android'
+  - contactApp: Zugriff auf Kontakte
+  - ionic-map: Einbindung von Google-Maps und Geolocation
+  - MyIonicProject: Tutorial erweitert um Kamerafunktion
+
+
+
+#Lizenz
+Diese Dokumentation unterliegt der Creative Commons Lizenz https://creativecommons.org/licenses/by/4.0/
