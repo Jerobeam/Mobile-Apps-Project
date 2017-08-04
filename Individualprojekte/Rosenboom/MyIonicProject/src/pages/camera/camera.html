@@ -1,0 +1,18 @@
+<ion-navbar *navbar>
+  <ion-title>
+    Picture
+  </ion-title>
+</ion-navbar>
+
+<ion-content class="home">
+  <ion-card>
+    <ion-card-content>
+      This is my camera page
+
+      <button (click)="takePicture()">Take a Picture</button>
+
+      Your last pic:
+      <img [src]="base64Image" *ngIf="base64Image" />
+    </ion-card-content>
+  </ion-card>
+</ion-content>
